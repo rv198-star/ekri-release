@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Capability Intelligence Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "created_at", "request_id", "source_tree", "status", "output_digests", "checks", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.capability-intelligence-audit.v1"},
+    "phase": {"const": "phase2-existing-capability-intelligence"},
+    "created_at": {"type": "string", "minLength": 1},
+    "request_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_tree": {"type": "string", "minLength": 40},
+    "status": {"const": "phase2-output-persisted"},
+    "output_digests": {
+      "type": "object",
+      "minProperties": 3,
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "check": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "blocked", "failed"]},
+          "detail": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 20}
+  }
+}

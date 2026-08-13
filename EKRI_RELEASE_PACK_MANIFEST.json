@@ -1,0 +1,1156 @@
+{
+  "claim_ceiling": "This release pack proves a bounded, source-identified EKRI distribution surface for the declared product version. Its semantic/product claims are limited by the included release notes and supported product contract. It does not prove exhaustive engineering knowledge, autonomous governance authority, host production readiness, or production approval.",
+  "excluded_families": [
+    "EKRI/tests/**",
+    "EKRI/registrations/**",
+    "EKRI/.pytest_cache/**",
+    "EKRI/docs ontology exploration/audit and historical validation records not listed as bounded product docs",
+    ".EKRI/** runtime state",
+    "WFF runtime/install-pack surfaces"
+  ],
+  "excluded_source_paths": [
+    "EKRI/docs/engineering-knowledge-ontology-audit-round1-cross-topic-consistency-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round10-post-adjustment-architecture-balance-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round11-post-adjustment-migration-complexity-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round12-final-adjustment-closure-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round2-adversarial-minimality-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round3-generality-and-reference-models-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round4-migration-and-operability-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round5-post-synthesis-falsification-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round6-cognitive-load-and-depth-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round7-query-path-and-retrieval-economy-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round8-boundary-economics-and-equilibrium-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-audit-round9-migration-reality-and-complexity-budget-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-problem-exploration-v0.1.md",
+    "EKRI/docs/engineering-knowledge-ontology-synthesis-v0.1.md",
+    "EKRI/docs/phase0-validation-20260804.md",
+    "EKRI/docs/phase1-validation-self-audit-20260804.md",
+    "EKRI/docs/phase2-independent-audit-20260804.md",
+    "EKRI/docs/phase2-validation-self-audit-20260804.md",
+    "EKRI/docs/phase3-independent-audit-20260804.md",
+    "EKRI/docs/phase3-validation-self-audit-20260804.md",
+    "EKRI/docs/project-knowledge-asset-v2-v0.1.md",
+    "EKRI/docs/project-knowledge-asset-validation-and-audit-20260805.md",
+    "EKRI/docs/v090-independent-closeout-audit-a-v0.1.md",
+    "EKRI/docs/v090-independent-closeout-audit-b-v0.1.md",
+    "EKRI/docs/v090-independent-product-baseline-plan-v0.1.md",
+    "EKRI/docs/v090-m0-baseline-v0.1.md",
+    "EKRI/docs/v090-release-record-v0.1.md",
+    "EKRI/docs/v100-architecture-authority-freeze-v0.1.md",
+    "EKRI/docs/v100-engineering-knowledge-system-transition-plan-v0.1.md",
+    "EKRI/docs/v100-p1-shadow-semantic-substrate-audit-20260813.md",
+    "EKRI/docs/v100-p1-shadow-semantic-substrate-v0.1.md",
+    "EKRI/docs/v100-p2-architecture-roundtrip-audit-20260813.md",
+    "EKRI/docs/v100-p2-architecture-roundtrip-v0.1.md",
+    "EKRI/docs/v100-p3-capability-named-query-audit-20260813.md",
+    "EKRI/docs/v100-p3-capability-named-query-v0.1.md",
+    "EKRI/docs/v100-p4-repository-firewall-stress-audit-20260813.md",
+    "EKRI/docs/v100-p4-repository-firewall-stress-v0.1.md",
+    "EKRI/docs/v100-p5-flow-handoff-audit-20260813.md",
+    "EKRI/docs/v100-p5-flow-handoff-v0.1.md",
+    "EKRI/docs/v100-p6-capability-authority-cutover-audit-20260813.md",
+    "EKRI/docs/v100-p6-capability-authority-cutover-v0.1.md",
+    "EKRI/docs/v100-p7-capability-writer-retirement-audit-20260813.md",
+    "EKRI/docs/v100-p7-capability-writer-retirement-v0.1.md",
+    "EKRI/docs/v100-p8-nonwff-product-conformance-audit-20260813.md",
+    "EKRI/docs/v100-p8-nonwff-product-conformance-v0.1.md",
+    "EKRI/docs/v100-p9-independent-audit-a-architecture-authority-20260813.md",
+    "EKRI/docs/v100-p9-independent-audit-b-distribution-conformance-20260813.md",
+    "EKRI/docs/v100-p9-rc-release-gate-v0.1.md",
+    "EKRI/docs/v100-predevelopment-readiness-20260813.md",
+    "EKRI/docs/v18-p0-core-boundary-reconstruction-v0.1.md",
+    "EKRI/docs/v18-p0-validation-and-clean-worktree-audit-20260804.md",
+    "EKRI/docs/v18-p1-independent-architecture-review-20260804.md",
+    "EKRI/docs/v18-p1-minimal-core-contract-v0.1.md",
+    "EKRI/docs/v18-p1-validation-and-clean-worktree-audit-20260804.md",
+    "EKRI/docs/v18-p2-core-extraction-v0.1.md",
+    "EKRI/docs/v18-p2-independent-architecture-review-20260804.md",
+    "EKRI/docs/v18-p2-validation-and-clean-worktree-audit-20260804.md",
+    "EKRI/docs/v18-p3-core-migration-v0.1.md",
+    "EKRI/docs/v18-p3-independent-architecture-review-20260805.md",
+    "EKRI/docs/v18-p3-validation-and-clean-worktree-audit-20260805.md",
+    "EKRI/registrations/issue-1070-v110-frontend-content-authoring.json",
+    "EKRI/registrations/issue-1072-v110-frontend-browser-runtime.json",
+    "EKRI/registrations/issue-864-p2-core-extraction-impacts.json",
+    "EKRI/registrations/issue-864-p2-core-extraction.json",
+    "EKRI/registrations/issue-865-p3-core-migration-impacts.json",
+    "EKRI/registrations/issue-865-p3-core-migration.json",
+    "EKRI/registrations/issue-866-p4-slimming-validation-impacts.json",
+    "EKRI/registrations/issue-866-p4-slimming-validation.json",
+    "EKRI/registrations/issue-877-full-lifecycle-dispatch-runtime-closure-impacts.json",
+    "EKRI/registrations/issue-877-full-lifecycle-dispatch-runtime-closure.json",
+    "EKRI/registrations/issue-877-full-lifecycle-strict-runtime-closure-impacts.json",
+    "EKRI/registrations/issue-877-full-lifecycle-strict-runtime-closure.json",
+    "EKRI/registrations/issue-877-p3-dispatch-no-ready-disposition-impacts.json",
+    "EKRI/registrations/issue-877-p3-dispatch-no-ready-disposition.json",
+    "EKRI/registrations/issue-877-p4-semantic-ledger-owner-routing-impacts.json",
+    "EKRI/registrations/issue-877-p4-semantic-ledger-owner-routing.json",
+    "EKRI/registrations/issue-877-three-scenario-ledger-digest-repair-impacts.json",
+    "EKRI/registrations/issue-877-three-scenario-ledger-digest-repair.json",
+    "EKRI/registrations/issue-877-wae-semantic-consistency-impacts.json",
+    "EKRI/registrations/issue-877-wae-semantic-consistency.json",
+    "EKRI/registrations/issue-878-project-knowledge-assets-impacts.json",
+    "EKRI/registrations/issue-878-project-knowledge-assets.json",
+    "EKRI/registrations/issue-879-p1-agentic-product-authority-impacts.json",
+    "EKRI/registrations/issue-879-p1-agentic-product-authority.json",
+    "EKRI/registrations/issue-881-p2-agentic-architecture-authority-impacts.json",
+    "EKRI/registrations/issue-881-p2-agentic-architecture-authority.json",
+    "EKRI/registrations/issue-886-p3-agentic-implementation-authority-impacts.json",
+    "EKRI/registrations/issue-886-p3-agentic-implementation-authority.json",
+    "EKRI/registrations/issue-888-bounded-doubt-driven-agentic-challenge-impacts.json",
+    "EKRI/registrations/issue-888-bounded-doubt-driven-agentic-challenge.json",
+    "EKRI/registrations/issue-892-bounded-challenge-integrity-hardening-impacts.json",
+    "EKRI/registrations/issue-892-bounded-challenge-integrity-hardening.json",
+    "EKRI/registrations/issue-896-authority-first-canonical-convergence-impacts.json",
+    "EKRI/registrations/issue-896-authority-first-canonical-convergence.json",
+    "EKRI/registrations/issue-907-p3-code-ownership-boundary-impacts.json",
+    "EKRI/registrations/issue-907-p3-code-ownership-boundary.json",
+    "EKRI/registrations/issue-909-p3-code-ownership-proof-impacts.json",
+    "EKRI/registrations/issue-909-p3-code-ownership-proof.json",
+    "EKRI/registrations/issue-913-p2-durable-persistence-identity-closure-impacts.json",
+    "EKRI/registrations/issue-913-p2-durable-persistence-identity-closure.json",
+    "EKRI/registrations/issue-924-v19-runtime-compat-packaging.json",
+    "EKRI/registrations/issue-925-v19-p3-scaffold-generator-consolidation.json",
+    "EKRI/registrations/issue-926-v19-p4-assurance-rationalization.json",
+    "EKRI/registrations/issue-932-v19-p3-modular-runtime-closure.json",
+    "EKRI/registrations/issue-934-v19-modular-baseline-fixtures.json",
+    "EKRI/registrations/issue-936-v19-verification-example-truth.json",
+    "EKRI/registrations/issue-938-v19-p2-contract-trace-identity.json",
+    "EKRI/registrations/issue-940-v19-review-bound-auth-evidence.json",
+    "EKRI/registrations/issue-941-v19-multi-operation-scenario-trace.json",
+    "EKRI/registrations/issue-944-v19-failure-field-hint-status.json",
+    "EKRI/registrations/issue-946-v19-runtime-evidence-contract.json",
+    "EKRI/registrations/issue-948-v19-non-operation-semantic-proof.json",
+    "EKRI/registrations/issue-950-v19-behavior-card-authority-projection.json",
+    "EKRI/registrations/issue-952-v19-contract-coverage-authority.json",
+    "EKRI/registrations/issue-954-v19-p4-review-bound-identity.json",
+    "EKRI/registrations/issue-956-v19-p3-audit-authority-gate.json",
+    "EKRI/registrations/issue-958-v19-type-aware-runtime-baseline-fixtures.json",
+    "EKRI/registrations/issue-968-v191-repository-asset-identity-impacts.json",
+    "EKRI/registrations/issue-968-v191-repository-asset-identity.json",
+    "EKRI/registrations/v1.8-internal-milestone-post913-alignment-impacts.json",
+    "EKRI/registrations/v1.8-internal-milestone-post913-alignment.json",
+    "EKRI/tests/test_adaptive_exploration.py",
+    "EKRI/tests/test_adaptive_exploration_conformance.py",
+    "EKRI/tests/test_adaptive_exploration_economy.py",
+    "EKRI/tests/test_architecture_roundtrip.py",
+    "EKRI/tests/test_capability_authority_cutover.py",
+    "EKRI/tests/test_capability_query.py",
+    "EKRI/tests/test_core_boundary_reconstruction.py",
+    "EKRI/tests/test_core_extraction.py",
+    "EKRI/tests/test_core_migration.py",
+    "EKRI/tests/test_existing_capability_intelligence.py",
+    "EKRI/tests/test_flow_query.py",
+    "EKRI/tests/test_knowledge_reconstruction.py",
+    "EKRI/tests/test_minimal_core_contract.py",
+    "EKRI/tests/test_nonwff_conformance.py",
+    "EKRI/tests/test_observation_boundary.py",
+    "EKRI/tests/test_phase3_evolution_intelligence.py",
+    "EKRI/tests/test_project_assets.py",
+    "EKRI/tests/test_project_assets_v2.py",
+    "EKRI/tests/test_release_packaging.py",
+    "EKRI/tests/test_repository_asset_identity.py",
+    "EKRI/tests/test_repository_firewall_stress.py",
+    "EKRI/tests/test_repository_lifecycle_observation.py",
+    "EKRI/tests/test_repository_ownership_boundary.py",
+    "EKRI/tests/test_shadow_semantic_substrate.py",
+    "EKRI/tests/test_v100_release_gate.py",
+    "EKRI/tests/test_v110_gate.py"
+  ],
+  "files": [
+    {
+      "generated": true,
+      "git_blob_oid": "",
+      "mode": "100644",
+      "path": ".gitignore",
+      "sha256": "0bc61050833737ce632747eb12f2cb43213eaecf924b6ae41e677222d6a98990",
+      "size": 50
+    },
+    {
+      "git_blob_oid": "04134bcc772d2aa7ad1afcb62a7659b89362fb08",
+      "mode": "100644",
+      "path": "EKRI/CHANGELOG.md",
+      "sha256": "6a262402dec2d1fbb9b2541f689b4ba1ce448b73f61b780f9a1c39c38a3b716e",
+      "size": 10259
+    },
+    {
+      "git_blob_oid": "033dd9b2137870e6c6cadc47115f488a65f3ce49",
+      "mode": "100644",
+      "path": "EKRI/README.md",
+      "sha256": "eed04078a724fe85923d37780223335251567cc78b7cbb19959e755314dac063",
+      "size": 26668
+    },
+    {
+      "git_blob_oid": "2d3c54ab66ca96996e5825689f43eccf9e2437fc",
+      "mode": "100644",
+      "path": "EKRI/audit-fixtures/nonwff-mercury-ci/target/README.md",
+      "sha256": "817e4e066b86314f2cf31f9d66ed9697c28ea96be011bd6d7cc5e7fbcdeb9688",
+      "size": 580
+    },
+    {
+      "git_blob_oid": "5ad0cfbf9c4f2e13041420789801f8000aa449d7",
+      "mode": "100644",
+      "path": "EKRI/audit-fixtures/nonwff-mercury-ci/target/deployment-policy.md",
+      "sha256": "07bd11725dddc040f86e238a8dd6535a5e0f557dc48ed0dc6b9bca20db3db743",
+      "size": 618
+    },
+    {
+      "git_blob_oid": "5045fb911d8f72af03a09520fcab2a1a317b8955",
+      "mode": "100644",
+      "path": "EKRI/audit-fixtures/nonwff-mercury-ci/target/pipeline.yaml",
+      "sha256": "71f700dac3301bc7c43fe3770d877a0232cc72939a9ce0d80e4231c7927bfd15",
+      "size": 484
+    },
+    {
+      "git_blob_oid": "83d5bbf39f887dfe76bcfaf37f1289826bb99e2c",
+      "mode": "100644",
+      "path": "EKRI/audit-fixtures/wff-v162-phase3-baseline.json",
+      "sha256": "6bc5313632063969ca7e636d91c8a385e5e344f13079a4e220fda695c005ff39",
+      "size": 1513
+    },
+    {
+      "git_blob_oid": "0cdb3a857e0796602fe9767d089b81a82d5c545f",
+      "mode": "100644",
+      "path": "EKRI/docs/adaptive-knowledge-acquisition-v1.1.md",
+      "sha256": "d345662c6d1c14a2575a655c559922fb311157b6b14b0f2387b8765d602efad3",
+      "size": 5705
+    },
+    {
+      "git_blob_oid": "b243b366f19ce98800904ad95b242332523bd2e8",
+      "mode": "100644",
+      "path": "EKRI/docs/engineering-knowledge-reconstruction-intelligence-v0.1.md",
+      "sha256": "3e05e8b7bdbdef9b527f1f9a181b8ff85843e4e1e4fd0f492d320fb95dc67f2b",
+      "size": 7423
+    },
+    {
+      "git_blob_oid": "73452ad42c188b30ecbd909da3c06b40555d63bd",
+      "mode": "100644",
+      "path": "EKRI/docs/phase0-observation-independence-v0.2.md",
+      "sha256": "b2a06fff63f19057823564118bb0f14f0aebc36bb5757371321d0fb6e78b8d2d",
+      "size": 5940
+    },
+    {
+      "git_blob_oid": "2df9bf194bb06d3e370f48d4fce885f6bd1abebf",
+      "mode": "100644",
+      "path": "EKRI/docs/phase1-wff-baseline-reconstruction-v0.1.md",
+      "sha256": "96b7a2bd191277506d5b51de215bc14aba26358d1cf8f7a6097c4656abde0c12",
+      "size": 9081
+    },
+    {
+      "git_blob_oid": "7fed5847dd118fd13203e4210c8171099e58701d",
+      "mode": "100644",
+      "path": "EKRI/docs/phase2-existing-capability-intelligence-v0.1.md",
+      "sha256": "58e0938442c2587b64032ffaa1ad2fcfb2a82c1c85ebbbcc0b76ff49cf074c12",
+      "size": 8021
+    },
+    {
+      "git_blob_oid": "9afa44a7233f00b548c126ffcc73d23b11be2af1",
+      "mode": "100644",
+      "path": "EKRI/docs/phase3-evolution-and-impact-intelligence-v0.1.md",
+      "sha256": "bb4295b80221cee1d7982977c4ccfae547be1a9afdcb11aabe5de043774225bf",
+      "size": 8699
+    },
+    {
+      "git_blob_oid": "e0abdddf8638933df3ef805bb2beda1df9f0a248",
+      "mode": "100644",
+      "path": "EKRI/docs/project-knowledge-asset-boundary-v0.1.md",
+      "sha256": "837ddd2a6f47768f4393733d90dd3d310384b9e80d53e890709de8edd078db2a",
+      "size": 5489
+    },
+    {
+      "git_blob_oid": "0adeeb6561fccccdee66c82999fb721c7d5723a1",
+      "mode": "100644",
+      "path": "EKRI/docs/releases/v0.9.0.md",
+      "sha256": "ee579a0abedc38fe637178d79ae821e06c29cf7819c9f76510b922c9c24e5fe1",
+      "size": 7774
+    },
+    {
+      "git_blob_oid": "57fbece222dce187dc67efefada1898c49e2bb6b",
+      "mode": "100644",
+      "path": "EKRI/docs/releases/v1.0.0.md",
+      "sha256": "7533f0fd1d111c42f6d318a77a31794262b10d5f3a3eb601b507eccdd558d51e",
+      "size": 6949
+    },
+    {
+      "git_blob_oid": "18fb5cdcb6eb4167fe8f95aee13ab3c28ca59fd6",
+      "mode": "100644",
+      "path": "EKRI/docs/releases/v1.1.0.md",
+      "sha256": "447fe9c90c7a3e9a127c71e42043c7aed9aa7344a020ddb382c39ad5865806de",
+      "size": 1910
+    },
+    {
+      "git_blob_oid": "46f09f8213079bef3e33618458bacb96780e0644",
+      "mode": "100644",
+      "path": "EKRI/docs/v100-supported-product-contract-v1.0.md",
+      "sha256": "7de38d98401602bc1307da413e90f14479c9db5f53cbf20cd9f4557fe027d602",
+      "size": 9317
+    },
+    {
+      "git_blob_oid": "b73869b99e96116309cf43bcd6249bd43d7ab386",
+      "mode": "100644",
+      "path": "EKRI/docs/v191-repository-asset-identity-model-v0.1.md",
+      "sha256": "9c24e25e2c1a799fe756a40e8deac7816874261aa00c34451f675ed9003d03c8",
+      "size": 2660
+    },
+    {
+      "git_blob_oid": "b04bb427ba3862da294c7f5ba47d9a0fbcae2ee3",
+      "mode": "100644",
+      "path": "EKRI/docs/v191-repository-lifecycle-observation-model-v0.1.md",
+      "sha256": "904f6e64637fc72c87eea3dbd2fee24baec34f8de2b5914e1371872fe23734c8",
+      "size": 3582
+    },
+    {
+      "git_blob_oid": "0d6909e955526db0497b7767a6ed20bf7ffd6fb0",
+      "mode": "100644",
+      "path": "EKRI/docs/v191-repository-ownership-boundary-model-v0.1.md",
+      "sha256": "ca27b5d842656f9f1da6bb7421b9bccca1d52e5dfb446ba03fdabd9585991871",
+      "size": 3986
+    },
+    {
+      "git_blob_oid": "f326540cd2c6f652856191a0bfab1e554f5fccd9",
+      "mode": "100644",
+      "path": "EKRI/docs/versioning-changelog-release-governance-v0.1.md",
+      "sha256": "4157d5c5fdb03bfc2ab66eba6be0eb15a6c4e8b2451c4c923aafc4bc0fb36818",
+      "size": 11679
+    },
+    {
+      "git_blob_oid": "6e98e191ceaf94f054b420a945dd5ad884bf393d",
+      "mode": "100644",
+      "path": "EKRI/pyproject.toml",
+      "sha256": "9264f3315255527bde294321358998292765d474339a962309c7dd498a0326a7",
+      "size": 348
+    },
+    {
+      "git_blob_oid": "dcd33d19e9e8aca32484021366c9c746edf35499",
+      "mode": "100644",
+      "path": "EKRI/schemas/acquisition-evidence-receipt.schema.json",
+      "sha256": "bb7d826473d191e55cdefd93f22bd250e5fca64d2e34ce53590a79b89439a0e5",
+      "size": 1096
+    },
+    {
+      "git_blob_oid": "ac58701be053201a0d10dca1487d2d878a25bd0e",
+      "mode": "100644",
+      "path": "EKRI/schemas/adaptive-exploration-wae-trace.schema.json",
+      "sha256": "4667749315075349b872b39a63a2df3c9f5fb090c1266cf2954cf47e47ab10c3",
+      "size": 1411
+    },
+    {
+      "git_blob_oid": "ec3b93731f2e9a189a1defb3ed436d2012078626",
+      "mode": "100644",
+      "path": "EKRI/schemas/architecture-evolution-map.schema.json",
+      "sha256": "038663a72ce1c657797a725ce1bdbce42080f3e97661b879bd0b620f7266c409",
+      "size": 4160
+    },
+    {
+      "git_blob_oid": "35ef012c8f3a289a6ff3bc2d60a87e24a739db25",
+      "mode": "100644",
+      "path": "EKRI/schemas/architecture-evolution-snapshot.schema.json",
+      "sha256": "80ad8b409371fcd40e98f76c98b81cb32bfef094171999ca024070ce64e5badd",
+      "size": 2359
+    },
+    {
+      "git_blob_oid": "21d84a09d0f3fcf2f7e3a421ebf14605d57a2bd9",
+      "mode": "100644",
+      "path": "EKRI/schemas/architecture-memory.schema.json",
+      "sha256": "119e55e5026ea3542279b236aba16e233804f915dbcf8ef530a8f0e4f9f4d431",
+      "size": 6615
+    },
+    {
+      "git_blob_oid": "87914c2e213f7098d27b000abf5e39553aceba3e",
+      "mode": "100644",
+      "path": "EKRI/schemas/architecture-roundtrip-parity.schema.json",
+      "sha256": "6e26a5ec4d90ba8bd0ccee223dcd3f2c148e7e702dda3ebde9e8554822d3a4f3",
+      "size": 3284
+    },
+    {
+      "git_blob_oid": "cb624ad20ab9d2bcb72bd9ebbe070a9c133db6fe",
+      "mode": "100644",
+      "path": "EKRI/schemas/architecture-view.schema.json",
+      "sha256": "82f3b24f2fcc6f1f0e384365e0ac783194fdf27ef98fe4727e4771b47956f1ec",
+      "size": 8409
+    },
+    {
+      "git_blob_oid": "13bc7d9fc86e1c649f1191edd623763915686c74",
+      "mode": "100644",
+      "path": "EKRI/schemas/baseline-equivalence.schema.json",
+      "sha256": "98e7a9628bb3255d9b35f0f1749ebeda56da226ddcdba9d91b443e395519710b",
+      "size": 4738
+    },
+    {
+      "git_blob_oid": "4fc4b0c7833afc753cbe5fa4476d136ffd177d98",
+      "mode": "100644",
+      "path": "EKRI/schemas/before-generate-capability-check.schema.json",
+      "sha256": "0ed3f3486ee3d96cef022bc1c281443a4a96f6c148504637305ec83b81a195af",
+      "size": 8442
+    },
+    {
+      "git_blob_oid": "33677d13958ce46fe243c7c5868b626bbe8a6b97",
+      "mode": "100644",
+      "path": "EKRI/schemas/candidate-authority-routing-decision.schema.json",
+      "sha256": "4ce8d40f86eb678ba451aea919e1e2cf3ca9b0138795be594fb7184493c6ecb1",
+      "size": 1022
+    },
+    {
+      "git_blob_oid": "f7db344218c1c80cd7230442886d61ba22074e28",
+      "mode": "100644",
+      "path": "EKRI/schemas/candidate-knowledge-delta.schema.json",
+      "sha256": "5f45e3584f4b137c4df150296b05d94d7084abee6c2acb47d16755b607649a82",
+      "size": 1609
+    },
+    {
+      "git_blob_oid": "4f6a070ea011afec4fc664d0e5b32574cd088f41",
+      "mode": "100644",
+      "path": "EKRI/schemas/capability-catalog.schema.json",
+      "sha256": "fb03a246c821d37e1d73abb01f05be83b9de85ef39c8f15dda68058f8a7fe2bb",
+      "size": 6853
+    },
+    {
+      "git_blob_oid": "93ecb4157c22a85a96ad3eda51a137b6c84986ec",
+      "mode": "100644",
+      "path": "EKRI/schemas/capability-intelligence-audit.schema.json",
+      "sha256": "d6799f9a708c3d159c96298c185ecf209c890db676d596891c71818b52e0b6de",
+      "size": 1331
+    },
+    {
+      "git_blob_oid": "9ab484f239b2c7aabb11d58993f83bcc7f98a340",
+      "mode": "100644",
+      "path": "EKRI/schemas/capability-query-answer.schema.json",
+      "sha256": "cdbb119896fcbefcf1dbcc174a8a49174b4cf705f576c5e4ae336adf7a85ba60",
+      "size": 7980
+    },
+    {
+      "git_blob_oid": "0c91af6386b9bc0e8fd90ca3303d94ee6cc583f3",
+      "mode": "100644",
+      "path": "EKRI/schemas/capability-query-index.schema.json",
+      "sha256": "5fc64e9732260eb23a41c8959ddb0c12c9e402c4ef874dbad9ce2203ef5e381e",
+      "size": 3927
+    },
+    {
+      "git_blob_oid": "0a04348791b8e1a638bcf9d545ead7a9bcf3e0f7",
+      "mode": "100644",
+      "path": "EKRI/schemas/capability-semantic-authority.schema.json",
+      "sha256": "9a2b774eb9fa424327247c5bb989993496b6ac21e31c1a5fc6a9f290441ca413",
+      "size": 4555
+    },
+    {
+      "git_blob_oid": "d4431fb54a63bf5422fe1a69c728ba0a026e3936",
+      "mode": "100644",
+      "path": "EKRI/schemas/change-impact-map.schema.json",
+      "sha256": "b95aa2e71beb9dc4a4d059650caef1dcc37f65745ff583f28da5c97bdff3440c",
+      "size": 2652
+    },
+    {
+      "git_blob_oid": "22e9710a74de442b0eb1fceeb765c7ec1bae72d9",
+      "mode": "100644",
+      "path": "EKRI/schemas/change-registration.schema.json",
+      "sha256": "3b8e9f8bdb5beb3fcf3f5350080a072eab7ca1034f9a6c054ec6eb816e726b3d",
+      "size": 3000
+    },
+    {
+      "git_blob_oid": "5c4b8e1245ed682528f4bc52d852d4c7de848bc8",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-boundary-audit.schema.json",
+      "sha256": "ee4d918c70267e5ae94dadc9e03cd070dc7c825a9b7103f661fdf7bf7eb07967",
+      "size": 1591
+    },
+    {
+      "git_blob_oid": "2221d40ff714aad2b55c77107b5a8a2ccb3002e6",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-candidate-map.schema.json",
+      "sha256": "f206a4b5a9e73a4278c9fd7bd646882c47bbc413d9873931a6f15f8940e78824",
+      "size": 11114
+    },
+    {
+      "git_blob_oid": "140bf3a33431ae5935d1eb696c854e796e3ded68",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-compatibility-matrix.schema.json",
+      "sha256": "02e7a2aa0dd9af291aab3f183b589977370b9396d0b10ea34d8b73b33e94b8d3",
+      "size": 2015
+    },
+    {
+      "git_blob_oid": "1a5bbdafb5c800e7640fec7d3207b8dd45e31353",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-contract-audit.schema.json",
+      "sha256": "c37710e095f377964ea2a09ae330f68a3d95ffec46269a61c915b72789b11978",
+      "size": 1092
+    },
+    {
+      "git_blob_oid": "d2be9ffe1029386daa3b0cc18ae35611581459f2",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-contract-conformance.schema.json",
+      "sha256": "a52cc716e137a3a2ded07b085273dc25498c0901509223d2dbc5e881d89419aa",
+      "size": 1553
+    },
+    {
+      "git_blob_oid": "9903a6139fe8ff41befc93e27e03568779283d38",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-contract.schema.json",
+      "sha256": "d44708d90a6e1006db9caa35610beba1a5e059b97bc01a8b6fcb89b38f24eda7",
+      "size": 3916
+    },
+    {
+      "git_blob_oid": "770ca007be465d3b282ff8281a67dd7f72f63f39",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-extension-interface.schema.json",
+      "sha256": "9b52ffd7bad8d0a917729d18a4192736f328c85ce57fbc209d6cec56a22aef65",
+      "size": 1565
+    },
+    {
+      "git_blob_oid": "edb7000197d325ce1a55f7512b764f2b509e24c8",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-extraction-audit.schema.json",
+      "sha256": "598246ce67f4215b762524ef5b2d20edcfa7c5c8314f2d463fb7d357d60d0d7d",
+      "size": 4570
+    },
+    {
+      "git_blob_oid": "2ba6228f1b4378b3a7638643d82cd06d1ebdfdfe",
+      "mode": "100644",
+      "path": "EKRI/schemas/core-migration-audit.schema.json",
+      "sha256": "c045779be45591efcbec0b1ef01e7f203664b2e0d066e3586aab9d739eafb0ab",
+      "size": 4478
+    },
+    {
+      "git_blob_oid": "456fac2126a83fc922c20cd4d82c4d8d64807cf8",
+      "mode": "100644",
+      "path": "EKRI/schemas/engineering-knowledge-shadow.schema.json",
+      "sha256": "03cffde9e9368f6b938609a86b7f345872f130e3f56a83c5e8bbba549c2fd366",
+      "size": 10813
+    },
+    {
+      "git_blob_oid": "8332223494478234c6e036a7b9ae0c7afd2e9058",
+      "mode": "100644",
+      "path": "EKRI/schemas/evidence-index.schema.json",
+      "sha256": "9e2d3efb446e123c95aee95cd1adc692e90ab5624105857ddb0d142f2bb66781",
+      "size": 3154
+    },
+    {
+      "git_blob_oid": "6ffb4ab3c579f129699e9e1eed192190ad28c09c",
+      "mode": "100644",
+      "path": "EKRI/schemas/flow-conformance-fixture.schema.json",
+      "sha256": "8179ae960bb43b37ebd142a432bdd7b800509c2a70645af16fdb552b9dd043da",
+      "size": 4659
+    },
+    {
+      "git_blob_oid": "2517b184b9e643dc67d236814643ac1618dfe33a",
+      "mode": "100644",
+      "path": "EKRI/schemas/flow-query-answer.schema.json",
+      "sha256": "cb3ea6df4a57bcc2bf87749e0e2a0e59161462d29a1d3b3133f6db71f787d722",
+      "size": 1900
+    },
+    {
+      "git_blob_oid": "590fca58987b9bbd7a7dd427fdc5a8836694a6c6",
+      "mode": "100644",
+      "path": "EKRI/schemas/flow-semantic-model.schema.json",
+      "sha256": "e061c5dd2c7d5cee51faa369e59c3c2935230a03f9dc0ee514eacea2feb055e9",
+      "size": 6547
+    },
+    {
+      "git_blob_oid": "6ed1e35ce802a27bc250f39c44c6658fb8a4bf98",
+      "mode": "100644",
+      "path": "EKRI/schemas/incremental-reconstruction.schema.json",
+      "sha256": "dd30ba41558fdcd1f9b2ff07187168b05320456d59c429a6e8ae52774425d1ec",
+      "size": 6127
+    },
+    {
+      "git_blob_oid": "17249b6336ca4b1d1d2ef77240b5b919e6c5b3bc",
+      "mode": "100644",
+      "path": "EKRI/schemas/knowledge-sufficiency-report.schema.json",
+      "sha256": "eccf0c55fc5880e3fce129edae33931ee4994210480c87dfcf55955cbfd8b14b",
+      "size": 1729
+    },
+    {
+      "git_blob_oid": "613a33f9a7610a371e530b21736509d9f9875476",
+      "mode": "100644",
+      "path": "EKRI/schemas/mission-context.schema.json",
+      "sha256": "cc6bd48c2384448cf35ef2c538394fb0b843f437fcddbb029dafb4ba3781fcf6",
+      "size": 2415
+    },
+    {
+      "git_blob_oid": "e19b2cea1bf3ca6705ab5afc769386142e068fd3",
+      "mode": "100644",
+      "path": "EKRI/schemas/mission-exploration-plan.schema.json",
+      "sha256": "d3d872f6988d7ea17660154cee4d2c1be18e9f0dd4a15aeb1e30998789521c60",
+      "size": 3180
+    },
+    {
+      "git_blob_oid": "0fce68eab37b25bcd3270f3276a1a0fba18d5611",
+      "mode": "100644",
+      "path": "EKRI/schemas/nonwff-conformance-report.schema.json",
+      "sha256": "30df421b8cbc2fd6f58ab53040196e7e55b5bc8e3a45015cea72285386349000",
+      "size": 2224
+    },
+    {
+      "git_blob_oid": "8c1239d160dccbb17348c43e63f7d29fc0f185e8",
+      "mode": "100644",
+      "path": "EKRI/schemas/observation-manifest.schema.json",
+      "sha256": "1a3ff91bc4c6cec24997d368d3b74ccf95660c46bfeb5014ad67e218565ce16a",
+      "size": 6838
+    },
+    {
+      "git_blob_oid": "1cae4c86a1f88dd073d000e23252cad187970698",
+      "mode": "100644",
+      "path": "EKRI/schemas/phase3-audit-fixture.schema.json",
+      "sha256": "87eeba44eff33070f0b96c87c235a7e26782691da6aaa1f3a21f9b6cbd1f22ed",
+      "size": 3067
+    },
+    {
+      "git_blob_oid": "5995f22cd3523de097593c6d584e9622c4a087a7",
+      "mode": "100644",
+      "path": "EKRI/schemas/phase3-evolution-audit.schema.json",
+      "sha256": "3f611894041af813f7462e0ead5bb38d3fde60ec1022dd86fd85d88378ff383e",
+      "size": 2692
+    },
+    {
+      "git_blob_oid": "913c49202f9d3e8e086a4d7423666882717b91c4",
+      "mode": "100644",
+      "path": "EKRI/schemas/project-knowledge-asset-v2.schema.json",
+      "sha256": "6189649885a90dcaee03a649ba32d9fcb73e11a50b85c57cb510efa5dcdabb5f",
+      "size": 5921
+    },
+    {
+      "git_blob_oid": "f0861b5d044ea8d150bbfdf82a67edfbe7840466",
+      "mode": "100644",
+      "path": "EKRI/schemas/project-knowledge-asset.schema.json",
+      "sha256": "202790f0c0768e6720bb0fc860b49ce4f6f98d3a8df73eefe00f23d563a5c8e9",
+      "size": 2486
+    },
+    {
+      "git_blob_oid": "9de07a2dba6db2282ff09267cfa631d3d216f213",
+      "mode": "100644",
+      "path": "EKRI/schemas/project-knowledge-family-artifact-v2.schema.json",
+      "sha256": "28965cc7ec4d79bc8a851675306d1e2e39f9a7cd354f72fe8236cd54fd741f30",
+      "size": 2447
+    },
+    {
+      "git_blob_oid": "d879850d5d385e64cb4a14c8ff046af25bafe4c3",
+      "mode": "100644",
+      "path": "EKRI/schemas/reconstruction-report.schema.json",
+      "sha256": "61efa0865ec250462ab4cb4efcee651dfb765a27e3ccc8ef9f6f3169ee0d3385",
+      "size": 2936
+    },
+    {
+      "git_blob_oid": "ea07bdae921876a2b700bda977c4dad1fa9463f1",
+      "mode": "100644",
+      "path": "EKRI/schemas/repository-asset-knowledge-map.schema.json",
+      "sha256": "d87a21f22dca2a580ef08828d5f7ed5207c1a42aea43df540ede76130c61b953",
+      "size": 5591
+    },
+    {
+      "git_blob_oid": "94e8d40292083392abfe92eadb4dbe3dff66accf",
+      "mode": "100644",
+      "path": "EKRI/schemas/repository-firewall-stress-view.schema.json",
+      "sha256": "3f8923f2fb4f72ef69b705d6aa1011d9a0cacc116371afe85a27a222af226a9b",
+      "size": 8804
+    },
+    {
+      "git_blob_oid": "beb3eb081c82da48304a3d2311cc59ad79bc7374",
+      "mode": "100644",
+      "path": "EKRI/schemas/repository-lifecycle-observation-snapshot.schema.json",
+      "sha256": "cd7ba44aa5cb88d86fff34dcc38d8b1b1680ae980013f586413c1c7b213dd17c",
+      "size": 6945
+    },
+    {
+      "git_blob_oid": "5f5e1930c67e731b87815c9733b4a52064570a47",
+      "mode": "100644",
+      "path": "EKRI/schemas/repository-ownership-boundary-map.schema.json",
+      "sha256": "9cfcd57dee201ab27ade1b11c4018b49b033a839708c4db59d7c3c0a8ff1d890",
+      "size": 8530
+    },
+    {
+      "git_blob_oid": "1c50c94b73730a6e73e449a6775e3cffcd1c63e3",
+      "mode": "100644",
+      "path": "EKRI/schemas/v100-release-gate.schema.json",
+      "sha256": "d4670af632de0ea38e3b4eeef1e7c751539077ee63c1d77ebf09b6386c9b8fa8",
+      "size": 4948
+    },
+    {
+      "git_blob_oid": "0adee1940223dea52203fd8eeb0a5651a88c3f13",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_adaptive_exploration_conformance.py",
+      "sha256": "2912e52bfed208feca2569f172d3e4e72eae431873951ff071445c8ccdc6c7ae",
+      "size": 487
+    },
+    {
+      "git_blob_oid": "ea439313ec663bdd18450b0878fa011343fdb5d3",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_adaptive_exploration_economy.py",
+      "sha256": "e543d3fab731713ed5b4d1df5d885435b428fd84fa328d3c1c07147639e44dfb",
+      "size": 397
+    },
+    {
+      "git_blob_oid": "20fde8c0e3b0440fe26463b15941a27dc430d744",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_release_pack.py",
+      "sha256": "1154a6df1c7cf01143a8d02186923cd8ce3115b9b6d1b569b7cd6484246b7879",
+      "size": 8564
+    },
+    {
+      "git_blob_oid": "4a6b5cee7cf0abbfd5cfc935648eda27a0194112",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_v100_release_gate.py",
+      "sha256": "0fdedc502bd439506781a3d9bf9173e6538b2e0bb35a3051a58e6e343d4a2c81",
+      "size": 1337
+    },
+    {
+      "git_blob_oid": "9b74e31dd248f05fd19994f333c92d9f3a1ba679",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_v110_gate.py",
+      "sha256": "853506adc22cd3ef4c99b16df7297095bcbbabfb06d920daa4a466d541d036fa",
+      "size": 344
+    },
+    {
+      "git_blob_oid": "8d54ee270083b45854be1a6044182886357a6ef4",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_wff_core_extraction.py",
+      "sha256": "2bd6b9d3e5db872867ecb35bed02572929de551a309b1c509430f1c2d56a37ed",
+      "size": 1464
+    },
+    {
+      "git_blob_oid": "a327e51d99fb3a62319250670e76e2eb56cf7dda",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_wff_core_migration.py",
+      "sha256": "f25133f68268caa66c1f1066365ecadb734555404e6c796247b181efee058098",
+      "size": 1343
+    },
+    {
+      "git_blob_oid": "244f2f158ad3507c9f94e27ad335526f5bf50a5f",
+      "mode": "100644",
+      "path": "EKRI/scripts/bootstrap_phase3_audit.py",
+      "sha256": "f80f344a3dc7e1593abc48cc311dfd7afd34de0aefddebcf8b4cc40129915594",
+      "size": 1803
+    },
+    {
+      "git_blob_oid": "26e1e3f0c47e074c347d3cbdcbf84374bf4f3528",
+      "mode": "100644",
+      "path": "EKRI/scripts/build_release_pack.py",
+      "sha256": "86641d62e7b92e67096a489350f1f9b076b62db13568402d74f044a6af97013c",
+      "size": 14503
+    },
+    {
+      "git_blob_oid": "758fc553316121a741aa55307d3bc1fb9ce9a2e7",
+      "mode": "100644",
+      "path": "EKRI/scripts/check_existing_capability.py",
+      "sha256": "866baa2e3635c434ff9bc4b946500cf967180d79539923d3cb894f51fa1f9e6b",
+      "size": 3374
+    },
+    {
+      "git_blob_oid": "b68067665bd3356386ecfeaba22a8d10867aad69",
+      "mode": "100644",
+      "path": "EKRI/scripts/compile_architecture_shadow.py",
+      "sha256": "6412cef5403f84826a6b7f915263db5e60b3fb44aa1448ff74c71582cd967aea",
+      "size": 2096
+    },
+    {
+      "git_blob_oid": "bcbc2a9fb1de346a7f233df0fe1df6e1e2c3558d",
+      "mode": "100644",
+      "path": "EKRI/scripts/define_wff_core_contract.py",
+      "sha256": "c8789171987ec6ca09ae1adcafccb5ef4184bbd75beebfc6fa08b39cb1584f0f",
+      "size": 1987
+    },
+    {
+      "git_blob_oid": "88a58304605188d8357683292ecce7223ca006f8",
+      "mode": "100644",
+      "path": "EKRI/scripts/manage_project_assets.py",
+      "sha256": "278dec27c01067f5999893afb65d4e1f7e57c52df693e90609f04ad1de6fe741",
+      "size": 2162
+    },
+    {
+      "git_blob_oid": "d3b0337920f91d112802f1fd2de496c36724114a",
+      "mode": "100644",
+      "path": "EKRI/scripts/query_capability.py",
+      "sha256": "9143929a97e48593f48f5589f80d93cc70345df361f61018f1ffd23629fde0f8",
+      "size": 3836
+    },
+    {
+      "git_blob_oid": "84ba01fe8a65022c520376aeb39a68880639da55",
+      "mode": "100644",
+      "path": "EKRI/scripts/reconstruct_wff_baseline.py",
+      "sha256": "58ecce767d67ea69014a65cd55574ff5bfcc965e09c4e76d3a78908b7d5f86c6",
+      "size": 2121
+    },
+    {
+      "git_blob_oid": "f8477640896d165d2de4c81161ae6f170e0b64c0",
+      "mode": "100644",
+      "path": "EKRI/scripts/reconstruct_wff_core_boundary.py",
+      "sha256": "f0a3d3f14353bc22630c26d046b888bc0b5fe9d25f1f4a7df62c702096580517",
+      "size": 2021
+    },
+    {
+      "git_blob_oid": "dc82243d2de001fe494f2a7bbac8ffdce8f28d0f",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_architecture_roundtrip.py",
+      "sha256": "3082c81f006f734b7412cbdca71ed7fb94730e68a425e6c4b436e4e26c026ee0",
+      "size": 2331
+    },
+    {
+      "git_blob_oid": "f1efa74bf40b7368e0f6c4ee48c0a527eec92f85",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_nonwff_conformance.py",
+      "sha256": "4642fa4908500c0f86510004da79502399d304fbb8a699fed290b75feb8810d0",
+      "size": 1494
+    },
+    {
+      "git_blob_oid": "141fcfb0cffab1b44ef40e722667587b20901781",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_phase3_evolution.py",
+      "sha256": "9267e1c83cab4567e2c55a214f811cc638928c7f343fca70fc8d792d1566e319",
+      "size": 4705
+    },
+    {
+      "git_blob_oid": "5265e7549610ce1c690fa29e1c5019e8f979e74a",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_repository_asset_identity.py",
+      "sha256": "96deadaaaf5d6e688a6873103dbb690e82953d03a277462f33ee52a87c9cd084",
+      "size": 8331
+    },
+    {
+      "git_blob_oid": "6a6dda6cddcd7c37f7e7bef880572ac41969ecc8",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_repository_firewall_stress.py",
+      "sha256": "2ca5277cd5dee5880e9eb291e6c65f5f75cdbcfba80b1d4ceadc216503900bc8",
+      "size": 3506
+    },
+    {
+      "git_blob_oid": "a22735b99c899590ac39af1aadb4efc916f56d0b",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_repository_lifecycle_observation.py",
+      "sha256": "e15c4557571adb465bae20686675a2a536e74dfa63a7248efb00840d3da77af8",
+      "size": 5276
+    },
+    {
+      "git_blob_oid": "a57049af5fecf28410d31d40d28e64f888acbfbf",
+      "mode": "100644",
+      "path": "EKRI/scripts/run_repository_ownership_boundary.py",
+      "sha256": "0cfbb5f2f215e2fc452e3ce7906ef9b93831a99416653c023d247e0bf8883087",
+      "size": 4795
+    },
+    {
+      "git_blob_oid": "5d838b745f31fb5da86591c9fea159a741c8ddb4",
+      "mode": "100644",
+      "path": "EKRI/scripts/trace_flow.py",
+      "sha256": "227d31896c6f2eec4639b99fdf7eb0885b06e748d192a20749eec6f57aacc237",
+      "size": 2230
+    },
+    {
+      "git_blob_oid": "3c03f8877847ab558eb5c765855854e1b9aaeb39",
+      "mode": "100644",
+      "path": "EKRI/scripts/validate_observation_boundary.py",
+      "sha256": "1564ea2653faeacc454c19e77e32c90921dbad13e3835f458d9e73ffe6895072",
+      "size": 2254
+    },
+    {
+      "git_blob_oid": "d1cda9d588208111f27a880030b930da1481545a",
+      "mode": "100644",
+      "path": "EKRI/specs/adaptive-exploration-conformance.json",
+      "sha256": "b57626c7e06cc1f8fb10219200e961193066012ed3df1038ad6cdcc9cd6f2cb4",
+      "size": 8149
+    },
+    {
+      "git_blob_oid": "09c3bacc00987e506bfe9c95e58c6c223663c209",
+      "mode": "100644",
+      "path": "EKRI/specs/flow-fixtures/ci-build-test-deploy.json",
+      "sha256": "0dbe744e43ebc71565b68d0b18455bb50a1cf45677aefdcc84a8568995ebef4d",
+      "size": 3809
+    },
+    {
+      "git_blob_oid": "9657eb09f3aa213d3b89fa22d4f467067a5f588c",
+      "mode": "100644",
+      "path": "EKRI/specs/flow-fixtures/wff-p1-p4-handoff.json",
+      "sha256": "d3cc549a5d8a98dafd2248126923cb50b6a5413d259ddc38fbab2327cad1b746",
+      "size": 5041
+    },
+    {
+      "git_blob_oid": "364556f01a06df5564b21785ee0735f26a4ee1ac",
+      "mode": "100644",
+      "path": "EKRI/specs/nonwff-conformance/mercury-ci.json",
+      "sha256": "a89bc743adb626fc4fa8fff2e7e614a3facd7c50f1f7d32b552b5df2e0ee8346",
+      "size": 14287
+    },
+    {
+      "git_blob_oid": "e6872e62c7b89c8e9fcbcc7fbcc41c20857289bb",
+      "mode": "100644",
+      "path": "EKRI/specs/v100-product-surface-classification.json",
+      "sha256": "a0500c6a242c25cec1fab5531c10cf2c384333465363e5ed325a0f54a53973bc",
+      "size": 7784
+    },
+    {
+      "git_blob_oid": "199a0cbd074045acda112ae48ceb66f03a54a9b1",
+      "mode": "100644",
+      "path": "EKRI/specs/v110-product-surface-classification.json",
+      "sha256": "0eea2f38a35246457c77fd0c549d5703de10a5e2035d76d9d9a161c8e3c48d54",
+      "size": 428
+    },
+    {
+      "git_blob_oid": "46d670615ac068675db90b374d717e59ef692b5e",
+      "mode": "100644",
+      "path": "EKRI/specs/wff-v162-baseline-reconstruction.json",
+      "sha256": "42bf7f08b334eda900584acdb9659f68ef3c51c45daed4ac2334a881663c14ca",
+      "size": 66845
+    },
+    {
+      "git_blob_oid": "5af52b9c8265345f43151266ba6b9bea1f624837",
+      "mode": "100644",
+      "path": "EKRI/specs/wff-v162-capability-intelligence.json",
+      "sha256": "7dba9f2abade4fe55032ef6aa8329f594fa165b860a80424491b4323d03bc31e",
+      "size": 14725
+    },
+    {
+      "git_blob_oid": "c113b39e8af42a10e637894fb16c832368e9a739",
+      "mode": "100644",
+      "path": "EKRI/specs/wff-v18-core-boundary-reconstruction.json",
+      "sha256": "b55d09ffa84912e46e97f2a98dd99aed373d6964f1b8d47d224fe7871e13199f",
+      "size": 81758
+    },
+    {
+      "git_blob_oid": "587ed00c21b211e538f3ec4e9bcc793c4329d309",
+      "mode": "100644",
+      "path": "EKRI/specs/wff-v18-core-extraction.json",
+      "sha256": "222425eda99abfe7a0dec6ae73435bd2d821636c32507dafb39b13c53cda572c",
+      "size": 3865
+    },
+    {
+      "git_blob_oid": "54043a2f6a0070622b6d9125414aa3705ac21879",
+      "mode": "100644",
+      "path": "EKRI/specs/wff-v18-core-migration.json",
+      "sha256": "1c189a92f4ae9d3adced3e142731d6d7148d602db189a86e0f308e7599e235ee",
+      "size": 6114
+    },
+    {
+      "git_blob_oid": "38d79e8502ea09b9bb072bd92484713205543f26",
+      "mode": "100644",
+      "path": "EKRI/specs/wff-v18-minimal-core-contract.json",
+      "sha256": "4b1237f02275106df6e71ca51d92b028cee90a1bbd614b877c73da4130cd91a0",
+      "size": 53592
+    },
+    {
+      "git_blob_oid": "545869ca12673c9b17e0aad959de9f9e321a7f63",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/__init__.py",
+      "sha256": "9d81cfd98263419dcd1288e591e35d59419c9281571393c47d8d0081fb899e8d",
+      "size": 5236
+    },
+    {
+      "git_blob_oid": "32e64c7a647bd7ee3a14a9a0916739b80ab1ba1c",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/adaptive_exploration.py",
+      "sha256": "7b4e1e8539528b7eceed9ba302368e1812e8c856f8c9f27a5f4bd46347755aa8",
+      "size": 98084
+    },
+    {
+      "git_blob_oid": "ef5d0ebab76b2e4a493d659a91e05774c7664f66",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/adaptive_exploration_conformance.py",
+      "sha256": "e2f16e8b8a7c2eedf2be75a94f89efee7122c991467405f8269deec75c0f1f70",
+      "size": 15815
+    },
+    {
+      "git_blob_oid": "9dd1876278292256571e716810b39bd5911ba033",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/adaptive_exploration_economy.py",
+      "sha256": "fe751015a195dcaedcb9834f2659e32e99f2b2fb3cbefe72d11053fa188e40ba",
+      "size": 12619
+    },
+    {
+      "git_blob_oid": "248a0b8767c8140a1b115c8f00df6960ad7109a6",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/architecture_roundtrip.py",
+      "sha256": "01e103b112ee11e030c4724c46bc6201a3d104fc03a7c40b29208366897ee2eb",
+      "size": 45493
+    },
+    {
+      "git_blob_oid": "88346c1b5d39a4148331ebacf4ee4448b83dc0b2",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/audit_bootstrap.py",
+      "sha256": "0da0e759829f9bd98285303d9f18b9e1fc2db4758f1f6dd9ae4a833f6d6d0fa0",
+      "size": 16367
+    },
+    {
+      "git_blob_oid": "381e867b98c87f240ac90b171ddaa84281211f94",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/capability_authority.py",
+      "sha256": "f28c122794940226708c08771b48daa364041c95e12d74d59047a4e343ac6a19",
+      "size": 31529
+    },
+    {
+      "git_blob_oid": "47c69577061a719cd435632d8301deb50b649d02",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/capability_contract.py",
+      "sha256": "766de003cad2fd3ed3ec9e4806154f3d67339a795e72428580c45346607bc473",
+      "size": 18968
+    },
+    {
+      "git_blob_oid": "df45474626fa64145da60302f1c2b9933750048c",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/capability_query.py",
+      "sha256": "906c2c73ec9810b2b9463ce2454a858137fde3f33acaf3bc12f5fde73bf1223a",
+      "size": 54281
+    },
+    {
+      "git_blob_oid": "e7f83980817ac50656dbe5af51aedc65df029f67",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/core_boundary_reconstruction.py",
+      "sha256": "6100bee419a296b44950c6a31d60cf20bf745c4a2a2a6d65d6290406e35c815e",
+      "size": 50436
+    },
+    {
+      "git_blob_oid": "7192d7a61cc5c50bca718c91e574672bebf0aee5",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/core_extraction.py",
+      "sha256": "f71f210c5a6c56d2a57ba32c69b9813457cf8acdad93816804a11c081093d0e7",
+      "size": 41391
+    },
+    {
+      "git_blob_oid": "d5fbdcea3b82b9ed9be3172824225bc6848d2ca8",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/core_migration.py",
+      "sha256": "6bb10e1ea593f5cb05f164a9be49917ff0979b04217e4b2bd3e638a5b3e40155",
+      "size": 39277
+    },
+    {
+      "git_blob_oid": "adeccb15eae6240e435fa2531dc984ebefd24c09",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/evolution_intelligence.py",
+      "sha256": "0a712643213a86927c6fa7958a4a2d86ffe6623ca5b43f19c317574042bcfe06",
+      "size": 61490
+    },
+    {
+      "git_blob_oid": "61a8429053727cc31eb5dcc3915a3aa239cc4d5b",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/existing_capability_intelligence.py",
+      "sha256": "4b729e1292fed0e3346282c7479854ce5d99b615ed46fe98b659995485fbd499",
+      "size": 21069
+    },
+    {
+      "git_blob_oid": "7ffdc7206ed7bdc60bfeca3a5954d1de6ab95ae4",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/flow_query.py",
+      "sha256": "e1c452ce8d4f8a6e87f98b9258e74ee89552b77195862ef5ee9ac31f3d746a80",
+      "size": 49229
+    },
+    {
+      "git_blob_oid": "17a29a085fd4d51640bb1ce233f2e126adc6ffd0",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/git_evidence.py",
+      "sha256": "a9a23ed515444c6dad3a433df8077f0158c2ccfd23aeb25605f5af4f56c3d58a",
+      "size": 4599
+    },
+    {
+      "git_blob_oid": "4b76c64260596bbfbfccca07fc23506d3a93d9e5",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/knowledge_reconstruction.py",
+      "sha256": "098f4f79367ef0b480ac18d7df575de1f8f94bd7e6438fd121b392173cf6fd01",
+      "size": 37218
+    },
+    {
+      "git_blob_oid": "c8a86a3794c9f6303c22c50b7236af31e946f94d",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/minimal_core_contract.py",
+      "sha256": "1140110d42c66971e6052b12629c9f24cd7e73f6b222a2d04bbebd312026138d",
+      "size": 50852
+    },
+    {
+      "git_blob_oid": "89150520e479213e3dbdce2b171dfadae7cd66b4",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/nonwff_conformance.py",
+      "sha256": "4ffbec6380477590062cd4f0638df526fb5ee7fbb5dbb111f6d923db01bc5c47",
+      "size": 23413
+    },
+    {
+      "git_blob_oid": "487971d520aed4511805981dea22682582730ef6",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/observation_boundary.py",
+      "sha256": "72dcb1a9a8e71a48c1ca97c025bc08bd6c43d8977e540a5519fd7be9d3a76de5",
+      "size": 36045
+    },
+    {
+      "git_blob_oid": "0dd599642fb7a229e38371d3a70f4195fb93e11a",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/phase1_snapshot.py",
+      "sha256": "e882cbd95914de0fed18631b08877e2f66228816134e525593119fb51e7e561e",
+      "size": 13735
+    },
+    {
+      "git_blob_oid": "ab783a34fea9abe2185f9eab6b0566962ecbf046",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/project_assets.py",
+      "sha256": "7d3508b9deae529770161ea20c6a971ce7ac110985c1ecf2d36f9e5bda94cb26",
+      "size": 23375
+    },
+    {
+      "git_blob_oid": "877f4476086ebb64287801bec161f416a784a2f1",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/project_assets_v2.py",
+      "sha256": "e1cbacc92d7d0528fca79547484d52c0967060b177143873b771babb6394b68e",
+      "size": 18265
+    },
+    {
+      "git_blob_oid": "59d02445cd8a288de9e4bbcfe6be65387f87e7f0",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/repository_asset_identity.py",
+      "sha256": "9318312f1f3fc348fbf5e8385bc784815ae821dffb9b61ec79d2eecce23b38e4",
+      "size": 27709
+    },
+    {
+      "git_blob_oid": "d041f47d0b8798f3e6a28f4265d50bbc8047fd4a",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/repository_firewall_stress.py",
+      "sha256": "92b02afc18be0c69793ce202134e99f3dc91136d491efc6f3b0c43345cff7ea6",
+      "size": 36185
+    },
+    {
+      "git_blob_oid": "586293898d64ed76ed6199a5ac882cf12d7aa544",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/repository_lifecycle_observation.py",
+      "sha256": "3e3e70ccc4fccaf533143fd5242e63bdd6d5960958eba2941d48cad160963d1a",
+      "size": 28556
+    },
+    {
+      "git_blob_oid": "6a302c21b1c953cc242959767df6bce195eada63",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/repository_ownership_boundary.py",
+      "sha256": "80397e59746d38a94274d663e205d17c3008b59adf0c53889bd123946ff5ff08",
+      "size": 40006
+    },
+    {
+      "git_blob_oid": "8b161bf584d176f96e6f6f253e5489d126b1390f",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/shadow_semantic_substrate.py",
+      "sha256": "2bfb91299df18b76f0ca7caaa280a43b5e53a9e2369b982d023c6511b9bec7ae",
+      "size": 41180
+    },
+    {
+      "git_blob_oid": "199ff6c3a48215bcef1fb856f6cdac8c624dbd98",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/v100_release_gate.py",
+      "sha256": "82bf3ea538d8cd61672b0c03d99154a14b709485fa4f1fe33ec5086bd332c591",
+      "size": 29751
+    },
+    {
+      "git_blob_oid": "339f646d19f266e820814a03a0b6c310df938207",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/v110_gate.py",
+      "sha256": "1ddb37c09e497fdfeb71c694d811c167c05d51ed61632daf3729e324642cab8a",
+      "size": 18060
+    },
+    {
+      "generated": true,
+      "git_blob_oid": "",
+      "mode": "100644",
+      "path": "README.md",
+      "sha256": "24fcfe659892aad1876a90968b89d6ca1c66247ef7d5e938738a4ec5f282e06c",
+      "size": 1984
+    }
+  ],
+  "formal_scanner_requirement": "EKRI Formal Scanner requires the active implementation to be committed as top-level EKRI/ inside its scanner-control Git repository; this package does not introduce a standalone provenance fallback.",
+  "included_file_count": 140,
+  "included_total_bytes": 1689400,
+  "installation_model": "git-committed-top-level-EKRI-scanner-control-repository",
+  "package_name": "ekri-v1.1.0-release-pack",
+  "packager_revision": "d45dc12d0777d5c7f6651f3564dea63b1dded8a6",
+  "product": "EKRI",
+  "schema_version": "ekri.release-pack.v1",
+  "source_ref": "ekri/v1.1.0",
+  "source_revision": "d45dc12d0777d5c7f6651f3564dea63b1dded8a6",
+  "source_tree": "966ef5b76f1e3a4d876985d98a3069c71f891c25",
+  "version": "1.1.0"
+}

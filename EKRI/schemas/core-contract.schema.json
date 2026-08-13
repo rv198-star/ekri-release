@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WFF v1.8 Minimal Core Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "phase", "profile_id", "status", "created_at",
+    "contract_id", "contract_version", "source", "specification",
+    "versioning_policy", "contracts", "public_types", "public_operations",
+    "invariants", "public_api", "internal_api", "extension_interface",
+    "capability_compatibility", "migration_decisions", "retained_p0_unknowns",
+    "resolved_p0_items", "conformance_rules", "counts", "checks", "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "wff.core-contract.v1"},
+    "phase": {"const": "v1.8-p1-minimal-core-contract"},
+    "profile_id": {"const": "wff-v1.8-p1-minimal-core-contract"},
+    "status": {"const": "minimal-core-contract-defined"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "contract_id": {"const": "wff-core-contract"},
+    "contract_version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p0_target_tree", "p0_core_map_sha256", "p0_equivalence_sha256", "p0_audit_sha256", "p0_equivalence_verdict"],
+      "properties": {
+        "p0_target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "p0_core_map_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "p0_equivalence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "p0_audit_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "p0_equivalence_verdict": {"const": "wff-v1.6.2-mainline-equals-v1.7-mainline"}
+      }
+    },
+    "specification": {"type": "object"},
+    "versioning_policy": {"type": "object"},
+    "contracts": {"type": "array", "minItems": 9, "maxItems": 9, "uniqueItems": true, "items": {"type": "object"}},
+    "public_types": {"type": "array", "minItems": 13, "uniqueItems": true, "items": {"type": "object"}},
+    "public_operations": {"type": "array", "minItems": 9, "maxItems": 9, "uniqueItems": true, "items": {"type": "object"}},
+    "invariants": {"type": "array", "minItems": 20, "uniqueItems": true, "items": {"type": "object"}},
+    "public_api": {"type": "object"},
+    "internal_api": {"type": "object"},
+    "extension_interface": {"type": "object"},
+    "capability_compatibility": {"type": "array", "minItems": 16, "maxItems": 16, "uniqueItems": true, "items": {"type": "object"}},
+    "migration_decisions": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "object"}},
+    "retained_p0_unknowns": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "resolved_p0_items": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "conformance_rules": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "object"}},
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contracts", "public_types", "public_operations", "invariants", "internal_surfaces", "capability_compatibility", "migration_decisions", "conformance_rules", "retained_p0_unknowns"],
+      "properties": {
+        "contracts": {"const": 9},
+        "public_types": {"minimum": 13, "type": "integer"},
+        "public_operations": {"const": 9},
+        "invariants": {"minimum": 20, "type": "integer"},
+        "internal_surfaces": {"minimum": 1, "type": "integer"},
+        "capability_compatibility": {"const": 16},
+        "migration_decisions": {"minimum": 8, "type": "integer"},
+        "conformance_rules": {"minimum": 8, "type": "integer"},
+        "retained_p0_unknowns": {"minimum": 0, "type": "integer"}
+      }
+    },
+    "checks": {"type": "array", "minItems": 7, "items": {"type": "object"}},
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

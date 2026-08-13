@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI WFF v1.8 P0 Core Boundary Output Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "status",
+    "created_at",
+    "source_tree",
+    "output_digests",
+    "checks",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.core-boundary-audit.v1"},
+    "phase": {"const": "v1.8-p0-core-boundary-reconstruction"},
+    "status": {"const": "core-boundary-output-persisted"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "output_digests": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+      "required": [
+        "baseline-equivalence.json",
+        "core-candidate-map.json",
+        "core-noncore-responsibility-matrix.json",
+        "dependency-direction-cycle-report.json",
+        "candidate-extraction-frontier.json",
+        "unknowns-disputed-boundaries.json",
+        "CORE_BOUNDARY_REVIEW.md"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "check": {"type": "string", "minLength": 2},
+          "status": {"const": "passed"},
+          "detail": {"type": "string", "minLength": 10}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  }
+}

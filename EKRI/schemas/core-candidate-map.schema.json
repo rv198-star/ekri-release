@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI WFF v1.8 P0 Core Candidate Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "profile_id",
+    "status",
+    "created_at",
+    "source",
+    "specification",
+    "layers",
+    "classifications",
+    "candidate_core_contracts",
+    "dependency_report",
+    "extraction_frontier",
+    "risk_register",
+    "unknowns",
+    "disputed_boundaries",
+    "counts",
+    "checks",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.core-candidate-map.v1"},
+    "phase": {"const": "v1.8-p0-core-boundary-reconstruction"},
+    "profile_id": {"const": "wff-v1.8-p0-core-boundary"},
+    "status": {"const": "core-boundary-reconstructed"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_snapshot_id",
+        "authority_commit",
+        "authority_tree",
+        "target_commit",
+        "target_tree",
+        "equivalence_verdict",
+        "equivalence_sha256"
+      ],
+      "properties": {
+        "authority_snapshot_id": {"type": "string", "minLength": 10},
+        "authority_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "authority_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "equivalence_verdict": {"const": "wff-v1.6.2-mainline-equals-v1.7-mainline"},
+        "equivalence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "specification": {"type": "object", "minProperties": 6},
+    "layers": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "responsibility", "non_responsibilities"],
+        "properties": {
+          "id": {
+            "enum": [
+              "core",
+              "capability-extension",
+              "assurance",
+              "distribution-adaptation",
+              "development-history-support",
+              "ekri-meta-capability",
+              "unknown"
+            ]
+          },
+          "name": {"type": "string", "minLength": 2},
+          "responsibility": {"type": "string", "minLength": 20},
+          "non_responsibilities": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}}
+        }
+      }
+    },
+    "classifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture_nodes", "responsibilities", "capabilities", "support_surfaces"],
+      "properties": {
+        "architecture_nodes": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/classification"}},
+        "responsibilities": {"type": "array", "minItems": 17, "maxItems": 17, "items": {"$ref": "#/$defs/classification"}},
+        "capabilities": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"$ref": "#/$defs/classification"}},
+        "support_surfaces": {"type": "array", "minItems": 8, "items": {"$ref": "#/$defs/freeClassification"}}
+      }
+    },
+    "candidate_core_contracts": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "allOf": [
+          {"$ref": "#/$defs/freeClassification"},
+          {
+            "type": "object",
+            "required": ["responsibility", "inputs", "outputs", "non_responsibilities"],
+            "properties": {
+              "primary_layer": {"const": "core"},
+              "responsibility": {"type": "string", "minLength": 20},
+              "inputs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}},
+              "outputs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}},
+              "non_responsibilities": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}}
+            }
+          }
+        ]
+      }
+    },
+    "dependency_report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edge_count",
+        "edges",
+        "dependency_cycle_count",
+        "dependency_cycles",
+        "core_outward_blocker_count",
+        "core_outward_blockers",
+        "permitted_control_loop_count",
+        "permitted_control_loops",
+        "hidden_dependency_risks",
+        "claim_ceiling"
+      ],
+      "properties": {
+        "edge_count": {"type": "integer", "minimum": 1},
+        "edges": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dependencyEdge"}},
+        "dependency_cycle_count": {"type": "integer", "minimum": 0},
+        "dependency_cycles": {"type": "array", "items": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 2}}},
+        "core_outward_blocker_count": {"type": "integer", "minimum": 1},
+        "core_outward_blockers": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dependencyEdge"}},
+        "permitted_control_loop_count": {"type": "integer", "minimum": 1},
+        "permitted_control_loops": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dependencyEdge"}},
+        "hidden_dependency_risks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reviewRow"}},
+        "claim_ceiling": {"type": "string", "minLength": 60}
+      }
+    },
+    "extraction_frontier": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reviewRow"}},
+    "risk_register": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reviewRow"}},
+    "unknowns": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/unknownRow"}},
+    "disputed_boundaries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reviewRow"}},
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "architecture_nodes",
+        "responsibilities",
+        "capabilities",
+        "support_surfaces",
+        "candidate_core_contracts",
+        "dependency_edges",
+        "dependency_cycles",
+        "core_outward_blockers",
+        "extraction_frontiers",
+        "risks",
+        "unknowns",
+        "disputed_boundaries"
+      ],
+      "properties": {
+        "architecture_nodes": {"const": 20},
+        "responsibilities": {"const": 17},
+        "capabilities": {"const": 16},
+        "support_surfaces": {"type": "integer", "minimum": 8},
+        "candidate_core_contracts": {"type": "integer", "minimum": 8},
+        "dependency_edges": {"type": "integer", "minimum": 1},
+        "dependency_cycles": {"type": "integer", "minimum": 0},
+        "core_outward_blockers": {"type": "integer", "minimum": 1},
+        "extraction_frontiers": {"type": "integer", "minimum": 1},
+        "risks": {"type": "integer", "minimum": 1},
+        "unknowns": {"type": "integer", "minimum": 1},
+        "disputed_boundaries": {"type": "integer", "minimum": 1}
+      }
+    },
+    "checks": {"type": "array", "minItems": 6, "items": {"$ref": "#/$defs/check"}},
+    "claim_ceiling": {"type": "string", "minLength": 120}
+  },
+  "$defs": {
+    "layerId": {
+      "enum": [
+        "core",
+        "capability-extension",
+        "assurance",
+        "distribution-adaptation",
+        "development-history-support",
+        "ekri-meta-capability",
+        "unknown"
+      ]
+    },
+    "boundaryState": {"enum": ["core-candidate", "non-core", "split-required", "unknown"]},
+    "evidenceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 3}
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "primary_layer",
+        "boundary_state",
+        "core_contract_slices",
+        "non_core_responsibilities",
+        "rationale",
+        "evidence_refs"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "primary_layer": {"$ref": "#/$defs/layerId"},
+        "boundary_state": {"$ref": "#/$defs/boundaryState"},
+        "core_contract_slices": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "non_core_responsibilities": {"type": "array", "items": {"type": "string", "minLength": 2}},
+        "rationale": {"type": "string", "minLength": 20},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "freeClassification": {
+      "type": "object",
+      "required": ["id", "primary_layer", "boundary_state", "rationale", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "primary_layer": {"$ref": "#/$defs/layerId"},
+        "boundary_state": {"$ref": "#/$defs/boundaryState"},
+        "rationale": {"type": "string", "minLength": 20},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "dependencyEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_id",
+        "source_layer",
+        "target_id",
+        "target_layer",
+        "relation",
+        "graph_kind",
+        "direction_status",
+        "rationale",
+        "evidence_refs"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "source_id": {"type": "string", "minLength": 2},
+        "source_layer": {"$ref": "#/$defs/layerId"},
+        "target_id": {"type": "string", "minLength": 2},
+        "target_layer": {"$ref": "#/$defs/layerId"},
+        "relation": {"type": "string", "minLength": 2},
+        "graph_kind": {"enum": ["dependency", "control-loop"]},
+        "direction_status": {"enum": ["permitted-control-loop", "core-outward-extraction-blocker", "inward-valid", "same-layer", "cross-layer-review"]},
+        "rationale": {"type": "string", "minLength": 20},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "reviewRow": {
+      "type": "object",
+      "required": ["id", "rationale", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "rationale": {"type": "string", "minLength": 20},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "unknownRow": {
+      "type": "object",
+      "required": ["id", "knowledge_state", "confidence", "statement", "rationale", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "knowledge_state": {"const": "unknown"},
+        "confidence": {"const": "not-applicable"},
+        "statement": {"type": "string", "minLength": 20},
+        "rationale": {"type": "string", "minLength": 20},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check", "status", "detail"],
+      "properties": {
+        "check": {"type": "string", "minLength": 2},
+        "status": {"const": "passed"},
+        "detail": {"type": "string", "minLength": 10}
+      }
+    }
+  }
+}

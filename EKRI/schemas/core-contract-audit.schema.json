@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI P1 Core Contract Output Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "source_tree", "contract_id", "contract_version", "output_digests", "checks", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.core-contract-audit.v1"},
+    "phase": {"const": "v1.8-p1-minimal-core-contract"},
+    "status": {"const": "core-contract-output-persisted"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "contract_id": {"const": "wff-core-contract"},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "output_digests": {
+      "type": "object",
+      "minProperties": 8,
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "checks": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  }
+}

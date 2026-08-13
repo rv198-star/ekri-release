@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Project Knowledge Family Artifact v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "asset_id",
+    "family_id",
+    "availability",
+    "artifact_role",
+    "semantic_authority",
+    "producer",
+    "target",
+    "source_contract",
+    "content",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.project-knowledge-family-artifact.v2"},
+    "asset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "family_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "availability": {
+      "enum": [
+        "native-bounded",
+        "bounded-overlay",
+        "migration-supported-legacy",
+        "blocked-source-contract-drift",
+        "derived-conformance"
+      ]
+    },
+    "artifact_role": {"enum": ["bounded-portable-projection", "evidence-only", "migration-evidence", "conformance-evidence"]},
+    "semantic_authority": {"const": false},
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product", "product_version", "source_revision"],
+      "properties": {
+        "product": {"const": "EKRI"},
+        "product_version": {"type": "string", "minLength": 3},
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product", "product_version", "commit", "tree"],
+      "properties": {
+        "product": {"type": "string", "minLength": 2},
+        "product_version": {"type": "string", "minLength": 2},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"}
+      }
+    },
+    "source_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "path", "sha256", "source_revision"],
+      "properties": {
+        "contract_id": {"type": "string", "minLength": 3},
+        "path": {"type": "string", "pattern": "^[A-Za-z0-9._/-]+$"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"}
+      }
+    },
+    "content": {"type": "object"},
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  }
+}

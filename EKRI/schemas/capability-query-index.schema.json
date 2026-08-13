@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Capability Query Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "authority_mode",
+    "materialization_class",
+    "source",
+    "specification",
+    "capability_count",
+    "capabilities",
+    "alias_index",
+    "ambiguous_aliases",
+    "semantic_fingerprint",
+    "projection_fingerprint",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.capability-query-index.v1"},
+    "status": {"const": "capability-query-index-built"},
+    "authority_mode": {"const": "derived-non-authoritative"},
+    "materialization_class": {"const": "rebuildable-derived-index"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_id",
+        "commit",
+        "tree",
+        "input_mode",
+        "project_asset_id",
+        "architecture_view_schema_version",
+        "architecture_view_semantic_fingerprint",
+        "architecture_view_projection_fingerprint",
+        "capability_authority_schema_version",
+        "capability_authority_semantic_fingerprint",
+        "capability_authority_projection_fingerprint"
+      ],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 8},
+        "commit": {"type": "string", "minLength": 40},
+        "tree": {"type": "string", "minLength": 40},
+        "input_mode": {"enum": ["provided-verified-view", "verified-local-phase1", "verified-project-asset"]},
+        "project_asset_id": {"type": "string"},
+        "architecture_view_schema_version": {"const": "ekri.architecture-view.v1"},
+        "architecture_view_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "architecture_view_projection_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "capability_authority_schema_version": {"const": "ekri.capability-semantic-authority.v1"},
+        "capability_authority_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "capability_authority_projection_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "specification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "path", "sha256", "scanner_commit", "scanner_tree", "blob_oid"],
+      "properties": {
+        "source": {"type": "string"},
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scanner_commit": {"type": "string"},
+        "scanner_tree": {"type": "string"},
+        "blob_oid": {"type": "string"}
+      }
+    },
+    "capability_count": {"type": "integer", "minimum": 1},
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability_id", "normalized_aliases"],
+        "properties": {
+          "capability_id": {"type": "string", "minLength": 2},
+          "normalized_aliases": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "alias_index": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {"type": "string", "minLength": 2}
+      }
+    },
+    "ambiguous_aliases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "uniqueItems": true,
+        "items": {"type": "string", "minLength": 2}
+      }
+    },
+    "semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "projection_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

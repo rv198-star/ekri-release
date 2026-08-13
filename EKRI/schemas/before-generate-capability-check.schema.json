@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Before Generate Existing Capability Check",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "created_at", "status", "request_id", "source", "request", "resolution", "answers", "boundary", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.before-generate-capability-check.v1"},
+    "phase": {"const": "phase2-existing-capability-intelligence"},
+    "created_at": {"type": "string", "minLength": 1},
+    "status": {"const": "existing-capability-intelligence-complete"},
+    "request_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_id", "commit", "tree", "catalog_sha256"],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "minLength": 40},
+        "tree": {"type": "string", "minLength": 40},
+        "catalog_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "capability_query", "trigger_basis", "change_mode", "trigger_reference", "decision_status", "decision_reference", "non_reuse_reason", "context_note", "normalized_query"],
+      "properties": {
+        "schema_version": {"const": "ekri.capability-check-request.v1"},
+        "capability_query": {"type": "string", "minLength": 2},
+        "trigger_basis": {"enum": ["observed-failure", "declared-requirement", "hypothetical-risk"]},
+        "change_mode": {"enum": ["use-as-is", "additive-extension", "behavior-replacement", "new-capability"]},
+        "trigger_reference": {"type": "string"},
+        "decision_status": {"enum": ["not-supplied", "accepted"]},
+        "decision_reference": {"type": "string"},
+        "non_reuse_reason": {"type": "string"},
+        "context_note": {"type": "string"},
+        "normalized_query": {"type": "string", "minLength": 1}
+      }
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "candidate_capability_ids", "matched_capability_id", "matched_capability_name"],
+      "properties": {
+        "status": {"enum": ["matched", "ambiguous", "not-found"]},
+        "candidate_capability_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "matched_capability_id": {"type": "string"},
+        "matched_capability_name": {"type": "string"}
+      }
+    },
+    "answers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability_exists", "where_it_exists", "why_reuse_may_be_limited", "trigger_basis", "wff_mainline_impact", "reuse_recommendation"],
+      "properties": {
+        "capability_exists": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "knowledge_state", "confidence", "evidence_refs"],
+          "properties": {
+            "status": {"enum": ["confirmed-existing", "inferred-existing", "unknown"]},
+            "knowledge_state": {"enum": ["observed-fact", "inferred-knowledge", "unknown"]},
+            "confidence": {"enum": ["verified", "high", "medium", "low", "not-applicable"]},
+            "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+          }
+        },
+        "where_it_exists": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["locations", "owners", "architecture_nodes", "evidence_refs"],
+          "properties": {
+            "locations": {"type": "array", "items": {"type": "string", "minLength": 1}},
+            "owners": {"type": "array", "items": {"type": "string", "minLength": 1}},
+            "architecture_nodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["id", "name", "kind"],
+                "properties": {
+                  "id": {"type": "string", "minLength": 2},
+                  "name": {"type": "string", "minLength": 1},
+                  "kind": {"type": "string", "minLength": 1}
+                }
+              }
+            },
+            "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+          }
+        },
+        "why_reuse_may_be_limited": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["conclusion", "items", "caller_supplied_non_reuse_reason"],
+          "properties": {
+            "conclusion": {"type": "string", "minLength": 1},
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["kind", "source_id", "statement"],
+                "properties": {
+                  "kind": {"enum": ["non-responsibility", "constraint"]},
+                  "source_id": {"type": "string", "minLength": 2},
+                  "statement": {"type": "string", "minLength": 1}
+                }
+              }
+            },
+            "caller_supplied_non_reuse_reason": {"type": "string"}
+          }
+        },
+        "trigger_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["basis", "reference", "classification", "replacement_policy"],
+          "properties": {
+            "basis": {"enum": ["observed-failure", "declared-requirement", "hypothetical-risk"]},
+            "reference": {"type": "string"},
+            "classification": {"enum": ["observed-pressure", "declared-pressure", "hypothetical-only"]},
+            "replacement_policy": {"type": "string", "minLength": 1}
+          }
+        },
+        "wff_mainline_impact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification", "knowledge_state", "confidence", "rationale", "evidence_refs"],
+          "properties": {
+            "classification": {"enum": ["direct-mainline", "conditional-mainline", "supporting-mainline", "outside-runtime-mainline", "unknown"]},
+            "knowledge_state": {"enum": ["inferred-knowledge", "unknown"]},
+            "confidence": {"enum": ["high", "not-applicable"]},
+            "rationale": {"type": "string", "minLength": 1},
+            "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+          }
+        },
+        "reuse_recommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["posture", "reason", "requires_architecture_decision", "decision_status", "decision_reference", "decision_acceptance_verification", "non_reuse_reason", "warning"],
+          "properties": {
+            "posture": {"enum": ["reuse", "extend", "replace", "create-new", "insufficient-evidence"]},
+            "reason": {"type": "string", "minLength": 1},
+            "requires_architecture_decision": {"type": "boolean"},
+            "decision_status": {"enum": ["not-supplied", "accepted"]},
+            "decision_reference": {"type": "string"},
+            "decision_acceptance_verification": {"enum": ["not-supplied", "caller-asserted-accepted-not-independently-verified"]},
+            "non_reuse_reason": {"type": "string"},
+            "warning": {"type": "string"}
+          }
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_allowed", "decision_status", "checks"],
+      "properties": {
+        "decision_allowed": {"type": "boolean"},
+        "decision_status": {"enum": ["actionable", "blocked-insufficient-evidence"]},
+        "checks": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check", "status", "detail"],
+            "properties": {
+              "check": {"type": "string", "minLength": 1},
+              "status": {"enum": ["passed", "blocked", "failed"]},
+              "detail": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 20}
+  }
+}

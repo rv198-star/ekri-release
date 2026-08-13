@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Portable Project Knowledge Asset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "asset_id",
+    "profile_id",
+    "target",
+    "portability",
+    "artifacts",
+    "capability_profile",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.project-knowledge-asset.v1"},
+    "status": {"const": "portable-project-knowledge-ready"},
+    "asset_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "profile_id": {"type": "string", "minLength": 3},
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "admitted_path_set_sha256"],
+      "properties": {
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "admitted_path_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "portability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_root_token", "formal_corpus_exclusions", "runtime_hydration_root"],
+      "properties": {
+        "repository_root_token": {"const": "${REPOSITORY_ROOT}"},
+        "formal_corpus_exclusions": {
+          "type": "array",
+          "const": ["EKRI/", ".EKRI/"]
+        },
+        "runtime_hydration_root": {"const": ".EKRI/runtime/project-assets"}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path", "sha256"],
+        "properties": {
+          "kind": {"enum": ["architecture-memory", "evidence-index", "reconstruction-report", "capability-catalog"]},
+          "path": {"type": "string", "pattern": "^[A-Za-z0-9._/-]+$"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "capability_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability_count", "alias_count", "ambiguous_alias_count"],
+      "properties": {
+        "capability_count": {"type": "integer", "minimum": 1},
+        "alias_count": {"type": "integer", "minimum": 1},
+        "ambiguous_alias_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.1 Knowledge Sufficiency Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "authority_mode",
+    "materialization_class",
+    "mission_context_fingerprint",
+    "mission",
+    "target",
+    "project_knowledge",
+    "questions",
+    "summary",
+    "claim_ceiling",
+    "report_fingerprint"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.knowledge-sufficiency-report.v1"},
+    "status": {"const": "knowledge-sufficiency-assessed"},
+    "authority_mode": {"const": "acquisition-non-authoritative"},
+    "materialization_class": {"const": "ephemeral-rebuildable-control-record"},
+    "mission_context_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mission": {"type": "object"},
+    "target": {"type": "object"},
+    "project_knowledge": {"type": "object"},
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["question_id", "question", "decision_relevance", "blocking", "family_requirements", "uncertainty_policy", "status", "requirement_results"],
+        "properties": {
+          "status": {"enum": ["sufficient-existing", "requires-exploration"]},
+          "blocking": {"type": "boolean"}
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["question_count", "reused_existing_question_count", "exploration_gap_question_count", "blocking_gap_question_ids", "existing_knowledge_reuse_ratio"]
+    },
+    "claim_ceiling": {"type": "string", "minLength": 80},
+    "report_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

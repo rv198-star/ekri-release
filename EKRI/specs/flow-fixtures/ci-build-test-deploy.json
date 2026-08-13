@@ -1,0 +1,79 @@
+{
+  "schema_version": "ekri.flow-conformance-fixture.v1",
+  "fixture_id": "ci-build-test-deploy",
+  "profile_id": "generic-ci",
+  "status": "bounded-conformance-fixture",
+  "binding_mode": "self-contained-fixture",
+  "source_context": {
+    "context_id": "context:generic-ci:fixture-v1",
+    "kind": "self-contained-conformance-fixture",
+    "semantic_identity": "generic-ci-build-test-deploy@fixture-v1",
+    "external_sources": []
+  },
+  "flow_definition": {
+    "id": "flow:generic-ci:build-test-deploy",
+    "name": "Generic CI build, test and deployment handoff flow"
+  },
+  "participants": [
+    {"id": "ci:source-control", "name": "Source control", "concept_type": "EngineeringStep"},
+    {"id": "ci:build", "name": "Build job", "concept_type": "EngineeringStep"},
+    {"id": "ci:test", "name": "Test job", "concept_type": "EngineeringStep"},
+    {"id": "ci:deploy", "name": "Deployment job", "concept_type": "EngineeringStep"}
+  ],
+  "artifacts": [
+    {"id": "artifact:ci:commit", "name": "Source revision", "concept_type": "Artifact"},
+    {"id": "artifact:ci:build-output", "name": "Build artifact", "concept_type": "Artifact"},
+    {"id": "artifact:ci:test-report", "name": "Test report", "concept_type": "Artifact"}
+  ],
+  "authority_refs": [
+    {"id": "authority:ci:source", "name": "Source revision authority", "concept_type": "AuthorityReference"},
+    {"id": "authority:ci:build", "name": "Build result authority", "concept_type": "AuthorityReference"},
+    {"id": "authority:ci:test", "name": "Test result authority", "concept_type": "AuthorityReference"}
+  ],
+  "entry_occurrence_ids": ["handoff:ci:source-build"],
+  "handoffs": [
+    {
+      "id": "handoff:ci:source-build",
+      "route_kind": "forward",
+      "from_ref": "ci:source-control",
+      "to_ref": "ci:build",
+      "carried_refs": ["artifact:ci:commit"],
+      "authority_refs": ["authority:ci:source"],
+      "allowed_reliance": ["build the exact declared source revision"],
+      "unresolved_items": [],
+      "forbidden_assumptions": ["source revision identity alone does not prove that the build succeeds"],
+      "consumer_scope": ["build execution"],
+      "evidence_refs": ["fixture:source-revision"],
+      "next_occurrence_ids": ["handoff:ci:build-test"]
+    },
+    {
+      "id": "handoff:ci:build-test",
+      "route_kind": "forward",
+      "from_ref": "ci:build",
+      "to_ref": "ci:test",
+      "carried_refs": ["artifact:ci:build-output"],
+      "authority_refs": ["authority:ci:build"],
+      "allowed_reliance": ["test the exact build artifact produced by the bounded build occurrence"],
+      "unresolved_items": [],
+      "forbidden_assumptions": ["successful build does not imply test success or deployment approval"],
+      "consumer_scope": ["test execution"],
+      "evidence_refs": ["fixture:build-result"],
+      "next_occurrence_ids": ["handoff:ci:test-deploy"]
+    },
+    {
+      "id": "handoff:ci:test-deploy",
+      "route_kind": "stop",
+      "from_ref": "ci:test",
+      "to_ref": "ci:deploy",
+      "carried_refs": ["artifact:ci:test-report"],
+      "authority_refs": ["authority:ci:test"],
+      "allowed_reliance": ["use the bounded test result as one deployment input"],
+      "unresolved_items": ["deployment approval remains an independent policy/authority decision"],
+      "forbidden_assumptions": ["test success alone does not establish production approval"],
+      "consumer_scope": ["deployment admission decision"],
+      "evidence_refs": ["fixture:test-result"],
+      "next_occurrence_ids": []
+    }
+  ],
+  "claim_ceiling": "This generic CI fixture proves only that the same EKRI Flow/Handoff semantics can represent a non-WFF build-test-deploy chain. It is a bounded conformance fixture and does not claim any real deployment, production approval, or exhaustive CI semantics."
+}

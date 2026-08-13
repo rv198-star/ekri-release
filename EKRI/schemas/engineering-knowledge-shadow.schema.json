@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.0 Engineering Knowledge Shadow Substrate",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "source_binding": {
+      "type": "object",
+      "required": ["family", "source_record_id"],
+      "properties": {
+        "family": {
+          "enum": [
+            "verified-phase1-snapshot",
+            "system_architecture_tree",
+            "module_responsibility_map",
+            "implementation_intent_summary",
+            "validation_assurance_ownership",
+            "constraints",
+            "unknowns"
+          ]
+        },
+        "source_record_id": {"type": "string", "minLength": 2},
+        "projection_key": {"type": "string", "minLength": 1}
+      }
+    },
+    "subject": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "ref"],
+          "properties": {
+            "kind": {"const": "object-ref"},
+            "ref": {"type": "string", "minLength": 2}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "term"],
+          "properties": {
+            "kind": {"const": "source-term"},
+            "term": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "object_value": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "ref"],
+          "properties": {
+            "kind": {"const": "object-ref"},
+            "ref": {"type": "string", "minLength": 2}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "value"],
+          "properties": {
+            "kind": {"const": "value"},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "qualifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_modality",
+        "epistemic_posture",
+        "source_knowledge_state",
+        "confidence",
+        "normative_posture",
+        "validity",
+        "scope",
+        "completeness",
+        "reliance",
+        "authority_mode"
+      ],
+      "properties": {
+        "semantic_modality": {"const": "source-unspecified"},
+        "epistemic_posture": {"enum": ["observed", "inferred", "unknown"]},
+        "source_knowledge_state": {"enum": ["observed-fact", "inferred-knowledge", "unknown"]},
+        "confidence": {"type": "string", "minLength": 2},
+        "normative_posture": {"const": "not-specified"},
+        "validity": {"const": "source-context-bound"},
+        "scope": {"const": "phase1-architecture-memory"},
+        "completeness": {"const": "bounded-source-projection"},
+        "reliance": {"const": "shadow-only"},
+        "authority_mode": {"const": "shadow-non-authoritative"}
+      }
+    },
+    "object_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "semantic_id",
+        "identity_source",
+        "types",
+        "roles",
+        "context_ref",
+        "source_binding",
+        "source_facets",
+        "source_epistemic_posture",
+        "authority_mode"
+      ],
+      "properties": {
+        "record_id": {"type": "string", "pattern": "^object-record:[0-9a-f]{32}$"},
+        "semantic_id": {"type": "string", "minLength": 2},
+        "identity_source": {"enum": ["trusted-git-tree-context", "phase1-architecture-node-id"]},
+        "types": {
+          "type": "array",
+          "items": {"enum": ["Context", "RepositorySnapshot", "SystemElement"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "roles": {
+          "type": "array",
+          "items": {"enum": ["ArchitectureElement", "SourceContext"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "context_ref": {"type": ["string", "null"]},
+        "source_binding": {"$ref": "#/$defs/source_binding"},
+        "source_facets": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {"type": "string", "minLength": 1}
+          }
+        },
+        "source_epistemic_posture": {"enum": ["observed", "inferred", "unknown"]},
+        "authority_mode": {"const": "shadow-non-authoritative"}
+      }
+    },
+    "assertion_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "statement_key",
+        "source_binding",
+        "subject",
+        "predicate",
+        "object",
+        "context_ref",
+        "qualifications",
+        "evidence_refs",
+        "rationale"
+      ],
+      "properties": {
+        "record_id": {"type": "string", "pattern": "^assertion:[0-9a-f]{32}$"},
+        "statement_key": {"type": "string", "pattern": "^statement:[0-9a-f]{64}$"},
+        "source_binding": {"$ref": "#/$defs/source_binding"},
+        "subject": {"$ref": "#/$defs/subject"},
+        "predicate": {
+          "enum": [
+            "excludesResponsibility",
+            "hasConstraint",
+            "hasImplementationIntent",
+            "hasName",
+            "hasResponsibility",
+            "hasSourceKind",
+            "hasUnresolvedStatement",
+            "partOf",
+            "responsibleFor",
+            "responsibleForAssurance"
+          ]
+        },
+        "object": {"$ref": "#/$defs/object_value"},
+        "context_ref": {"type": "string", "minLength": 2},
+        "qualifications": {"$ref": "#/$defs/qualifications"},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 3}, "uniqueItems": true},
+        "rationale": {"type": "string", "minLength": 2}
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "model_version",
+    "compiler_version",
+    "status",
+    "authority_mode",
+    "source",
+    "context",
+    "vocabulary",
+    "objects",
+    "occurrences",
+    "assertions",
+    "reliance",
+    "summary",
+    "semantic_fingerprint",
+    "projection_fingerprint"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.engineering-knowledge-shadow.v1"},
+    "model_version": {"const": "ekri.engineering-knowledge-model.v0.1"},
+    "compiler_version": {"const": "ekri.architecture-shadow-compiler.v0.1"},
+    "status": {"const": "shadow-compiled"},
+    "authority_mode": {"const": "shadow-non-authoritative"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compiler_input",
+        "profile_id",
+        "source_commit",
+        "source_tree",
+        "snapshot_id",
+        "architecture_memory_schema_version",
+        "source_output_digests",
+        "evidence_ref_count"
+      ],
+      "properties": {
+        "compiler_input": {"const": "verified-phase1-snapshot"},
+        "profile_id": {"type": "string", "minLength": 2},
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "snapshot_id": {"type": "string", "minLength": 3},
+        "architecture_memory_schema_version": {"type": "string", "minLength": 3},
+        "source_output_digests": {"type": "object", "minProperties": 3},
+        "evidence_ref_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context_id", "kind", "source_commit", "source_tree", "snapshot_id"],
+      "properties": {
+        "context_id": {"type": "string", "pattern": "^context:git-tree:[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "kind": {"const": "repository-snapshot"},
+        "source_commit": {"type": "string", "minLength": 40},
+        "source_tree": {"type": "string", "minLength": 40},
+        "snapshot_id": {"type": "string", "minLength": 3}
+      }
+    },
+    "vocabulary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["general_object_types", "general_roles", "predicates", "qualification_dimensions", "profile_extension_policy"],
+      "properties": {
+        "general_object_types": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "general_roles": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "predicates": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "qualification_dimensions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "profile_extension_policy": {"type": "string", "minLength": 20}
+      }
+    },
+    "objects": {"type": "array", "items": {"$ref": "#/$defs/object_record"}, "minItems": 1},
+    "occurrences": {"type": "array", "maxItems": 0},
+    "assertions": {"type": "array", "items": {"$ref": "#/$defs/assertion_record"}, "minItems": 1},
+    "reliance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_ceiling", "absence_posture", "authority_posture", "authority_mode"],
+      "properties": {
+        "claim_ceiling": {"type": "string", "minLength": 40},
+        "absence_posture": {"const": "index-or-projection-miss-does-not-prove-absence"},
+        "authority_posture": {"const": "shadow-output-cannot-establish-or-revise-source-truth"},
+        "authority_mode": {"const": "shadow-non-authoritative"}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "architecture_semantic_object_count",
+        "object_record_count",
+        "occurrence_record_count",
+        "assertion_record_count",
+        "source_family_count",
+        "source_record_count",
+        "projected_source_record_count",
+        "source_evidence_ref_count",
+        "projected_evidence_ref_count",
+        "source_semantic_ids"
+      ],
+      "properties": {
+        "architecture_semantic_object_count": {"type": "integer", "minimum": 1},
+        "object_record_count": {"type": "integer", "minimum": 1},
+        "occurrence_record_count": {"type": "integer", "minimum": 0},
+        "assertion_record_count": {"type": "integer", "minimum": 1},
+        "source_family_count": {"const": 6},
+        "source_record_count": {"type": "integer", "minimum": 1},
+        "projected_source_record_count": {"type": "integer", "minimum": 1},
+        "source_evidence_ref_count": {"type": "integer", "minimum": 1},
+        "projected_evidence_ref_count": {"type": "integer", "minimum": 0},
+        "source_semantic_ids": {"type": "array", "items": {"type": "string", "minLength": 2}, "uniqueItems": true}
+      }
+    },
+    "semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "projection_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "ekri.v110-product-surface-classification.v1",
+  "product_version": "1.1.0",
+  "inherits": "EKRI/specs/v100-product-surface-classification.json",
+  "added_supported_general": [
+    {
+      "surface_id": "mission-oriented-adaptive-knowledge-acquisition",
+      "authority_posture": "acquisition-control-non-authoritative",
+      "materialization_posture": "ephemeral-rebuildable-control-record"
+    }
+  ]
+}

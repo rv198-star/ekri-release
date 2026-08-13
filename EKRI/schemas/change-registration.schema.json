@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 3 Change Register",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "source_tree", "registrations", "counts", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.change-registration.v1"},
+    "phase": {"const": "phase3-evolution-and-impact-intelligence"},
+    "status": {"const": "change-register-evaluated"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "registrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["change_id", "capability_id", "change_kind", "summary", "expected_paths", "state", "decision_reference", "registered_at", "effective_state", "verification"],
+        "properties": {
+          "change_id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._-]+$"},
+          "capability_id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._-]+$"},
+          "change_kind": {"enum": ["capability-addition", "capability-replacement", "capability-removal", "responsibility-migration", "validation-ownership-change", "architecture-boundary-change"]},
+          "summary": {"type": "string", "minLength": 8},
+          "expected_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "state": {"enum": ["registered", "planned"]},
+          "decision_reference": {"type": "string"},
+          "registered_at": {"type": "string", "format": "date-time"},
+          "effective_state": {"enum": ["registered", "planned", "observed", "verified"]},
+          "verification": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["requested", "status", "reason", "matched_paths", "missing_expected_paths", "event_id"],
+            "properties": {
+              "requested": {"type": "boolean"},
+              "status": {"enum": ["pending", "verified"]},
+              "reason": {"type": "string", "minLength": 8},
+              "matched_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+              "missing_expected_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+              "event_id": {"type": "string", "pattern": "^$|^[0-9a-f]{64}$"}
+            }
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "verified", "observed_pending", "unobserved_pending"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0},
+        "verified": {"type": "integer", "minimum": 0},
+        "observed_pending": {"type": "integer", "minimum": 0},
+        "unobserved_pending": {"type": "integer", "minimum": 0}
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  }
+}

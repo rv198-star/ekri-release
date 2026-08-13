@@ -1,0 +1,1410 @@
+{
+  "schema_version": "ekri.wff-core-boundary-spec.v1",
+  "profile_id": "wff-v1.8-p0-core-boundary",
+  "baseline_equivalence": {
+    "authority": {
+      "commit": "764dc832eb7488b32ff0e24591a2018bfa719d39",
+      "tree": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1",
+      "profile_id": "wff-v1.6.2-baseline"
+    },
+    "target": {
+      "tag": "v1.7",
+      "commit": "0021860062bfa2aa14a8db95c6bae3e5b8e77986",
+      "tree": "81967f6ba46358dda790fffb1dc71f0a03864869"
+    },
+    "allowed_delta_prefixes": [
+      "EKRI/"
+    ],
+    "allowed_metadata_paths": [
+      ".gitignore",
+      ".wff/WFF_REPOSITORY_CONTEXT.md",
+      "README.md",
+      "docs/README.md",
+      "docs/README.zh-CN.md",
+      "docs/internal/audit-notes/v1.7-engineering-knowledge-reconstruction-closeout-20260804.md",
+      "docs/internal/collab-board/current-work-index.md",
+      "docs/v1.7-release-notes.zh-CN.md",
+      "pytest.ini",
+      "release-cases/proof-snapshots/v1.7-closeout.md"
+    ],
+    "runtime_invariant_prefixes": [
+      "skills/",
+      "scripts/",
+      "templates/",
+      "reference-packages/",
+      "runtime-deps/"
+    ],
+    "runtime_invariant_paths": [
+      "AGENTS.md",
+      "config/wff-skill-catalog.json",
+      "config/wff-install-profiles.json",
+      "config/generated-output-policy.json",
+      "docs/ARCHITECTURE.md",
+      "docs/ARCHITECTURE.zh-CN.md",
+      "docs/governance/v1.3-workflow-agentic-evidence-responsibility-matrix-v0.1.md",
+      "docs/governance/v1.3-workflow-agentic-evidence-responsibility-matrix-v0.1.zh-CN.md",
+      "docs/public/wff-orientation-map.zh-CN.md"
+    ]
+  },
+  "supplemental_evidence_sources": [
+    {
+      "id": "v17-boundary",
+      "path": "docs/v1.7-release-notes.zh-CN.md",
+      "anchors": [
+        {
+          "id": "no-runtime-change",
+          "contains": "本版本不会改变 P1/P2/P3/P4/PX 运行行为"
+        },
+        {
+          "id": "non-mainline-surfaces",
+          "contains": "WFF 的验证、Harness、测试、gate、Human Review、install/profile/release 等非主链表面"
+        },
+        {
+          "id": "tests-prove-behavior",
+          "contains": "tests 证明实现行为"
+        },
+        {
+          "id": "runtime-proves-execution",
+          "contains": "runtime/Harness evidence 证明执行声明"
+        },
+        {
+          "id": "gates-cap-claims",
+          "contains": "gates 限制正式声明"
+        },
+        {
+          "id": "review-supports-decisions",
+          "contains": "Human Review 支持阅读和决策"
+        },
+        {
+          "id": "distribution-classification",
+          "contains": "install/profile/release 属于 distribution/adaptation"
+        },
+        {
+          "id": "runtime-implementation-classification",
+          "contains": "scaffolder、generator 和 phase runtime 属于实现责任"
+        },
+        {
+          "id": "history-support-classification",
+          "contains": "fixtures、proof、archive 和 repository-only tooling 属于开发、验证或历史支持"
+        },
+        {
+          "id": "ekri-outside-runtime",
+          "contains": "EKRI 保持在 WFF 用户运行与打包表面之外"
+        },
+        {
+          "id": "ekri-not-packaged",
+          "contains": "不会把 EKRI 加入 WFF Skills、install profiles、install pack 或 release bundle"
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "id": "core",
+      "name": "WFF Core",
+      "responsibility": "Own the minimum lifecycle, handoff, evidence, claim-state, and control-boundary contracts required by every supported WFF route.",
+      "non_responsibilities": [
+        "It does not own product, architecture, implementation, validation-content, or existing-system truth.",
+        "It does not package capabilities or prove its own claims."
+      ]
+    },
+    {
+      "id": "capability-extension",
+      "name": "Capability Extension",
+      "responsibility": "Implement P1-P4, PhaseX, shared support, artifact projections, and other executable capabilities against Core contracts.",
+      "non_responsibilities": [
+        "It does not redefine global lifecycle truth or raise claim ceilings."
+      ]
+    },
+    {
+      "id": "assurance",
+      "name": "Assurance",
+      "responsibility": "Provide tests, Harness evidence, gates, validation projections, and review evidence that prove or cap bounded claims.",
+      "non_responsibilities": [
+        "It does not create product, architecture, or implementation truth."
+      ]
+    },
+    {
+      "id": "distribution-adaptation",
+      "name": "Distribution and Adaptation",
+      "responsibility": "Package, install, publish, and adapt Core plus capabilities for supported user scenarios and role entry surfaces.",
+      "non_responsibilities": [
+        "Package composition does not define WFF methodology or Core semantics."
+      ]
+    },
+    {
+      "id": "development-history-support",
+      "name": "Development and History Support",
+      "responsibility": "Retain fixtures, proof snapshots, archives, evaluations, migrations, and repository-only maintenance material.",
+      "non_responsibilities": [
+        "Historical presence or test volume does not establish Core status."
+      ]
+    },
+    {
+      "id": "ekri-meta-capability",
+      "name": "EKRI Meta-capability",
+      "responsibility": "Reconstruct and audit WFF engineering knowledge while remaining outside WFF runtime, Skills, and package surfaces.",
+      "non_responsibilities": [
+        "It is not a WFF runtime capability and cannot use generated knowledge as self-evidence."
+      ]
+    },
+    {
+      "id": "unknown",
+      "name": "Unknown or Review-bound",
+      "responsibility": "Retain unresolved ownership or extraction decisions without converting them into architecture facts.",
+      "non_responsibilities": [
+        "Unknown does not authorize deletion, movement, or a default Core classification."
+      ]
+    }
+  ],
+  "classifications": {
+    "architecture_nodes": [
+      {
+        "id": "wff-system",
+        "primary_layer": "core",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["agentic-boundary-contract", "claim-state-contract", "phase-contract"],
+        "non_core_responsibilities": ["Executable phase capabilities", "Assurance implementations", "Distribution and repository history"],
+        "rationale": "The system identity and governing lifecycle semantics are Core, but the current WFF system node aggregates every executable and support layer.",
+        "evidence_refs": ["readme-product.framework-purpose", "orientation.control-boundary"]
+      },
+      {
+        "id": "routing",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["lifecycle-route-contract", "extension-registration-contract"],
+        "non_core_responsibilities": ["Concrete P1/PX implementation dispatch"],
+        "rationale": "Admission and route control are globally required, while concrete route implementations must be registered extensions rather than Core-owned modules.",
+        "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only"]
+      },
+      {
+        "id": "external-entry-routing",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["lifecycle-route-contract"],
+        "non_core_responsibilities": ["Requirements or brownfield content generation"],
+        "rationale": "External admission is a universal route contract and must remain independent from the content implementation selected by the route.",
+        "evidence_refs": ["orientation.entry-boundary", "using-wff-route.existing-route"]
+      },
+      {
+        "id": "internal-continuation",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["handoff-contract", "reentry-return-contract"],
+        "non_core_responsibilities": ["Phase-specific generation and validation bodies"],
+        "rationale": "Accepted handoff continuation, stop, return, and re-entry semantics are lifecycle-wide contracts rather than any one phase implementation.",
+        "evidence_refs": ["using-wff-route.internal-only", "using-wff-route.p3-to-p4"]
+      },
+      {
+        "id": "greenfield-lifecycle",
+        "primary_layer": "core",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["phase-contract", "handoff-contract", "reentry-return-contract"],
+        "non_core_responsibilities": ["P1, P2, P3, and P4 executable implementations"],
+        "rationale": "The P1-P4 order and handoff model are Core, while each phase's content truth and runtime implementation remain extensions.",
+        "evidence_refs": ["orientation.greenfield-route", "responsibility-matrix.phase-p1", "responsibility-matrix.phase-p4"]
+      },
+      {
+        "id": "pre-phase1-intake",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Conversational intake and P1 source-brief preparation"],
+        "rationale": "Pre-P1 intake is an optional executable capability that consumes route and handoff contracts without defining them.",
+        "evidence_refs": ["req-chat-entry.pre-phase1", "req-chat-entry.not-prd"]
+      },
+      {
+        "id": "phase1-requirements",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Product requirements truth and PRD generation"],
+        "rationale": "Phase 1 owns product truth and implementation-specific generation; Core only defines its phase and handoff contract.",
+        "evidence_refs": ["phase1-entry.product-truth", "phase1-entry.preserve-authority"]
+      },
+      {
+        "id": "phase2-architecture",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Architecture decisions, data/API contracts, and design trade-offs"],
+        "rationale": "Architecture judgment is phase-owned Agentic work and cannot be embedded in the minimal lifecycle Core.",
+        "evidence_refs": ["phase2-entry.architecture-owner", "phase2-entry.machine-pass-limit"]
+      },
+      {
+        "id": "phase3-implementation",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Runnable code, tests, runtime evidence, and implementation work packages"],
+        "rationale": "Implementation delivery consumes Core contracts but owns executable content and proof-producing work outside Core.",
+        "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.bounded-packages"]
+      },
+      {
+        "id": "phase4-validation",
+        "primary_layer": "capability-extension",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["claim-state-contract", "reentry-return-contract"],
+        "non_core_responsibilities": ["Validation analysis, remediation judgment, and phase-specific evidence review"],
+        "rationale": "Phase 4 is an executable validation capability; only its formal claim-state and return-route contracts belong in Core.",
+        "evidence_refs": ["phase4-entry.read-only", "phase4-entry.route-owner"]
+      },
+      {
+        "id": "brownfield-route",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Code-backed existing-system assessment and change planning"],
+        "rationale": "PhaseX is a sidecar capability that consumes Core re-entry contracts without becoming a mandatory lifecycle phase.",
+        "evidence_refs": ["phasex-entry.sidecar-route", "phasex-entry.code-backed"]
+      },
+      {
+        "id": "shared-support",
+        "primary_layer": "capability-extension",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["artifact-identity-contract"],
+        "non_core_responsibilities": ["Project context, reader translation, interaction maps, and storage implementations"],
+        "rationale": "The current shared-support aggregate contains one potential Core identity seam and several clearly optional support capabilities.",
+        "evidence_refs": ["skill-catalog.project-context", "skill-catalog.traceability", "skill-catalog.reader-translation"]
+      },
+      {
+        "id": "project-context-support",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Durable project-context maintenance"],
+        "rationale": "Project context supports agents but is not a lifecycle phase or formal truth artifact and therefore remains an extension.",
+        "evidence_refs": ["project-context.not-formal-truth", "project-context.conflict-routing"]
+      },
+      {
+        "id": "traceability-support",
+        "primary_layer": "core",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["artifact-identity-contract", "handoff-contract"],
+        "non_core_responsibilities": ["Registry storage, SQLite projections, and traceability tooling"],
+        "rationale": "Artifact identity and binding semantics are Core candidates, while registry persistence and maintenance remain replaceable extension implementations.",
+        "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+      },
+      {
+        "id": "reader-translation-support",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Localized reader artifact generation"],
+        "rationale": "Reader translation is an additive projection and cannot define canonical artifacts or lifecycle claims.",
+        "evidence_refs": ["reader-translation.canonical-authority", "reader-translation.no-claim-upgrade"]
+      },
+      {
+        "id": "interaction-map-support",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Interaction-map validation and mechanical rendering"],
+        "rationale": "Interaction maps are optional review projections and do not own lifecycle, content, evidence acceptance, or claim semantics.",
+        "evidence_refs": ["interaction-map.optional-companion", "interaction-map.no-authority"]
+      },
+      {
+        "id": "assurance",
+        "primary_layer": "assurance",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["evidence-contract", "claim-state-contract"],
+        "non_core_responsibilities": ["Tests, Harness execution, validators, gates, and review implementations"],
+        "rationale": "Core defines evidence and claim semantics, while assurance mechanisms independently prove, block, or cap concrete claims.",
+        "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row"]
+      },
+      {
+        "id": "human-review-projection",
+        "primary_layer": "assurance",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Human-readable review projections and decision support"],
+        "rationale": "Human Review is read-only and additive; it must remain outside Core and cannot become a second lifecycle truth.",
+        "evidence_refs": ["human-review.no-replace", "human-review.no-ceiling-increase"]
+      },
+      {
+        "id": "distribution",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Install profiles, install packs, release bundles, and publication surfaces"],
+        "rationale": "Distribution consumes Core and capability metadata but package composition must not define methodology or Core truth.",
+        "evidence_refs": ["agents-control.profile-boundary", "orientation.profile-no-methodology"]
+      },
+      {
+        "id": "role-agent-adaptation",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Role-oriented prompts and platform adaptation"],
+        "rationale": "Role agents are optional entry adapters over existing skills and profiles, not lifecycle or truth owners.",
+        "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter"]
+      }
+    ],
+    "responsibilities": [
+      {
+        "id": "workflow-control",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["lifecycle-route-contract", "phase-contract", "handoff-contract"],
+        "non_core_responsibilities": ["Business and engineering content truth"],
+        "rationale": "Global engineering order, stage interfaces, stop paths, and evidence capture are the minimum shared lifecycle control plane.",
+        "evidence_refs": ["agents-control.workflow-order", "responsibility-matrix.workflow-row"]
+      },
+      {
+        "id": "agentic-control",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["agentic-boundary-contract"],
+        "non_core_responsibilities": ["Replacing Agentic judgment with deterministic schemas or gates"],
+        "rationale": "Core must preserve who owns uncertainty and engineering judgment without attempting to perform those decisions itself.",
+        "evidence_refs": ["agents-control.agentic-judgment", "responsibility-matrix.agentic-row"]
+      },
+      {
+        "id": "template-control",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["agentic-boundary-contract"],
+        "non_core_responsibilities": ["Owning business truth or hidden workflow control"],
+        "rationale": "The template/TVG boundary is a Core governance constraint even though individual templates remain extensions.",
+        "evidence_refs": ["agents-control.template-boundary", "responsibility-matrix.template-row"]
+      },
+      {
+        "id": "evidence-control",
+        "primary_layer": "core",
+        "boundary_state": "core-candidate",
+        "core_contract_slices": ["evidence-contract", "claim-state-contract"],
+        "non_core_responsibilities": ["Creating product, architecture, or implementation truth"],
+        "rationale": "Proof ownership and claim ceilings are universal formal semantics; concrete assurance tools remain outside Core.",
+        "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row"]
+      },
+      {
+        "id": "route-control",
+        "primary_layer": "core",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["lifecycle-route-contract", "extension-registration-contract"],
+        "non_core_responsibilities": ["Hard-coded knowledge of concrete phase skill implementations"],
+        "rationale": "Route ownership is Core, but current direct references to concrete capabilities must be inverted through a registration contract.",
+        "evidence_refs": ["using-wff-route.external-only", "using-wff-route.p1-to-p2"]
+      },
+      {
+        "id": "p1-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Product truth and PRD content"],
+        "rationale": "P1 content ownership is a phase extension responsibility bounded by Core phase and handoff contracts.",
+        "evidence_refs": ["phase1-entry.product-truth", "phase1-entry.evidence-capped"]
+      },
+      {
+        "id": "p2-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Architecture truth and design trade-offs"],
+        "rationale": "P2 judgment belongs to the architecture capability rather than the minimal lifecycle Core.",
+        "evidence_refs": ["phase2-entry.architecture-owner", "phase2-entry.upstream-authority"]
+      },
+      {
+        "id": "p3-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Runnable implementation and implementation evidence"],
+        "rationale": "P3 produces code and tests as an executable extension that consumes Core contracts.",
+        "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.return-upstream"]
+      },
+      {
+        "id": "p4-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["claim-state-contract", "reentry-return-contract"],
+        "non_core_responsibilities": ["Validation analysis and remediation judgment"],
+        "rationale": "P4 execution remains an extension while formal claim and return semantics become Core contracts.",
+        "evidence_refs": ["phase4-entry.read-only", "phase4-entry.route-owner"]
+      },
+      {
+        "id": "px-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Existing-system truth reconstruction and change planning"],
+        "rationale": "PhaseX is an optional sidecar capability and must not become part of the minimum greenfield Core.",
+        "evidence_refs": ["phasex-entry.sidecar-route", "phasex-entry.truth-separation"]
+      },
+      {
+        "id": "project-context-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Durable project fact maintenance"],
+        "rationale": "Project context is supporting information and explicitly not a formal lifecycle truth artifact.",
+        "evidence_refs": ["project-context.durable-facts", "project-context.not-formal-truth"]
+      },
+      {
+        "id": "traceability-control",
+        "primary_layer": "core",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["artifact-identity-contract", "handoff-contract"],
+        "non_core_responsibilities": ["Registry database and traceability implementation mechanics"],
+        "rationale": "Identity, bindings, and link integrity are Core contract candidates while documents retain meaning and persistence stays replaceable.",
+        "evidence_refs": ["traceability.documents-source", "traceability.identity-owner"]
+      },
+      {
+        "id": "reader-translation-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Localized reader editions"],
+        "rationale": "Reader translation is an optional projection that must not change source authority or claims.",
+        "evidence_refs": ["reader-translation.canonical-authority", "reader-translation.reader-edition"]
+      },
+      {
+        "id": "interaction-map-control",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Interaction map validation and rendering"],
+        "rationale": "The interaction map is optional review support and cannot own lifecycle or evidence semantics.",
+        "evidence_refs": ["interaction-map.no-authority", "interaction-map.mechanical-projection"]
+      },
+      {
+        "id": "packaging-control",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Install and release package composition"],
+        "rationale": "Packaging selects capabilities for scenarios but does not define phase ownership or Core semantics.",
+        "evidence_refs": ["agents-control.profile-boundary", "orientation.profile-no-methodology"]
+      },
+      {
+        "id": "review-control",
+        "primary_layer": "assurance",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Read-only human decision projection"],
+        "rationale": "Review supports independent decisions but cannot replace canonical artifacts or increase claim ceilings.",
+        "evidence_refs": ["human-review.no-replace", "human-review.no-ceiling-increase"]
+      },
+      {
+        "id": "role-control",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Role and platform adaptation"],
+        "rationale": "Role-oriented entry remains an adapter over WFF capabilities and cannot become an alternate methodology.",
+        "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter"]
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "lifecycle-routing",
+        "primary_layer": "core",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["lifecycle-route-contract", "extension-registration-contract", "reentry-return-contract"],
+        "non_core_responsibilities": ["Concrete skill names, route-specific prompts, and capability implementation dispatch"],
+        "rationale": "Routing is the closest existing capability to Core, but its current concrete knowledge of entry implementations must be inverted before extraction.",
+        "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only", "readme-product.three-entries"]
+      },
+      {
+        "id": "greenfield-lifecycle",
+        "primary_layer": "capability-extension",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["phase-contract", "handoff-contract"],
+        "non_core_responsibilities": ["P1-P4 content implementations and phase runtime bodies"],
+        "rationale": "The existing aggregate mixes Core lifecycle order with four independently owned executable capabilities and must be decomposed at the contract boundary.",
+        "evidence_refs": ["orientation.greenfield-route", "responsibility-matrix.phase-p1", "responsibility-matrix.phase-p4"]
+      },
+      {
+        "id": "requirements-intake",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Conversational source intake"],
+        "rationale": "Requirements intake is an optional pre-P1 extension that produces a Core-compatible handoff.",
+        "evidence_refs": ["req-chat-entry.pre-phase1", "req-chat-entry.source-brief"]
+      },
+      {
+        "id": "product-requirements",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Product requirements reconstruction and PRD generation"],
+        "rationale": "Product truth is intentionally phase-owned Agentic work outside the minimum reusable Core.",
+        "evidence_refs": ["phase1-entry.product-truth", "phase1-entry.preserve-authority"]
+      },
+      {
+        "id": "architecture-design",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Architecture design and engineering trade-offs"],
+        "rationale": "Architecture design consumes upstream truth and Core contracts but remains a distinct executable capability.",
+        "evidence_refs": ["phase2-entry.architecture-owner", "phase2-entry.machine-pass-limit"]
+      },
+      {
+        "id": "implementation-delivery",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Runnable implementation, tests, and runtime proof production"],
+        "rationale": "Implementation delivery is replaceable capability behavior and cannot be part of a minimal semantic Core.",
+        "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.failing-tests"]
+      },
+      {
+        "id": "validation-closure",
+        "primary_layer": "capability-extension",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["claim-state-contract", "reentry-return-contract"],
+        "non_core_responsibilities": ["Evidence review and remediation decisions"],
+        "rationale": "Validation execution stays outside Core; only formal state, claim ceiling, and return routing are shared contracts.",
+        "evidence_refs": ["phase4-entry.read-only", "phase4-entry.missing-review-bound", "phase4-entry.route-owner"]
+      },
+      {
+        "id": "brownfield-assessment",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Code-backed brownfield truth and change impact analysis"],
+        "rationale": "Brownfield assessment is an optional route consumer with Core-compatible re-entry, not a Core lifecycle requirement.",
+        "evidence_refs": ["phasex-entry.code-backed", "phasex-entry.truth-separation"]
+      },
+      {
+        "id": "project-context",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Durable project context maintenance"],
+        "rationale": "Project context supports Agentic work but is not a formal phase or source of lifecycle truth.",
+        "evidence_refs": ["project-context.durable-facts", "project-context.not-formal-truth"]
+      },
+      {
+        "id": "traceability",
+        "primary_layer": "capability-extension",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["artifact-identity-contract", "handoff-contract"],
+        "non_core_responsibilities": ["Trace registry storage, synchronization, and derived database implementation"],
+        "rationale": "Traceability contains Core-worthy identity and binding contracts plus replaceable storage and management behavior.",
+        "evidence_refs": ["traceability.registry-mechanism", "traceability.documents-source", "traceability.identity-owner"]
+      },
+      {
+        "id": "reader-translation",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Localized reader projections"],
+        "rationale": "Reader translation is additive and optional; it preserves canonical authority and cannot alter formal claims.",
+        "evidence_refs": ["reader-translation.canonical-authority", "reader-translation.no-claim-upgrade"]
+      },
+      {
+        "id": "interaction-map",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Interaction map validation and rendering"],
+        "rationale": "Interaction maps provide optional review usability without lifecycle or evidence authority.",
+        "evidence_refs": ["interaction-map.optional-companion", "interaction-map.no-authority"]
+      },
+      {
+        "id": "evidence-assurance",
+        "primary_layer": "assurance",
+        "boundary_state": "split-required",
+        "core_contract_slices": ["evidence-contract", "claim-state-contract"],
+        "non_core_responsibilities": ["Tests, gates, runtime evidence collection, and validation implementations"],
+        "rationale": "The capability mixes Core evidence semantics with independent proof mechanisms and must be split by ownership rather than moved wholesale.",
+        "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row"]
+      },
+      {
+        "id": "human-review",
+        "primary_layer": "assurance",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Human-readable review and decision projection"],
+        "rationale": "Human Review is detached assurance and must never become a second source of lifecycle truth.",
+        "evidence_refs": ["human-review.read-only-projection", "human-review.no-ceiling-increase"]
+      },
+      {
+        "id": "capability-packaging",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Install profiles, dependency closure, and package content policy"],
+        "rationale": "Packaging assembles supported scenarios but cannot own or redefine lifecycle contracts.",
+        "evidence_refs": ["install-profiles.default-profile", "install-builder.dependency-closure", "orientation.profile-no-methodology"]
+      },
+      {
+        "id": "role-agent-adaptation",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Role prompts and platform adapters"],
+        "rationale": "Role agents adapt entry surfaces over existing capabilities and do not replace WFF Core or phase ownership.",
+        "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter"]
+      }
+    ],
+    "support_surfaces": [
+      {
+        "id": "phase-runtime-implementations",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "locations": ["scripts/phase1/", "scripts/phase2/", "scripts/phase3/", "scripts/phase4/", "scripts/phasex/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Scaffolding, generation, orchestration, and phase runtime implementation"],
+        "rationale": "Phase runtime scripts implement capabilities and are explicitly classified as implementation responsibility rather than Core semantics.",
+        "evidence_refs": ["v17-boundary.runtime-implementation-classification", "phase3-runtime.mainline"]
+      },
+      {
+        "id": "test-harness-assurance",
+        "primary_layer": "assurance",
+        "boundary_state": "non-core",
+        "locations": ["tests/", "scripts/**/runtime*", "release-cases/proof-snapshots/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Behavior and execution proof"],
+        "rationale": "Tests and Harness evidence prove implementation and execution claims but do not define content truth or Core status.",
+        "evidence_refs": ["v17-boundary.tests-prove-behavior", "v17-boundary.runtime-proves-execution", "agents-control.evidence-ceiling"]
+      },
+      {
+        "id": "gate-validator-assurance",
+        "primary_layer": "assurance",
+        "boundary_state": "split-required",
+        "locations": ["scripts/**/gate*", "scripts/**/validate*", "scripts/release/audit*"],
+        "core_contract_slices": ["claim-state-contract"],
+        "non_core_responsibilities": ["Mechanical validation and claim blocking"],
+        "rationale": "Gates consume Core claim semantics and cap formal state; their rules and implementations remain assurance rather than Core truth owners.",
+        "evidence_refs": ["v17-boundary.gates-cap-claims", "responsibility-matrix.evidence-row"]
+      },
+      {
+        "id": "templates-reference-assets",
+        "primary_layer": "capability-extension",
+        "boundary_state": "non-core",
+        "locations": ["templates/", "reference-packages/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Output direction, depth prompts, and capability reference material"],
+        "rationale": "Templates and reference assets support capability depth while the Core only preserves their non-truth-owner boundary.",
+        "evidence_refs": ["agents-control.template-boundary", "responsibility-matrix.template-row"]
+      },
+      {
+        "id": "install-release-tooling",
+        "primary_layer": "distribution-adaptation",
+        "boundary_state": "non-core",
+        "locations": ["config/wff-install-profiles.json", "scripts/release/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Install packs, release bundles, audit packaging, and publication support"],
+        "rationale": "Install/profile/release surfaces are explicitly distribution and adaptation, not WFF Core or lifecycle truth.",
+        "evidence_refs": ["v17-boundary.distribution-classification", "install-builder.build-entry", "orientation.profile-no-methodology"]
+      },
+      {
+        "id": "retained-fixtures-proof-history",
+        "primary_layer": "development-history-support",
+        "boundary_state": "non-core",
+        "locations": ["tests/fixtures/", "release-cases/proof-snapshots/", "archive/", "docs/internal/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Fixtures, retained proof, archives, evaluations, and historical records"],
+        "rationale": "Retained fixtures, proof, archives, and repository-only material are development, assurance, or history support and cannot be promoted to Core by age or volume.",
+        "evidence_refs": ["v17-boundary.history-support-classification", "agents-control.release-ceiling"]
+      },
+      {
+        "id": "repository-maintenance-tooling",
+        "primary_layer": "development-history-support",
+        "boundary_state": "non-core",
+        "locations": ["docs/internal/collab-board/", ".wff/WFF_REPOSITORY_CONTEXT.md", "tmp/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["Maintainer coordination, local workspaces, and repository operations"],
+        "rationale": "Repository maintenance context supports WFF development but is not released methodology or runtime capability.",
+        "evidence_refs": ["v17-boundary.history-support-classification", "agents-control.profile-boundary"]
+      },
+      {
+        "id": "ekri-meta",
+        "primary_layer": "ekri-meta-capability",
+        "boundary_state": "non-core",
+        "locations": ["EKRI/", ".EKRI/"],
+        "core_contract_slices": [],
+        "non_core_responsibilities": ["WFF runtime execution, Skills, install profiles, and release packaging"],
+        "rationale": "EKRI is the architecture-analysis meta-capability used by v1.8 and remains permanently outside WFF runtime and package surfaces.",
+        "evidence_refs": ["v17-boundary.ekri-outside-runtime", "v17-boundary.ekri-not-packaged"]
+      }
+    ]
+  },
+  "candidate_core_contracts": [
+    {
+      "id": "lifecycle-route-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Represent admissible external entries, accepted internal continuations, selected route identity, and stop conditions.",
+      "inputs": ["source state", "available extension registrations", "accepted handoff metadata"],
+      "outputs": ["route decision", "required entry contract", "stop or context-completion decision"],
+      "non_responsibilities": ["It does not generate requirements, architecture, implementation, validation, or brownfield content.", "It does not hard-code extension implementation paths."],
+      "rationale": "Every supported WFF use begins or continues through a bounded route, while content generation remains extension-owned.",
+      "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only", "orientation.entry-boundary"]
+    },
+    {
+      "id": "phase-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Define phase identity, owner, required inputs, required outputs, entry conditions, exit state, and allowed continuation.",
+      "inputs": ["phase registration", "upstream handoff"],
+      "outputs": ["phase execution contract", "formal phase result envelope"],
+      "non_responsibilities": ["It does not decide product truth, architecture trade-offs, implementation content, or validation conclusions."],
+      "rationale": "P1-P4 share a lifecycle contract even though each phase owns different Agentic and executable behavior.",
+      "evidence_refs": ["orientation.greenfield-route", "responsibility-matrix.phase-p1", "responsibility-matrix.phase-p4"]
+    },
+    {
+      "id": "handoff-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Bind upstream authority, artifact identities, consumed evidence, produced outputs, unresolved items, and next-owner expectations.",
+      "inputs": ["canonical artifacts", "artifact identities", "evidence references"],
+      "outputs": ["accepted handoff", "rejected handoff with owner and minimum rerun boundary"],
+      "non_responsibilities": ["It does not replace documents as sources of meaning or infer missing upstream truth."],
+      "rationale": "WFF continuity depends on explicit source authority and handoff identity rather than shared conversational memory.",
+      "evidence_refs": ["phase1-entry.preserve-authority", "phase2-entry.upstream-authority", "traceability.documents-source", "using-wff-route.internal-only"]
+    },
+    {
+      "id": "artifact-identity-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Define stable artifact identity, version/binding references, provenance links, and integrity expectations independent of storage implementation.",
+      "inputs": ["artifact metadata", "source and downstream bindings"],
+      "outputs": ["artifact identity", "binding and link-integrity records"],
+      "non_responsibilities": ["It does not own document meaning, registry persistence, SQLite storage, or reader projections."],
+      "rationale": "Cross-phase evidence and handoffs require identity and link integrity, while current traceability storage is explicitly derived and replaceable.",
+      "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "evidence-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Represent evidence identity, provenance, evidence type, observed/inferred/unknown posture, and the claim that evidence may support.",
+      "inputs": ["test, runtime, review, external, or manual evidence"],
+      "outputs": ["bounded evidence record", "unsupported or conflicting evidence state"],
+      "non_responsibilities": ["It does not execute tests, fabricate evidence, or decide business and architecture truth."],
+      "rationale": "Evidence is the shared proof language across phases and assurance mechanisms, but concrete proof production remains outside Core.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row", "v17-boundary.tests-prove-behavior"]
+    },
+    {
+      "id": "claim-state-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Define formal state transitions, review-bound status, claim ceilings, and the weakest-evidence cap applied to lifecycle results.",
+      "inputs": ["phase result", "evidence records", "missing or conflicting proof"],
+      "outputs": ["formal state", "claim ceiling", "block or return decision"],
+      "non_responsibilities": ["It does not grant production approval, real UAT, owner sign-off, or content truth without authority."],
+      "rationale": "Claim ceilings and formal state are universal WFF semantics and must not be redefined independently by each gate or phase.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "agents-control.release-ceiling", "phase3-entry.weakest-evidence", "phase4-entry.missing-review-bound"]
+    },
+    {
+      "id": "agentic-boundary-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Preserve the ownership boundary among Workflow, Agentic reasoning, Templates/TVG, and Evidence/Gates.",
+      "inputs": ["work type", "uncertainty", "required proof"],
+      "outputs": ["control owner", "judgment owner", "support role", "proof owner"],
+      "non_responsibilities": ["It does not perform business, architecture, implementation, or review judgment in place of the responsible Agentic capability."],
+      "rationale": "WFF's highest project principle is a shared Core governance contract that prevents scripts, templates, and validators from becoming truth owners.",
+      "evidence_refs": ["agents-control.workflow-order", "agents-control.agentic-judgment", "agents-control.template-boundary", "agents-control.evidence-ceiling"]
+    },
+    {
+      "id": "extension-registration-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Register route, phase, support, assurance, and adaptation extensions by declared contracts without Core importing concrete implementations.",
+      "inputs": ["extension identity", "provided and required contracts", "compatibility metadata"],
+      "outputs": ["validated extension registration", "dependency direction result"],
+      "non_responsibilities": ["It does not package extensions, decide their content truth, or make unsupported standalone-installability claims."],
+      "rationale": "A slim Core requires dependency inversion so routing and lifecycle semantics no longer depend directly on concrete phase and package implementations.",
+      "evidence_refs": ["agents-control.profile-boundary", "orientation.profile-no-methodology", "install-builder.dependency-closure"]
+    },
+    {
+      "id": "reentry-return-contract",
+      "primary_layer": "core",
+      "boundary_state": "core-candidate",
+      "responsibility": "Represent bounded remediation returns, owning phase, required evidence, minimum rerun boundary, and PhaseX-to-mainline re-entry.",
+      "inputs": ["validation failure or brownfield finding", "owner", "affected contracts"],
+      "outputs": ["return packet", "re-entry target", "rerun boundary"],
+      "non_responsibilities": ["It does not decide remediation content or silently rewrite upstream artifacts."],
+      "rationale": "P4 remediation and PhaseX re-entry are valid lifecycle control loops that must be explicit without creating package dependency cycles.",
+      "evidence_refs": ["phase4-entry.route-owner", "phasex-entry.sidecar-route", "using-wff-route.internal-only"]
+    }
+  ],
+  "dependency_edges": [
+    {
+      "id": "routing-to-intake",
+      "source_id": "lifecycle-routing",
+      "target_id": "requirements-intake",
+      "relation": "concrete-dispatch",
+      "graph_kind": "dependency",
+      "rationale": "The current route surface names the concrete conversational intake capability directly; P1 must replace this Core-outward dependency with extension registration.",
+      "evidence_refs": ["using-wff-route.rough-route"]
+    },
+    {
+      "id": "routing-to-product-requirements",
+      "source_id": "lifecycle-routing",
+      "target_id": "product-requirements",
+      "relation": "concrete-dispatch",
+      "graph_kind": "dependency",
+      "rationale": "The current route surface names the concrete P1 capability directly and therefore embeds extension knowledge in the Core candidate.",
+      "evidence_refs": ["using-wff-route.stable-route"]
+    },
+    {
+      "id": "routing-to-brownfield",
+      "source_id": "lifecycle-routing",
+      "target_id": "brownfield-assessment",
+      "relation": "concrete-dispatch",
+      "graph_kind": "dependency",
+      "rationale": "The current route surface names the concrete PhaseX capability directly; extraction requires a registered route adapter.",
+      "evidence_refs": ["using-wff-route.existing-route"]
+    },
+    {
+      "id": "routing-to-registration-contract",
+      "source_id": "lifecycle-routing",
+      "target_id": "extension-registration-contract",
+      "relation": "requires-contract",
+      "graph_kind": "dependency",
+      "rationale": "The target Core route capability must resolve extension registrations rather than import or encode concrete implementations.",
+      "evidence_refs": ["orientation.profile-no-methodology", "using-wff-route.external-only"]
+    },
+    {
+      "id": "intake-to-handoff",
+      "source_id": "requirements-intake",
+      "target_id": "handoff-contract",
+      "relation": "produces-contract",
+      "graph_kind": "dependency",
+      "rationale": "Conversational intake produces a P1 source brief rather than a PRD and therefore must emit a bounded handoff.",
+      "evidence_refs": ["req-chat-entry.source-brief", "req-chat-entry.not-prd"]
+    },
+    {
+      "id": "p1-to-phase-contract",
+      "source_id": "product-requirements",
+      "target_id": "phase-contract",
+      "relation": "implements-contract",
+      "graph_kind": "dependency",
+      "rationale": "P1 implements a phase-owned content capability within a shared lifecycle contract.",
+      "evidence_refs": ["phase1-entry.official-entry", "phase1-entry.product-truth"]
+    },
+    {
+      "id": "p1-to-artifact-identity",
+      "source_id": "product-requirements",
+      "target_id": "artifact-identity-contract",
+      "relation": "produces-identified-artifact",
+      "graph_kind": "dependency",
+      "rationale": "P1 outputs must participate in cross-phase identity and binding without transferring document meaning to the registry.",
+      "evidence_refs": ["traceability.documents-source", "phase1-entry.preserve-authority"]
+    },
+    {
+      "id": "p2-to-p1",
+      "source_id": "architecture-design",
+      "target_id": "product-requirements",
+      "relation": "consumes-upstream-output",
+      "graph_kind": "dependency",
+      "rationale": "P2 consumes accepted P1 truth as upstream authority and must not reconstruct product truth independently.",
+      "evidence_refs": ["phase2-entry.upstream-authority"]
+    },
+    {
+      "id": "p2-to-handoff",
+      "source_id": "architecture-design",
+      "target_id": "handoff-contract",
+      "relation": "implements-contract",
+      "graph_kind": "dependency",
+      "rationale": "P2 consumes and produces explicit handoffs rather than relying on implicit shared context.",
+      "evidence_refs": ["phase2-entry.upstream-authority", "using-wff-route.p2-to-p3"]
+    },
+    {
+      "id": "p3-to-p2",
+      "source_id": "implementation-delivery",
+      "target_id": "architecture-design",
+      "relation": "consumes-upstream-output",
+      "graph_kind": "dependency",
+      "rationale": "P3 implements the accepted P2 handoff and returns upstream instead of inventing missing architecture truth.",
+      "evidence_refs": ["phase3-entry.return-upstream", "using-wff-route.p2-to-p3"]
+    },
+    {
+      "id": "p3-runtime-to-phase-contract",
+      "source_id": "phase-runtime-implementations",
+      "target_id": "phase-contract",
+      "relation": "implements-contract",
+      "graph_kind": "dependency",
+      "rationale": "Phase runners execute capability-specific behavior behind shared entry, output, and state contracts.",
+      "evidence_refs": ["v17-boundary.runtime-implementation-classification", "phase3-runtime.mainline"]
+    },
+    {
+      "id": "p4-to-p3",
+      "source_id": "validation-closure",
+      "target_id": "implementation-delivery",
+      "relation": "consumes-upstream-output",
+      "graph_kind": "dependency",
+      "rationale": "P4 validates P3 implementation and evidence as a read-only downstream capability.",
+      "evidence_refs": ["phase4-entry.read-only", "using-wff-route.p3-to-p4"]
+    },
+    {
+      "id": "p4-to-claim-state",
+      "source_id": "validation-closure",
+      "target_id": "claim-state-contract",
+      "relation": "applies-contract",
+      "graph_kind": "dependency",
+      "rationale": "P4 must apply shared claim ceilings and review-bound semantics rather than inventing a separate formal state model.",
+      "evidence_refs": ["phase4-entry.missing-review-bound", "phase4-entry.external-production"]
+    },
+    {
+      "id": "px-to-artifact-identity",
+      "source_id": "brownfield-assessment",
+      "target_id": "artifact-identity-contract",
+      "relation": "produces-identified-evidence",
+      "graph_kind": "dependency",
+      "rationale": "PhaseX findings and re-entry packets require stable identity and evidence bindings across existing-system and mainline work.",
+      "evidence_refs": ["phasex-entry.truth-separation", "traceability.identity-owner"]
+    },
+    {
+      "id": "project-context-to-agentic-boundary",
+      "source_id": "project-context",
+      "target_id": "agentic-boundary-contract",
+      "relation": "supports-judgment",
+      "graph_kind": "dependency",
+      "rationale": "Project context supports Agentic decisions but remains subordinate to formal lifecycle artifacts and ownership rules.",
+      "evidence_refs": ["project-context.not-formal-truth", "project-context.conflict-routing"]
+    },
+    {
+      "id": "traceability-to-artifact-contract",
+      "source_id": "traceability",
+      "target_id": "artifact-identity-contract",
+      "relation": "implements-contract",
+      "graph_kind": "dependency",
+      "rationale": "The traceability capability should implement identity and binding contracts while keeping its persistence mechanism outside Core.",
+      "evidence_refs": ["traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "reader-to-p1-output",
+      "source_id": "reader-translation",
+      "target_id": "product-requirements",
+      "relation": "projects-canonical-output",
+      "graph_kind": "dependency",
+      "rationale": "Reader translation consumes canonical phase artifacts and cannot become their authority.",
+      "evidence_refs": ["reader-translation.canonical-authority", "reader-translation.reader-edition"]
+    },
+    {
+      "id": "interaction-map-to-human-review",
+      "source_id": "interaction-map",
+      "target_id": "human-review",
+      "relation": "supports-review",
+      "graph_kind": "dependency",
+      "rationale": "Interaction maps are mechanical projections used by review surfaces without acquiring evidence or lifecycle authority.",
+      "evidence_refs": ["interaction-map.optional-companion", "interaction-map.mechanical-projection"]
+    },
+    {
+      "id": "assurance-to-evidence-contract",
+      "source_id": "evidence-assurance",
+      "target_id": "evidence-contract",
+      "relation": "implements-contract",
+      "graph_kind": "dependency",
+      "rationale": "Tests, runtime evidence, and gates produce or consume records under the shared evidence model.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "v17-boundary.tests-prove-behavior"]
+    },
+    {
+      "id": "assurance-to-claim-state",
+      "source_id": "evidence-assurance",
+      "target_id": "claim-state-contract",
+      "relation": "applies-contract",
+      "graph_kind": "dependency",
+      "rationale": "Assurance mechanisms cap claims under Core state semantics and must not create their own truth model.",
+      "evidence_refs": ["responsibility-matrix.evidence-row", "v17-boundary.gates-cap-claims"]
+    },
+    {
+      "id": "human-review-to-evidence-contract",
+      "source_id": "human-review",
+      "target_id": "evidence-contract",
+      "relation": "projects-evidence",
+      "graph_kind": "dependency",
+      "rationale": "Human Review projects evidence for decisions but does not replace canonical artifacts or increase claim ceilings.",
+      "evidence_refs": ["human-review.read-only-projection", "human-review.no-ceiling-increase"]
+    },
+    {
+      "id": "packaging-to-registration",
+      "source_id": "capability-packaging",
+      "target_id": "extension-registration-contract",
+      "relation": "packages-registered-extensions",
+      "graph_kind": "dependency",
+      "rationale": "Distribution should package declared extension contracts rather than becoming the source of lifecycle semantics.",
+      "evidence_refs": ["install-builder.profile-selection", "orientation.profile-no-methodology"]
+    },
+    {
+      "id": "packaging-to-p1",
+      "source_id": "capability-packaging",
+      "target_id": "product-requirements",
+      "relation": "packages-capability",
+      "graph_kind": "dependency",
+      "rationale": "Install profiles include phase capabilities as distribution content while leaving their ownership unchanged.",
+      "evidence_refs": ["install-profiles.phase1-package", "agents-control.profile-boundary"]
+    },
+    {
+      "id": "role-adapter-to-routing",
+      "source_id": "role-agent-adaptation",
+      "target_id": "lifecycle-routing",
+      "relation": "adapts-entry",
+      "graph_kind": "dependency",
+      "rationale": "Role agents adapt user entry to existing route and capability surfaces without defining an alternate mainline.",
+      "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter"]
+    },
+    {
+      "id": "tests-to-evidence-contract",
+      "source_id": "test-harness-assurance",
+      "target_id": "evidence-contract",
+      "relation": "produces-evidence",
+      "graph_kind": "dependency",
+      "rationale": "Tests and Harness runs produce bounded implementation and execution evidence under the Core evidence contract.",
+      "evidence_refs": ["v17-boundary.tests-prove-behavior", "v17-boundary.runtime-proves-execution"]
+    },
+    {
+      "id": "gates-to-claim-state",
+      "source_id": "gate-validator-assurance",
+      "target_id": "claim-state-contract",
+      "relation": "caps-state",
+      "graph_kind": "dependency",
+      "rationale": "Gates and validators apply claim ceilings and formal state transitions but cannot own the underlying truth.",
+      "evidence_refs": ["v17-boundary.gates-cap-claims", "agents-control.evidence-ceiling"]
+    },
+    {
+      "id": "templates-to-agentic-boundary",
+      "source_id": "templates-reference-assets",
+      "target_id": "agentic-boundary-contract",
+      "relation": "supports-judgment",
+      "graph_kind": "dependency",
+      "rationale": "Templates guide depth and questions under the Core ownership boundary without deciding answers.",
+      "evidence_refs": ["agents-control.template-boundary", "responsibility-matrix.template-row"]
+    },
+    {
+      "id": "install-tooling-to-packaging",
+      "source_id": "install-release-tooling",
+      "target_id": "capability-packaging",
+      "relation": "implements-distribution",
+      "graph_kind": "dependency",
+      "rationale": "Release tooling implements package construction and audit for the distribution capability.",
+      "evidence_refs": ["v17-boundary.distribution-classification", "install-builder.build-entry"]
+    },
+    {
+      "id": "p4-return-to-p1",
+      "source_id": "validation-closure",
+      "target_id": "product-requirements",
+      "relation": "bounded-return",
+      "graph_kind": "control-loop",
+      "rationale": "Validation may return a defect to P1 with explicit owner, evidence, and minimum rerun boundary; this is a control loop, not a package dependency.",
+      "evidence_refs": ["phase4-entry.route-owner"]
+    },
+    {
+      "id": "p4-return-to-p2",
+      "source_id": "validation-closure",
+      "target_id": "architecture-design",
+      "relation": "bounded-return",
+      "graph_kind": "control-loop",
+      "rationale": "Validation may return architecture defects to P2 through a bounded remediation packet rather than a cyclic import.",
+      "evidence_refs": ["phase4-entry.route-owner"]
+    },
+    {
+      "id": "p4-return-to-p3",
+      "source_id": "validation-closure",
+      "target_id": "implementation-delivery",
+      "relation": "bounded-return",
+      "graph_kind": "control-loop",
+      "rationale": "Validation may return implementation defects to P3 while preserving phase ownership and rerun scope.",
+      "evidence_refs": ["phase4-entry.route-owner"]
+    },
+    {
+      "id": "px-reentry-to-p1",
+      "source_id": "brownfield-assessment",
+      "target_id": "product-requirements",
+      "relation": "conditional-reentry",
+      "graph_kind": "control-loop",
+      "rationale": "PhaseX may re-enter P1 when existing-system findings require product truth reconstruction.",
+      "evidence_refs": ["phasex-entry.sidecar-route", "phasex-entry.truth-separation"]
+    },
+    {
+      "id": "px-reentry-to-p2",
+      "source_id": "brownfield-assessment",
+      "target_id": "architecture-design",
+      "relation": "conditional-reentry",
+      "graph_kind": "control-loop",
+      "rationale": "PhaseX may re-enter P2 for architecture change while remaining a sidecar route.",
+      "evidence_refs": ["phasex-entry.sidecar-route", "phasex-entry.code-backed"]
+    },
+    {
+      "id": "px-reentry-to-p3",
+      "source_id": "brownfield-assessment",
+      "target_id": "implementation-delivery",
+      "relation": "conditional-reentry",
+      "graph_kind": "control-loop",
+      "rationale": "PhaseX may create bounded implementation work after upstream truth and architecture are sufficient.",
+      "evidence_refs": ["phasex-entry.sidecar-route", "phasex-entry.safety-net"]
+    },
+    {
+      "id": "px-reentry-to-p4",
+      "source_id": "brownfield-assessment",
+      "target_id": "validation-closure",
+      "relation": "conditional-reentry",
+      "graph_kind": "control-loop",
+      "rationale": "PhaseX-originated changes must return to validation under the same evidence and claim boundaries.",
+      "evidence_refs": ["phasex-entry.safety-net", "phase4-entry.read-only"]
+    }
+  ],
+  "hidden_dependency_risks": [
+    {
+      "id": "dynamic-script-resource-closure",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "Python imports, subprocess calls, shell commands, data assets, generated paths, and dynamic resource lookups may create dependencies not visible in the semantic graph.",
+      "mitigation": "P1 must define dependency contracts; P2/P3 must add forbidden-import and resource-closure audits before moving files.",
+      "rationale": "Current install tooling already resolves script dependency closure, but the P0 graph intentionally does not claim exhaustive dynamic closure.",
+      "evidence_refs": ["install-builder.dependency-closure", "install-builder.profile-selection"]
+    },
+    {
+      "id": "configuration-as-methodology",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "Install profiles and catalogs may accidentally become a second source of lifecycle truth during extraction.",
+      "mitigation": "Core contracts must be authoritative; distribution metadata may reference but never redefine them.",
+      "rationale": "WFF explicitly states that profile composition does not change phase responsibility or methodology.",
+      "evidence_refs": ["agents-control.profile-boundary", "orientation.profile-no-methodology"]
+    },
+    {
+      "id": "shared-helper-owner-ambiguity",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "medium",
+      "statement": "Shared scripts may combine lifecycle semantics, capability mechanics, assurance checks, and distribution behavior under one physical helper.",
+      "mitigation": "Classify each shared helper by truth owner and dependency direction before extraction; do not move it based on directory name.",
+      "rationale": "The current architecture is capability-oriented rather than directory-oriented, so physical helper ownership remains a review task.",
+      "evidence_refs": ["agents-control.workflow-order", "agents-control.evidence-ceiling", "v17-boundary.runtime-implementation-classification"]
+    },
+    {
+      "id": "generated-package-context-mask",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "Repository-local guidance or files may mask missing contracts when validation is not run from the isolated final package.",
+      "mitigation": "P4 must execute the final install pack and release bundle in isolated environments across the mandatory scenario matrix.",
+      "rationale": "Repository instructions require isolated release validation so repo-level helper context cannot hide missing runtime guidance.",
+      "evidence_refs": ["agents-control.profile-boundary", "install-builder.content-policy"]
+    },
+    {
+      "id": "traceability-storage-coupling",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "medium",
+      "statement": "Artifact identity semantics may currently be coupled to traceability registry and derived SQLite implementation details.",
+      "mitigation": "P1 must define storage-neutral artifact and binding contracts before P2 extraction.",
+      "rationale": "Traceability owns identity and link integrity while documents own meaning and SQLite remains derived.",
+      "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    }
+  ],
+  "extraction_frontier": [
+    {
+      "id": "route-registry-inversion",
+      "priority": "P0-critical",
+      "statement": "Replace Core routing knowledge of concrete P1/PX implementations with an extension registration and route adapter contract.",
+      "exit_criterion": "Core route resolution depends only on registered contracts and has no import or content dependency on concrete capabilities.",
+      "rationale": "Current routing-to-capability edges are the clearest Core-outward extraction blockers.",
+      "evidence_refs": ["using-wff-route.rough-route", "using-wff-route.stable-route", "using-wff-route.existing-route"]
+    },
+    {
+      "id": "phase-contract-seam",
+      "priority": "P0-critical",
+      "statement": "Extract phase identity, input/output, state, stop, continuation, and ownership contracts from P1-P4 implementation bodies.",
+      "exit_criterion": "P1-P4 implement the same Core phase interface while retaining independent content-truth ownership.",
+      "rationale": "The greenfield lifecycle aggregate currently combines Core order with four executable phase capabilities.",
+      "evidence_refs": ["orientation.greenfield-route", "responsibility-matrix.phase-p1", "responsibility-matrix.phase-p4"]
+    },
+    {
+      "id": "handoff-identity-seam",
+      "priority": "P0-critical",
+      "statement": "Separate storage-neutral artifact identity and handoff binding contracts from the traceability skill and registry implementation.",
+      "exit_criterion": "Core can validate artifact identity and handoff bindings without depending on SQLite or traceability tooling.",
+      "rationale": "Cross-phase continuity requires identity and bindings, but registry persistence is explicitly derived.",
+      "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "evidence-claim-seam",
+      "priority": "P0-critical",
+      "statement": "Separate evidence record and formal claim-state semantics from tests, Harnesses, validators, gates, and P4 review implementations.",
+      "exit_criterion": "Assurance tools consume one Core evidence/claim model and cannot introduce independent truth or claim states.",
+      "rationale": "Evidence and claim ceilings are Core semantics while proof production and validation remain independent assurance.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row", "v17-boundary.gates-cap-claims"]
+    },
+    {
+      "id": "agentic-control-seam",
+      "priority": "P1-high",
+      "statement": "Codify the Workflow/Agentic/Templates/Evidence ownership model as a Core contract consumed by all capabilities and assurance tools.",
+      "exit_criterion": "No validator, template, route, or package can silently become a content-truth owner.",
+      "rationale": "The ownership matrix is WFF's highest project principle and must survive physical separation.",
+      "evidence_refs": ["agents-control.workflow-order", "agents-control.agentic-judgment", "agents-control.template-boundary", "agents-control.evidence-ceiling"]
+    },
+    {
+      "id": "compatibility-facade",
+      "priority": "P1-high",
+      "statement": "Define compatibility adapters for existing skill names, entrypoints, handoff files, and package profiles before changing physical locations.",
+      "exit_criterion": "Existing supported route and install surfaces remain behaviorally compatible or have an explicitly approved migration.",
+      "rationale": "v1.8 is a high-risk subtractive release and cannot infer parity from cleaner directories or passing unit tests alone.",
+      "evidence_refs": ["readme-product.three-entries", "readme-product.install-unit", "agents-control.profile-boundary"]
+    },
+    {
+      "id": "assurance-distribution-isolation",
+      "priority": "P1-high",
+      "statement": "Define inward-only dependencies for assurance and distribution so Core never imports tests, release tooling, profiles, or review projections.",
+      "exit_criterion": "Forbidden-import and package audits prove Core has no outward dependency on assurance or distribution.",
+      "rationale": "Assurance proves claims and distribution packages capabilities; neither may become a Core implementation dependency.",
+      "evidence_refs": ["v17-boundary.non-mainline-surfaces", "v17-boundary.distribution-classification", "responsibility-matrix.evidence-row"]
+    },
+    {
+      "id": "ekri-external-drift-watch",
+      "priority": "P1-high",
+      "statement": "Keep EKRI outside the extracted runtime and use it to register changes, reconstruct the post-extraction architecture, and detect ownership drift.",
+      "exit_criterion": "No EKRI or .EKRI path enters Core, Skills, install packs, or release bundles; post-change EKRI reports no unregistered responsibility loss.",
+      "rationale": "EKRI is the v1.8 analysis authority but is explicitly outside WFF runtime and packaging.",
+      "evidence_refs": ["v17-boundary.ekri-outside-runtime", "v17-boundary.ekri-not-packaged"]
+    }
+  ],
+  "risk_register": [
+    {
+      "id": "over-extraction-runtime-loss",
+      "severity": "critical",
+      "statement": "Removing or relocating a surface that carries hidden lifecycle or runtime behavior can make supported P1-P4/PX scenarios unusable.",
+      "mitigation": "Require contract-first extraction, compatibility adapters, and final three-scenario P1-P4 plus four-scenario PX release evidence.",
+      "rationale": "v1.8 is subtractive and runtime parity cannot be inferred from repository size reduction.",
+      "evidence_refs": ["v17-boundary.no-runtime-change", "orientation.greenfield-route", "phasex-entry.sidecar-route"]
+    },
+    {
+      "id": "under-extraction-distributed-core",
+      "severity": "high",
+      "statement": "Leaving lifecycle, identity, evidence, and claim semantics duplicated across skills and gates would create a nominal Core without a real authority boundary.",
+      "mitigation": "P1 must assign one authority for every Core contract and P4 must detect duplicated lifecycle truth.",
+      "rationale": "A smaller directory is not sufficient if truth ownership remains scattered or circular.",
+      "evidence_refs": ["agents-control.workflow-order", "agents-control.evidence-ceiling", "traceability.identity-owner"]
+    },
+    {
+      "id": "assurance-truth-owner-drift",
+      "severity": "critical",
+      "statement": "Validators, tests, or gates may accidentally become owners of architecture or business truth during contract extraction.",
+      "mitigation": "Preserve the Agentic ownership boundary and limit assurance to proof, blocking, routing, and claim ceilings.",
+      "rationale": "WFF explicitly prohibits script passes from proving product value, architecture judgment, or implementation meaning.",
+      "evidence_refs": ["agents-control.agentic-judgment", "agents-control.evidence-ceiling", "responsibility-matrix.pseudo-agentic"]
+    },
+    {
+      "id": "route-compatibility-regression",
+      "severity": "critical",
+      "statement": "Dependency inversion may break external entry routing, internal continuation, P4 returns, or PhaseX re-entry.",
+      "mitigation": "Pin route contracts and rerun full mainline and brownfield scenarios from final packages.",
+      "rationale": "Routing currently names concrete implementations and contains both forward and return/re-entry semantics.",
+      "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only", "phase4-entry.route-owner", "phasex-entry.sidecar-route"]
+    },
+    {
+      "id": "traceability-semantic-loss",
+      "severity": "high",
+      "statement": "Separating traceability storage from Core identity contracts may lose artifact bindings or let storage become document truth.",
+      "mitigation": "Define storage-neutral identity and binding acceptance tests before moving traceability code.",
+      "rationale": "Documents own meaning while traceability owns identity, bindings, and link integrity.",
+      "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "package-leakage-or-omission",
+      "severity": "high",
+      "statement": "Slimming may either leak EKRI/repository-only support into public packs or omit required runtime assets after dependency changes.",
+      "mitigation": "Retain install/release audits, isolated package execution, dependency closure, and zero EKRI leakage checks.",
+      "rationale": "Package composition is a separate distribution responsibility and must be proven from the final candidate.",
+      "evidence_refs": ["install-builder.dependency-closure", "install-builder.content-policy", "v17-boundary.ekri-not-packaged"]
+    },
+    {
+      "id": "historical-artifact-misclassification",
+      "severity": "medium",
+      "statement": "Old fixtures, proof snapshots, archives, or large test surfaces may be mistaken for Core because of age, volume, or central repository location.",
+      "mitigation": "Classify by semantic necessity and truth ownership, never by line count, directory age, or test volume.",
+      "rationale": "v1.7 explicitly classifies fixtures, proof, archives, and repository-only tooling as development, validation, or history support.",
+      "evidence_refs": ["v17-boundary.history-support-classification", "v17-boundary.non-mainline-surfaces"]
+    },
+    {
+      "id": "insufficient-release-validation",
+      "severity": "critical",
+      "statement": "Unit tests or one smoke scenario may pass while the separated WFF is unusable across supported lifecycle and brownfield paths.",
+      "mitigation": "Block release until final-package GEO, PetClinic, BrainyPal P1-P4 and four retained PX scenarios complete with evidence and claim ceilings.",
+      "rationale": "The final release claim must be based on representative multi-scenario runtime evidence, not structure or test count alone.",
+      "evidence_refs": ["agents-control.release-ceiling", "v17-boundary.tests-prove-behavior", "v17-boundary.runtime-proves-execution"]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "physical-core-home",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "statement": "The final physical package, directory, language boundary, and install shape of WFF Core are not yet decided.",
+      "resolution_owner": "P1 Minimal Core Contract review",
+      "rationale": "P0 defines semantic boundaries and explicitly forbids assuming a directory before the contract is accepted.",
+      "evidence_refs": ["readme-product.framework-purpose", "agents-control.workflow-order"]
+    },
+    {
+      "id": "extension-registry-shape",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "statement": "The exact extension registration schema, discovery mechanism, compatibility versioning, and failure behavior remain undecided.",
+      "resolution_owner": "P1 Minimal Core Contract review",
+      "rationale": "Dependency inversion is required, but P0 evidence does not select one technical registry design.",
+      "evidence_refs": ["using-wff-route.external-only", "agents-control.profile-boundary"]
+    },
+    {
+      "id": "traceability-persistence-placement",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "statement": "The final owner and package location of registry persistence, SQLite projections, and synchronization tooling remain undecided.",
+      "resolution_owner": "P1 contract plus P2 extraction design",
+      "rationale": "Evidence establishes storage-neutral identity ownership but not the final implementation package boundary.",
+      "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "exhaustive-code-dependency-closure",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "statement": "P0 does not establish an exhaustive import, subprocess, dynamic asset, generated path, or external runtime dependency graph for every repository file.",
+      "resolution_owner": "P2 extraction and P4 forbidden-dependency audit",
+      "rationale": "The bounded semantic graph and existing script dependency closure cannot prove all dynamic dependencies before physical extraction.",
+      "evidence_refs": ["install-builder.dependency-closure", "v17-boundary.runtime-implementation-classification"]
+    },
+    {
+      "id": "compatibility-lifetime",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "statement": "The supported lifetime and removal policy for legacy skill names, entrypoints, handoff paths, and package adapters remain undecided.",
+      "resolution_owner": "P1 contract and migration policy",
+      "rationale": "P0 requires compatibility protection but does not have authority to choose deprecation duration or public migration policy.",
+      "evidence_refs": ["readme-product.three-entries", "readme-product.install-unit", "agents-control.profile-boundary"]
+    }
+  ],
+  "disputed_boundaries": [
+    {
+      "id": "greenfield-aggregate-boundary",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "The current greenfield-lifecycle capability is not itself the Core; it contains a Core phase/handoff spine plus four non-Core phase implementations.",
+      "decision_needed": "P1 must define the exact contract seam and ownership of lifecycle sequencing versus phase adapters.",
+      "rationale": "The architecture node aggregates P1-P4 while the responsibility matrix assigns distinct content owners to each phase.",
+      "evidence_refs": ["orientation.greenfield-route", "responsibility-matrix.phase-p1", "responsibility-matrix.phase-p4"]
+    },
+    {
+      "id": "traceability-boundary",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "Artifact identity and link contracts are Core candidates, but the current traceability skill and persistence implementation are not wholesale Core.",
+      "decision_needed": "P1 must specify the storage-neutral interface and P2 must assign the implementation layer.",
+      "rationale": "Documents own meaning, traceability owns identity and links, and SQLite is explicitly derived.",
+      "evidence_refs": ["traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "evidence-assurance-boundary",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "Evidence and claim-state semantics belong in Core, while tests, Harnesses, validators, gates, P4 analysis, and Human Review remain assurance or capabilities.",
+      "decision_needed": "P1 must define the common evidence/claim types without moving assurance truth ownership into Core.",
+      "rationale": "The governing matrix separates proof and claim ceilings from content-truth judgment.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row", "v17-boundary.non-mainline-surfaces"]
+    },
+    {
+      "id": "routing-implementation-boundary",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "statement": "Route semantics are Core, but the current using-wff surface embeds concrete capability names and user-facing adaptation text.",
+      "decision_needed": "P1 must separate the route model and registration interface from the current adapter/skill presentation.",
+      "rationale": "The route layer owns admission and continuation while external entry skills and role adaptations remain executable or distribution surfaces.",
+      "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only", "agents-control.role-boundary"]
+    }
+  ],
+  "claim_ceiling": "This P0 output defines an evidence-linked, review-bound WFF Core candidate boundary over the verified v1.6.2 mainline Architecture Memory and the formally proven v1.7 mainline equivalence receipt. It classifies every current architecture node, responsibility, capability, and required non-mainline support surface; identifies candidate Core contracts, current Core-outward coupling, bounded dependency cycles, extraction frontiers, risks, unknowns, and disputed boundaries. It does not authorize directory moves, package extraction, deletion, runtime behavior change, release readiness, exhaustive code dependency closure, production readiness, real UAT, owner sign-off, or any claim that v1.8 remains compatible before the mandatory final-package multi-scenario validation passes."
+}

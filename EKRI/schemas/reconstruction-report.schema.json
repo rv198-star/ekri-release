@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 1 Reconstruction Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "status",
+    "created_at",
+    "profile_id",
+    "source_commit",
+    "source_tree",
+    "checks",
+    "counts",
+    "target_blob_read_paths",
+    "claim_ceiling",
+    "output_digests"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.reconstruction-report.v1"},
+    "phase": {"const": "phase1-baseline-knowledge-reconstruction"},
+    "status": {"const": "architecture-memory-reconstructed"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "profile_id": {"const": "wff-v1.6.2-baseline"},
+    "source_commit": {"const": "764dc832eb7488b32ff0e24591a2018bfa719d39"},
+    "source_tree": {"const": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1"},
+    "checks": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "check": {"type": "string", "minLength": 2},
+          "status": {"const": "passed"},
+          "detail": {"type": "string", "minLength": 8}
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_sources",
+        "evidence_anchors",
+        "target_blob_reads",
+        "architecture_nodes",
+        "responsibility_entries",
+        "implementation_intents",
+        "assurance_entries",
+        "constraints",
+        "unknowns"
+      ],
+      "properties": {
+        "evidence_sources": {"type": "integer", "minimum": 1},
+        "evidence_anchors": {"type": "integer", "minimum": 1},
+        "target_blob_reads": {"type": "integer", "minimum": 1},
+        "architecture_nodes": {"type": "integer", "minimum": 1},
+        "responsibility_entries": {"type": "integer", "minimum": 1},
+        "implementation_intents": {"type": "integer", "minimum": 1},
+        "assurance_entries": {"type": "integer", "minimum": 1},
+        "constraints": {"type": "integer", "minimum": 1},
+        "unknowns": {"type": "integer", "minimum": 1}
+      }
+    },
+    "target_blob_read_paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "claim_ceiling": {"type": "string", "minLength": 40},
+    "output_digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence-index.json", "architecture-memory.json", "ARCHITECTURE_MEMORY.md"],
+      "properties": {
+        "evidence-index.json": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "architecture-memory.json": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "ARCHITECTURE_MEMORY.md": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": "ekri.v100-product-surface-classification.v1",
+  "product_version": "1.0.0",
+  "status": "release-candidate-classification",
+  "supported_general": [
+    {
+      "surface_id": "observation-trust-boundary",
+      "stability": "supported",
+      "entrypoints": ["evaluate_observation_boundary", "validate_observation_boundary.py"],
+      "authority_posture": "trust-root",
+      "notes": "Exact Git identity, No Active Self-Scan and evidence admission remain foundational general contracts."
+    },
+    {
+      "surface_id": "engineering-architecture-view",
+      "stability": "supported-schema-contract",
+      "entrypoints": ["ekri.architecture-view.v1"],
+      "authority_posture": "derived-view-over-accepted-architecture-authority",
+      "notes": "General Architecture model contract preserves identity, evidence, observed/inferred/unknown/conflicting posture and claim ceilings. Raw round-trip tooling is not public API."
+    },
+    {
+      "surface_id": "capability-semantic-authority",
+      "stability": "supported-model-contract",
+      "entrypoints": ["ekri.capability-semantic-authority.v1"],
+      "authority_posture": "ontology-authoritative-single-slice",
+      "notes": "First completed v1.0 semantic-authority cutover. Legacy Capability Catalog is derived compatibility output only."
+    },
+    {
+      "surface_id": "capability-named-queries",
+      "stability": "supported",
+      "entrypoints": ["find_capability", "get_realizations", "explain_authority", "get_evidence"],
+      "authority_posture": "derived-query-over-capability-authority",
+      "notes": "L0-L3 progressive disclosure. Query misses do not prove absence."
+    },
+    {
+      "surface_id": "bounded-flow-handoff-query",
+      "stability": "supported-bounded",
+      "entrypoints": ["FlowQueryService", "trace_flow"],
+      "authority_posture": "derived-non-authoritative",
+      "notes": "FlowDefinition/Object, HandoffOccurrence and qualified Assertion semantics are supported for bounded reconstruction/query; there is no Flow truth store."
+    },
+    {
+      "surface_id": "repository-asset-identity",
+      "stability": "supported",
+      "entrypoints": ["run_repository_asset_identity.py"],
+      "authority_posture": "evidence-bounded-semantic-writer",
+      "notes": "Stable asset identity, observed roles and explicit owner-evidence posture; no safe-delete authority."
+    },
+    {
+      "surface_id": "repository-ownership-boundary",
+      "stability": "supported",
+      "entrypoints": ["run_repository_ownership_boundary.py"],
+      "authority_posture": "evidence-bounded-semantic-writer",
+      "notes": "Structural evidence remains non-authoritative for semantic ownership."
+    },
+    {
+      "surface_id": "repository-lifecycle-observation",
+      "stability": "supported",
+      "entrypoints": ["run_repository_lifecycle_observation.py"],
+      "authority_posture": "observation-only-semantic-writer",
+      "notes": "Observation absence cannot create retirement/removal/deletion authority."
+    },
+    {
+      "surface_id": "evolution-impact-intelligence",
+      "stability": "supported",
+      "entrypoints": ["run_phase3_evolution_analysis"],
+      "authority_posture": "evolution-authoritative-impact-predictive",
+      "notes": "Evolution remains verified repository change knowledge; Impact remains inferred/predictive and cannot become Architecture fact."
+    },
+    {
+      "surface_id": "portable-project-knowledge",
+      "stability": "supported",
+      "entrypoints": ["promote_project_asset", "verify_project_asset", "hydrate_project_asset"],
+      "authority_posture": "verified-portable-knowledge-boundary",
+      "notes": "Tracked portable knowledge is independently verified and never self-certifies."
+    }
+  ],
+  "wff_profile_compatibility": [
+    {
+      "surface_id": "wff-before-generate",
+      "stability": "compatibility",
+      "entrypoints": ["build_request", "evaluate_capability_before_generate", "run_existing_capability_check"],
+      "authority_posture": "derived-compatibility-over-capability-authority",
+      "notes": "WFF-specific trigger/reuse recommendation compatibility; not required by the general Engineering Knowledge Model."
+    },
+    {
+      "surface_id": "wff-core-analysis",
+      "stability": "profile-specific",
+      "entrypoints": ["run_core_boundary_reconstruction", "run_minimal_core_contract", "run_core_extraction_audit", "run_core_migration_audit"],
+      "authority_posture": "wff-profile-analysis",
+      "notes": "WFF Core contracts and P1/P2/P3/P4/PX semantics remain outside the general meta-kernel."
+    },
+    {
+      "surface_id": "wff-fixed-baseline-reconstruction",
+      "stability": "profile-specific-compatibility",
+      "entrypoints": ["reconstruct_and_persist_wff_baseline", "verify_phase1_snapshot"],
+      "authority_posture": "wff-host-reconstruction-profile",
+      "notes": "The fixed WFF v1.6.2 reconstruction profile remains a validated host fixture and compatibility source, not EKRI's general semantic definition."
+    }
+  ],
+  "experimental_internal": [
+    {
+      "surface_id": "raw-ooa-substrate",
+      "stability": "internal",
+      "entrypoints": ["shadow_semantic_substrate.py"],
+      "authority_posture": "implementation-normal-form",
+      "notes": "Object/Occurrence/Assertion is internal semantic normalization. Normal consumers must not traverse it directly."
+    },
+    {
+      "surface_id": "architecture-roundtrip-tooling",
+      "stability": "migration-internal",
+      "entrypoints": ["architecture_roundtrip.py", "run_architecture_roundtrip.py"],
+      "authority_posture": "comparison-only",
+      "notes": "Retained as migration/conformance proof infrastructure; not a peer Architecture authority."
+    },
+    {
+      "surface_id": "repository-firewall-stress",
+      "stability": "conformance-internal",
+      "entrypoints": ["repository_firewall_stress.py", "run_repository_firewall_stress.py"],
+      "authority_posture": "derived-non-authoritative",
+      "notes": "Full-scale adversarial authority stress tool, not a normal consumer API."
+    },
+    {
+      "surface_id": "nonwff-conformance-harness",
+      "stability": "conformance-internal",
+      "entrypoints": ["nonwff_conformance.py", "run_nonwff_conformance.py"],
+      "authority_posture": "conformance-evidence-only",
+      "notes": "Release conformance harness; does not create semantic truth."
+    }
+  ],
+  "compatibility_policy": {
+    "schema": "Supported v1 schema identities remain stable within the 1.x compatibility line unless an explicit migration record changes them.",
+    "api": "Supported named queries preserve semantic meaning and claim ceilings; additive fields require compatible defaults, incompatible changes require a major-version decision.",
+    "profile": "WFF-specific compatibility may evolve independently provided general model/query contracts do not acquire WFF-only dependencies.",
+    "storage": "Physical storage or serialization changes do not remint stable semantic IDs by themselves."
+  },
+  "rollback_policy": {
+    "pre_cutover": "Discard non-authoritative shadow/derived state and keep the current sole authority.",
+    "post_cutover": "Freeze the failed/new context, restore exactly one accepted authority source, rebuild derived views/compatibility outputs, and retain the failed context as historical evidence.",
+    "forbidden": ["peer dual-write", "bidirectional semantic synchronization", "silent fallback between authoritative writers"]
+  },
+  "claim_ceiling": "This classification defines EKRI v1.0 supported, WFF-profile compatibility and internal/experimental surfaces. It does not make every future Flow, Decision, Claim, Code Graph, runtime trace or domain profile feature-complete, nor does it authorize production governance decisions."
+}

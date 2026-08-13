@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WFF Core Capability Compatibility Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "contract_id", "contract_version", "source", "versioning_policy", "capability_count", "capabilities", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "wff.core-compatibility-matrix.v1"},
+    "phase": {"const": "v1.8-p1-minimal-core-contract"},
+    "status": {"const": "current-capability-compatibility-defined"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "contract_id": {"const": "wff-core-contract"},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "source": {"type": "object"},
+    "versioning_policy": {"type": "object"},
+    "capability_count": {"const": 16},
+    "capabilities": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability_id", "posture", "consumes_contract_ids", "current_compatibility_surfaces", "migration_action", "compatibility_commitment", "forbidden_dependency"],
+        "properties": {
+          "capability_id": {"type": "string", "minLength": 2},
+          "posture": {"enum": ["split-contract-and-implementation", "extension-consumer", "assurance-consumer", "distribution-adapter"]},
+          "consumes_contract_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+          "current_compatibility_surfaces": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "migration_action": {"type": "string", "minLength": 20},
+          "compatibility_commitment": {"type": "string", "minLength": 20},
+          "forbidden_dependency": {"type": "string", "minLength": 20}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  }
+}

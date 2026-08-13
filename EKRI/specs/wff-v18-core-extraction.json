@@ -1,0 +1,100 @@
+{
+  "schema_version": "ekri.wff-core-extraction-spec.v1",
+  "profile_id": "wff-v1.8-p2-core-extraction",
+  "base_main_commit": "08cee30193aedd7880b1935e0b8f6e4e46b88646",
+  "p1_authority": {
+    "target_tree": "81967f6ba46358dda790fffb1dc71f0a03864869",
+    "contract_id": "wff-core-contract",
+    "contract_version": "1.0.0",
+    "required_counts": {
+      "contracts": 9,
+      "public_types": 13,
+      "public_operations": 9,
+      "invariants": 24,
+      "capability_compatibility": 16
+    }
+  },
+  "physical_boundary": {
+    "project_root": "wff-core",
+    "python_import_root": "wff_core",
+    "package_source_root": "wff-core/src/wff_core",
+    "contract_manifest_path": "wff-core/src/wff_core/contracts/wff-core-contract.json",
+    "capability_manifest_path": "wff-core/src/wff_core/contracts/current-capabilities.json",
+    "dependency_manifest_path": "wff-core/DEPENDENCY_MANIFEST.json",
+    "compatibility_adapter_path": "scripts/common/wff_core_compat.py",
+    "retirement_plan_path": "wff-core/COMPATIBILITY_RETIREMENT.md",
+    "required_paths": [
+      "wff-core/.gitignore",
+      "wff-core/pyproject.toml",
+      "wff-core/README.md",
+      "wff-core/DEPENDENCY_MANIFEST.json",
+      "wff-core/COMPATIBILITY_RETIREMENT.md",
+      "wff-core/src/wff_core/__init__.py",
+      "wff-core/src/wff_core/errors.py",
+      "wff-core/src/wff_core/manifest.py",
+      "wff-core/src/wff_core/models.py",
+      "wff-core/src/wff_core/operations.py",
+      "wff-core/src/wff_core/registry.py",
+      "wff-core/src/wff_core/contracts/__init__.py",
+      "wff-core/src/wff_core/contracts/wff-core-contract.json",
+      "wff-core/src/wff_core/contracts/current-capabilities.json",
+      "wff-core/tools/audit_dependencies.py",
+      "wff-core/tests/conftest.py",
+      "wff-core/tests/test_dependency_boundary.py",
+      "wff-core/tests/test_manifest.py",
+      "wff-core/tests/test_models.py",
+      "wff-core/tests/test_operations.py",
+      "wff-core/tests/test_registry.py",
+      "scripts/common/wff_core_compat.py",
+      "tests/test_wff_core_compat.py",
+      "tests/test_wff_core_installability.py"
+    ],
+    "repository_record_paths": [
+      "docs/internal/collab-board/current-work-index.md"
+    ],
+    "runtime_python_paths": [
+      "wff-core/src/wff_core/__init__.py",
+      "wff-core/src/wff_core/contracts/__init__.py",
+      "wff-core/src/wff_core/errors.py",
+      "wff-core/src/wff_core/manifest.py",
+      "wff-core/src/wff_core/models.py",
+      "wff-core/src/wff_core/operations.py",
+      "wff-core/src/wff_core/registry.py"
+    ]
+  },
+  "registered_change_ids": [
+    "issue-864-core-package-boundary",
+    "issue-864-core-semantic-operations",
+    "issue-864-compatibility-adapter",
+    "issue-864-core-extraction-assurance"
+  ],
+  "forbidden_repository_dependencies": [
+    "skills/",
+    "scripts/phase1/",
+    "scripts/phase2/",
+    "scripts/phase3/",
+    "scripts/phase4/",
+    "scripts/phasex/",
+    "scripts/release/",
+    "tests/",
+    "release-cases/",
+    "EKRI/",
+    ".EKRI/"
+  ],
+  "required_compatibility_entries": {
+    "using-wff": "lifecycle-routing",
+    "wff-req-chat": "requirements-intake",
+    "wff-req": "product-requirements",
+    "wff-arch": "architecture-design",
+    "wff-impl": "implementation-delivery",
+    "wff-validation": "validation-closure",
+    "wff-x": "brownfield-assessment"
+  },
+  "retained_unknowns": [
+    "exhaustive-code-dependency-closure"
+  ],
+  "resolved_unknowns": [
+    "physical-core-home"
+  ],
+  "claim_ceiling": "This P2 specification authorizes the bounded physical wff-core package, structural operations, declarative current-capability descriptors, and a temporary repository compatibility adapter. It does not authorize broad capability migration, public install-pack inclusion, adapter retirement, exhaustive dynamic dependency closure, runtime parity, or v1.8 release readiness."
+}

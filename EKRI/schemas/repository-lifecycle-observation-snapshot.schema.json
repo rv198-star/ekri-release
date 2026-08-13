@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Repository Lifecycle Observation Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "created_at",
+    "source",
+    "authority_boundary",
+    "summary",
+    "tracked_assets",
+    "compatibility_surfaces",
+    "evidence_input_receipts",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.repository-lifecycle-observation-snapshot.v1"},
+    "status": {"const": "repository-lifecycle-observation-recorded"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested_ref", "commit", "tree", "self_scan_verdict"],
+      "properties": {
+        "requested_ref": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "self_scan_verdict": {"type": "string", "minLength": 1}
+      }
+    },
+    "authority_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_only",
+        "lifecycle_governance_authority",
+        "retirement_decisions_allowed",
+        "deletion_decisions_allowed",
+        "rule"
+      ],
+      "properties": {
+        "observation_only": {"const": true},
+        "lifecycle_governance_authority": {"const": false},
+        "retirement_decisions_allowed": {"const": false},
+        "deletion_decisions_allowed": {"const": false},
+        "rule": {"type": "string", "minLength": 40}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tracked_asset_count",
+        "tracked_asset_present_count",
+        "tracked_implementation_loc",
+        "compatibility_surface_count",
+        "compatibility_surface_present_count",
+        "compatibility_surface_loc",
+        "observation_class_counts",
+        "formal_profile_membership_asset_count",
+        "maintainer_bundle_membership_asset_count"
+      ],
+      "properties": {
+        "tracked_asset_count": {"type": "integer", "minimum": 0},
+        "tracked_asset_present_count": {"type": "integer", "minimum": 0},
+        "tracked_implementation_loc": {"type": "integer", "minimum": 0},
+        "compatibility_surface_count": {"type": "integer", "minimum": 0},
+        "compatibility_surface_present_count": {"type": "integer", "minimum": 0},
+        "compatibility_surface_loc": {"type": "integer", "minimum": 0},
+        "observation_class_counts": {"type": "object"},
+        "formal_profile_membership_asset_count": {"type": "integer", "minimum": 0},
+        "maintainer_bundle_membership_asset_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "tracked_assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id", "baseline_path", "current_path", "observation_group",
+          "presence", "git_identity", "current_loc", "formal_profile_membership",
+          "maintainer_bundle_member", "python_import_consumer_count",
+          "python_import_consumer_role_counts", "python_import_consumer_samples",
+          "exact_path_reference_count", "exact_path_reference_role_counts",
+          "exact_path_reference_samples", "observation_class", "governance_decision"
+        ],
+        "properties": {
+          "asset_id": {"type": "string", "pattern": "^asset-[0-9a-f]{24}$"},
+          "baseline_path": {"type": "string", "minLength": 1},
+          "current_path": {"type": "string", "minLength": 1},
+          "observation_group": {"type": "string", "minLength": 1},
+          "presence": {"enum": ["present", "absent"]},
+          "git_identity": {"type": "object"},
+          "current_loc": {"type": "integer", "minimum": 0},
+          "formal_profile_membership": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "maintainer_bundle_member": {"type": "boolean"},
+          "python_import_consumer_count": {"type": "integer", "minimum": 0},
+          "python_import_consumer_role_counts": {"type": "object"},
+          "python_import_consumer_samples": {"type": "array", "items": {"type": "string"}},
+          "exact_path_reference_count": {"type": "integer", "minimum": 0},
+          "exact_path_reference_role_counts": {"type": "object"},
+          "exact_path_reference_samples": {"type": "array", "items": {"type": "string"}},
+          "observation_class": {
+            "enum": [
+              "active-distribution-observed",
+              "non-test-import-observed",
+              "compatibility-import-observed",
+              "test-import-observed",
+              "reference-only-observed",
+              "present-no-positive-use-observed",
+              "absent-current-tree"
+            ]
+          },
+          "governance_decision": {"const": "not-evaluated-in-v1.9.1"}
+        }
+      }
+    },
+    "compatibility_surfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "surface_id", "path", "origin", "presence", "current_loc",
+          "formal_profile_membership", "maintainer_bundle_member",
+          "python_import_consumer_count", "python_import_consumer_role_counts",
+          "python_import_consumer_samples", "exact_path_reference_count",
+          "exact_path_reference_role_counts", "exact_path_reference_samples",
+          "observation_class", "governance_decision"
+        ],
+        "properties": {
+          "surface_id": {"type": "string", "pattern": "^surface-[0-9a-f]{24}$"},
+          "path": {"type": "string", "minLength": 1},
+          "origin": {"enum": ["preexisting-compatibility-surface", "p3-generated-compatibility-shim"]},
+          "presence": {"enum": ["present", "absent"]},
+          "current_loc": {"type": "integer", "minimum": 0},
+          "formal_profile_membership": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "maintainer_bundle_member": {"type": "boolean"},
+          "python_import_consumer_count": {"type": "integer", "minimum": 0},
+          "python_import_consumer_role_counts": {"type": "object"},
+          "python_import_consumer_samples": {"type": "array", "items": {"type": "string"}},
+          "exact_path_reference_count": {"type": "integer", "minimum": 0},
+          "exact_path_reference_role_counts": {"type": "object"},
+          "exact_path_reference_samples": {"type": "array", "items": {"type": "string"}},
+          "observation_class": {"type": "string", "minLength": 1},
+          "governance_decision": {"const": "not-evaluated-in-v1.9.1"}
+        }
+      }
+    },
+    "evidence_input_receipts": {"type": "object"},
+    "claim_ceiling": {"type": "string", "minLength": 100}
+  }
+}

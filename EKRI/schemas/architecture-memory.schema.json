@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 3},
+      "uniqueItems": true
+    },
+    "knowledge_state": {
+      "type": "object",
+      "required": ["knowledge_state", "confidence", "rationale", "evidence_refs"],
+      "properties": {
+        "knowledge_state": {"enum": ["observed-fact", "inferred-knowledge", "unknown"]},
+        "confidence": {"enum": ["verified", "high", "medium", "low", "not-applicable"]},
+        "rationale": {"type": "string", "minLength": 8},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      }
+    },
+    "architecture_node": {
+      "allOf": [
+        {"$ref": "#/$defs/knowledge_state"},
+        {
+          "type": "object",
+          "required": ["id", "name", "kind", "parent_id", "responsibility", "non_responsibilities"],
+          "properties": {
+            "id": {"type": "string", "minLength": 2},
+            "name": {"type": "string", "minLength": 2},
+            "kind": {"type": "string", "minLength": 2},
+            "parent_id": {"type": "string"},
+            "responsibility": {"type": "string", "minLength": 2},
+            "non_responsibilities": {
+              "type": "array",
+              "items": {"type": "string", "minLength": 2}
+            }
+          }
+        }
+      ]
+    },
+    "responsibility_entry": {
+      "allOf": [
+        {"$ref": "#/$defs/knowledge_state"},
+        {
+          "type": "object",
+          "required": ["id", "subject", "owner", "responsibility", "non_responsibilities"],
+          "properties": {
+            "id": {"type": "string", "minLength": 2},
+            "subject": {"type": "string", "minLength": 2},
+            "owner": {"type": "string", "minLength": 2},
+            "responsibility": {"type": "string", "minLength": 2},
+            "non_responsibilities": {
+              "type": "array",
+              "items": {"type": "string", "minLength": 2}
+            }
+          }
+        }
+      ]
+    },
+    "statement_entry": {
+      "allOf": [
+        {"$ref": "#/$defs/knowledge_state"},
+        {
+          "type": "object",
+          "required": ["id", "subject", "statement"],
+          "properties": {
+            "id": {"type": "string", "minLength": 2},
+            "subject": {"type": "string", "minLength": 2},
+            "statement": {"type": "string", "minLength": 2}
+          }
+        }
+      ]
+    },
+    "assurance_entry": {
+      "allOf": [
+        {"$ref": "#/$defs/knowledge_state"},
+        {
+          "type": "object",
+          "required": ["id", "subject", "owner", "responsibility"],
+          "properties": {
+            "id": {"type": "string", "minLength": 2},
+            "subject": {"type": "string", "minLength": 2},
+            "owner": {"type": "string", "minLength": 2},
+            "responsibility": {"type": "string", "minLength": 2}
+          }
+        }
+      ]
+    }
+  },
+  "title": "EKRI Architecture Memory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "status",
+    "snapshot_id",
+    "created_at",
+    "profile_id",
+    "source",
+    "scanner",
+    "evidence_index_ref",
+    "observed_inventory",
+    "system_architecture_tree",
+    "module_responsibility_map",
+    "implementation_intent_summary",
+    "validation_assurance_ownership",
+    "constraints",
+    "unknowns",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.architecture-memory.v1"},
+    "phase": {"const": "phase1-baseline-knowledge-reconstruction"},
+    "status": {"const": "architecture-memory-reconstructed"},
+    "snapshot_id": {"type": "string", "minLength": 3},
+    "created_at": {"type": "string", "format": "date-time"},
+    "profile_id": {"const": "wff-v1.6.2-baseline"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_root",
+        "commit",
+        "tree",
+        "observation_manifest_schema",
+        "observation_manifest_sha256",
+        "admitted_path_set_sha256"
+      ],
+      "properties": {
+        "repository_root": {"type": "string"},
+        "commit": {"const": "764dc832eb7488b32ff0e24591a2018bfa719d39"},
+        "tree": {"const": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1"},
+        "observation_manifest_schema": {"const": "ekri.observation-manifest.v2"},
+        "observation_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "admitted_path_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "scanner": {
+      "type": "object",
+      "required": [
+        "repository_root",
+        "implementation_root",
+        "commit",
+        "tree",
+        "object_format",
+        "surface_tree_sha256",
+        "surface_path_count",
+        "runtime_matches_commit"
+      ],
+      "properties": {
+        "repository_root": {"type": "string"},
+        "implementation_root": {"type": "string"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "object_format": {"enum": ["sha1", "sha256"]},
+        "surface_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "surface_path_count": {"type": "integer", "minimum": 1},
+        "runtime_matches_commit": {"const": true}
+      }
+    },
+    "evidence_index_ref": {"const": "evidence-index.json"},
+    "observed_inventory": {"type": "object"},
+    "system_architecture_tree": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/architecture_node"}
+    },
+    "module_responsibility_map": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/responsibility_entry"}
+    },
+    "implementation_intent_summary": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/statement_entry"}
+    },
+    "validation_assurance_ownership": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/assurance_entry"}
+    },
+    "constraints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/statement_entry"}
+    },
+    "unknowns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "allOf": [
+          {"$ref": "#/$defs/statement_entry"},
+          {
+            "properties": {
+              "knowledge_state": {"const": "unknown"},
+              "confidence": {"const": "not-applicable"}
+            }
+          }
+        ]
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  }
+}

@@ -1,0 +1,19 @@
+service: mercury-ci
+stages:
+  - id: source-ingest
+    owner: source-control
+    produces: source-revision
+  - id: build
+    owner: build-automation
+    consumes: source-revision
+    produces: build-artifact
+  - id: test
+    owner: verification-automation
+    consumes: build-artifact
+    produces: test-report
+  - id: deploy-admission
+    owner: release-automation
+    consumes: test-report
+    decision: deployment-admission
+policy:
+  test_success_implies_deployment_approval: false

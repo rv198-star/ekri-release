@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.1 Mission Context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "authority_mode",
+    "materialization_class",
+    "mission",
+    "target",
+    "repository_environment",
+    "project_knowledge",
+    "constitution",
+    "operator_registry",
+    "budget",
+    "claim_ceiling",
+    "context_fingerprint"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.mission-context.v1"},
+    "status": {"const": "mission-context-ready"},
+    "authority_mode": {"const": "acquisition-non-authoritative"},
+    "materialization_class": {"const": "ephemeral-rebuildable-control-record"},
+    "mission": {"type": "object"},
+    "target": {"type": "object"},
+    "repository_environment": {
+      "type": "object",
+      "required": ["posture", "visible_blob_path_count", "protected_blob_path_count", "root_files", "top_level_roots", "suffix_counts", "visible_path_set_sha256", "claim_ceiling"],
+      "properties": {
+        "posture": {"const": "path-metadata-only-non-authoritative"},
+        "visible_blob_path_count": {"type": "integer", "minimum": 0},
+        "protected_blob_path_count": {"type": "integer", "minimum": 0},
+        "visible_path_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "project_knowledge": {
+      "type": "object",
+      "required": ["source", "asset_id", "schema_version", "freshness", "target", "families"],
+      "properties": {
+        "freshness": {"enum": ["no-project-knowledge", "exact-target", "stale-target"]},
+        "families": {"type": "array"}
+      }
+    },
+    "constitution": {"type": "object"},
+    "operator_registry": {"type": "array", "minItems": 1},
+    "budget": {
+      "type": "object",
+      "required": ["max_iterations", "max_slices", "max_tool_calls", "max_source_expansions", "max_source_bytes"],
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1},
+        "max_slices": {"type": "integer", "minimum": 1},
+        "max_tool_calls": {"type": "integer", "minimum": 1},
+        "max_source_expansions": {"type": "integer", "minimum": 1},
+        "max_source_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 80},
+    "context_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

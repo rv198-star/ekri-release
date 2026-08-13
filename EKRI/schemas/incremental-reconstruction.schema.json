@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 3 Incremental Reconstruction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "scan_id", "scan_mode", "baseline", "target", "delta", "frontier", "blob_reads", "checks", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.incremental-reconstruction.v1"},
+    "phase": {"const": "phase3-evolution-and-impact-intelligence"},
+    "status": {"const": "incremental-reconstruction-complete"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "scan_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "scan_mode": {"enum": ["baseline", "local-change", "drift"]},
+    "baseline": {"$ref": "#/$defs/baseline"},
+    "target": {"$ref": "#/$defs/target"},
+    "delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admitted_change_count", "protected_excluded_change_count", "changes", "protected_excluded_changes"],
+      "properties": {
+        "admitted_change_count": {"type": "integer", "minimum": 0},
+        "protected_excluded_change_count": {"type": "integer", "minimum": 0},
+        "changes": {"type": "array", "items": {"$ref": "#/$defs/change"}},
+        "protected_excluded_changes": {"type": "array", "items": {"$ref": "#/$defs/change"}}
+      }
+    },
+    "frontier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed_paths", "deferred_unobserved_registration_paths", "changed_frontier_paths", "dependency_neighborhood_paths", "ownership_neighborhood_ids", "capability_neighborhood_ids", "unmapped_changed_paths", "hidden_dependency_risk"],
+      "properties": {
+        "seed_paths": {"$ref": "#/$defs/uniqueStrings"},
+        "deferred_unobserved_registration_paths": {"$ref": "#/$defs/uniqueStrings"},
+        "changed_frontier_paths": {"$ref": "#/$defs/uniqueStrings"},
+        "dependency_neighborhood_paths": {"$ref": "#/$defs/uniqueStrings"},
+        "ownership_neighborhood_ids": {"$ref": "#/$defs/uniqueStrings"},
+        "capability_neighborhood_ids": {"$ref": "#/$defs/uniqueStrings"},
+        "unmapped_changed_paths": {"$ref": "#/$defs/uniqueStrings"},
+        "hidden_dependency_risk": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "reasons"],
+          "properties": {
+            "status": {"const": "managed-not-eliminated"},
+            "reasons": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 20}}
+          }
+        }
+      }
+    },
+    "blob_reads": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["before", "after", "skipped_non_regular", "before_read_paths", "after_read_paths"],
+      "properties": {
+        "before": {"type": "array", "items": {"$ref": "#/$defs/receipt"}},
+        "after": {"type": "array", "items": {"$ref": "#/$defs/receipt"}},
+        "skipped_non_regular": {"type": "array", "items": {"type": "object"}},
+        "before_read_paths": {"$ref": "#/$defs/uniqueStrings"},
+        "after_read_paths": {"$ref": "#/$defs/uniqueStrings"}
+      }
+    },
+    "checks": {"type": "array", "minItems": 5, "items": {"$ref": "#/$defs/check"}},
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  },
+  "$defs": {
+    "uniqueStrings": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "baseline": {
+      "type": "object", "additionalProperties": false,
+      "required": ["snapshot_id", "commit", "tree", "manifest_sha256"],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 10},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requested_ref", "commit", "tree", "manifest_sha256", "self_scan_verdict"],
+      "properties": {
+        "requested_ref": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "self_scan_verdict": {"enum": ["same-repository-protected-surfaces-excluded", "external-repository-target"]}
+      }
+    },
+    "side": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "object_type", "oid", "admitted"],
+      "properties": {
+        "mode": {"type": "string"}, "object_type": {"type": "string"}, "oid": {"type": "string"}, "admitted": {"type": "boolean"}
+      }
+    },
+    "change": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "change_type", "old_path", "new_path", "before", "after"],
+      "properties": {
+        "status": {"type": "string", "minLength": 1},
+        "change_type": {"enum": ["added", "deleted", "modified", "type-changed", "renamed", "copied", "other"]},
+        "old_path": {"type": "string", "minLength": 1},
+        "new_path": {"type": "string", "minLength": 1},
+        "before": {"$ref": "#/$defs/side"},
+        "after": {"$ref": "#/$defs/side"}
+      }
+    },
+    "receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "mode", "object_type", "blob_oid", "sha256", "size_bytes"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1}, "mode": {"enum": ["100644", "100755"]}, "object_type": {"const": "blob"},
+        "blob_oid": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "size_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "check": {
+      "type": "object", "additionalProperties": false,
+      "required": ["check", "status", "detail"],
+      "properties": {"check": {"type": "string", "minLength": 2}, "status": {"const": "passed"}, "detail": {"type": "string", "minLength": 8}}
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 1 Evidence Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "profile_id",
+    "created_at",
+    "source",
+    "sources",
+    "read_paths",
+    "read_blob_count"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.evidence-index.v1"},
+    "phase": {"const": "phase1-baseline-knowledge-reconstruction"},
+    "profile_id": {"const": "wff-v1.6.2-baseline"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_root", "commit", "tree"],
+      "properties": {
+        "repository_root": {"type": "string"},
+        "commit": {"const": "764dc832eb7488b32ff0e24591a2018bfa719d39"},
+        "tree": {"const": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1"}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path", "media_type", "blob", "line_count", "anchors"],
+        "properties": {
+          "id": {"type": "string", "minLength": 2},
+          "path": {"type": "string", "minLength": 1},
+          "media_type": {"type": "string", "minLength": 3},
+          "blob": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "mode", "object_type", "blob_oid", "sha256", "size_bytes"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "mode": {"type": "string", "minLength": 6},
+              "object_type": {"const": "blob"},
+              "blob_oid": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "size_bytes": {"type": "integer", "minimum": 0}
+            }
+          },
+          "line_count": {"type": "integer", "minimum": 1},
+          "anchors": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "evidence_ref", "contains", "line_numbers", "excerpts"],
+              "properties": {
+                "id": {"type": "string", "minLength": 2},
+                "evidence_ref": {"type": "string", "minLength": 3},
+                "contains": {"type": "string", "minLength": 1},
+                "line_numbers": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "integer", "minimum": 1}
+                },
+                "excerpts": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "read_paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "read_blob_count": {"type": "integer", "minimum": 1}
+  }
+}

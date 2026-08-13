@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.0 Architecture Round-Trip Parity Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "verdict",
+    "authority_mode",
+    "source_commit",
+    "source_tree",
+    "shadow_semantic_fingerprint",
+    "baseline_view_semantic_fingerprint",
+    "derived_view_semantic_fingerprint",
+    "dimensions",
+    "mismatch_count",
+    "mismatch_paths",
+    "baseline_summary",
+    "derived_summary",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.architecture-roundtrip-parity.v1"},
+    "status": {"const": "architecture-roundtrip-evaluated"},
+    "verdict": {"enum": ["pass", "fail"]},
+    "authority_mode": {"const": "comparison-only-non-authoritative"},
+    "source_commit": {"type": "string", "minLength": 40},
+    "source_tree": {"type": "string", "minLength": 40},
+    "shadow_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "baseline_view_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "derived_view_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_context",
+        "architecture_identity_structure",
+        "responsibility_non_responsibility",
+        "implementation_intent",
+        "assurance_ownership",
+        "constraints",
+        "unknown_posture",
+        "claim_ceiling",
+        "evidence_bindings",
+        "semantic_fingerprint"
+      ],
+      "properties": {
+        "source_context": {"type": "boolean"},
+        "architecture_identity_structure": {"type": "boolean"},
+        "responsibility_non_responsibility": {"type": "boolean"},
+        "implementation_intent": {"type": "boolean"},
+        "assurance_ownership": {"type": "boolean"},
+        "constraints": {"type": "boolean"},
+        "unknown_posture": {"type": "boolean"},
+        "claim_ceiling": {"type": "boolean"},
+        "evidence_bindings": {"type": "boolean"},
+        "semantic_fingerprint": {"type": "boolean"}
+      }
+    },
+    "mismatch_count": {"type": "integer", "minimum": 0},
+    "mismatch_paths": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "baseline_summary": {"$ref": "#/$defs/summary"},
+    "derived_summary": {"$ref": "#/$defs/summary"},
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  },
+  "$defs": {
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "architecture_node_count",
+        "responsibility_count",
+        "implementation_intent_count",
+        "assurance_count",
+        "constraint_count",
+        "unknown_count"
+      ],
+      "properties": {
+        "architecture_node_count": {"type": "integer", "minimum": 0},
+        "responsibility_count": {"type": "integer", "minimum": 0},
+        "implementation_intent_count": {"type": "integer", "minimum": 0},
+        "assurance_count": {"type": "integer", "minimum": 0},
+        "constraint_count": {"type": "integer", "minimum": 0},
+        "unknown_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

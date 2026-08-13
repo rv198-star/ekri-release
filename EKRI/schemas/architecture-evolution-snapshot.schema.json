@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 3 Architecture Evolution Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "base_snapshot_id", "source", "release_verification", "verified_evolution_event_ids", "pending_registration_ids", "unmapped_changed_paths", "overlay_model", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.architecture-evolution-snapshot.v1"},
+    "phase": {"const": "phase3-evolution-and-impact-intelligence"},
+    "status": {"enum": ["incremental-snapshot-refresh-complete", "release-snapshot-refresh-complete"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "base_snapshot_id": {"type": "string", "minLength": 10},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline_commit", "baseline_tree", "target_commit", "target_tree", "target_manifest_sha256", "scan_id"],
+      "properties": {
+        "baseline_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "baseline_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scan_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "release_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested", "release_reference", "policy"],
+      "properties": {
+        "requested": {"type": "boolean"},
+        "release_reference": {"type": "string"},
+        "policy": {"const": "project-governance-post-release-refresh"}
+      }
+    },
+    "verified_evolution_event_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "pending_registration_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+    "unmapped_changed_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "overlay_model": {"const": "verified-evolution-over-phase1-baseline"},
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  }
+}

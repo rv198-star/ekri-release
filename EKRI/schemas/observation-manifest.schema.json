@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 0 Observation Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "created_at",
+    "observation_mode",
+    "source",
+    "scanner",
+    "output",
+    "exclusions",
+    "corpus",
+    "boundary"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.observation-manifest.v2"},
+    "phase": {"const": "phase0-observation-independence"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "observation_mode": {"const": "formal-git-tree"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_root",
+        "requested_ref",
+        "commit",
+        "tree",
+        "object_format",
+        "replace_objects_disabled"
+      ],
+      "properties": {
+        "repository_root": {"type": "string"},
+        "requested_ref": {"type": "string"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "object_format": {"enum": ["sha1", "sha256"]},
+        "replace_objects_disabled": {"const": true}
+      }
+    },
+    "scanner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_root",
+        "implementation_root",
+        "commit",
+        "tree",
+        "object_format",
+        "implementation_version",
+        "surface_tree_sha256",
+        "surface_path_count",
+        "runtime_matches_commit",
+        "exclusion_policy_id",
+        "exclusion_policy_sha256",
+        "target_blob_reads_performed"
+      ],
+      "properties": {
+        "repository_root": {"type": "string"},
+        "implementation_root": {"type": "string"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"},
+        "object_format": {"enum": ["sha1", "sha256"]},
+        "implementation_version": {"enum": ["0.2.0", "0.3.0", "0.4.0", "0.5.0", "0.6.0", "0.7.0", "0.8.0"]},
+        "surface_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "surface_path_count": {"type": "integer", "minimum": 1},
+        "runtime_matches_commit": {"const": true},
+        "exclusion_policy_id": {"const": "ekri-protected-paths-v2"},
+        "exclusion_policy_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "target_blob_reads_performed": {"const": false}
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root",
+        "manifest_path",
+        "knowledge_root",
+        "cache_root",
+        "logs_root"
+      ],
+      "properties": {
+        "root": {"type": "string"},
+        "manifest_path": {"type": "string"},
+        "knowledge_root": {"type": "string"},
+        "cache_root": {"type": "string"},
+        "logs_root": {"type": "string"}
+      }
+    },
+    "exclusions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protected_path_prefixes",
+        "active_scanner_path_prefixes",
+        "runtime_state_path_prefixes",
+        "oracle_path_prefixes",
+        "caller_overridable",
+        "excluded_active_scanner_paths",
+        "excluded_runtime_state_paths",
+        "excluded_oracle_paths"
+      ],
+      "properties": {
+        "protected_path_prefixes": {"const": ["EKRI/", ".EKRI/"]},
+        "active_scanner_path_prefixes": {"const": ["EKRI/"]},
+        "runtime_state_path_prefixes": {"const": [".EKRI/"]},
+        "oracle_path_prefixes": {"const": ["EKRI/evaluation-oracle/"]},
+        "caller_overridable": {"const": false},
+        "excluded_active_scanner_paths": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^EKRI/"},
+          "uniqueItems": true
+        },
+        "excluded_runtime_state_paths": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^\\.EKRI/"},
+          "uniqueItems": true
+        },
+        "excluded_oracle_paths": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^EKRI/evaluation-oracle/"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "corpus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_path_count",
+        "excluded_path_count",
+        "accepted_path_count",
+        "path_set_sha256",
+        "paths"
+      ],
+      "properties": {
+        "candidate_path_count": {"type": "integer", "minimum": 0},
+        "excluded_path_count": {"type": "integer", "minimum": 0},
+        "accepted_path_count": {"type": "integer", "minimum": 0},
+        "path_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "paths": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid",
+        "verdict",
+        "self_scan_verdict",
+        "failure_code",
+        "failure_reason",
+        "checks"
+      ],
+      "properties": {
+        "valid": {"type": "boolean"},
+        "verdict": {"enum": ["formal-corpus-valid", "rejected"]},
+        "self_scan_verdict": {
+          "enum": [
+            "same-repository-protected-surfaces-excluded",
+            "external-repository-target",
+            "rejected"
+          ]
+        },
+        "failure_code": {"type": "string"},
+        "failure_reason": {"type": "string"},
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check", "status", "detail"],
+            "properties": {
+              "check": {"type": "string", "minLength": 1},
+              "status": {"enum": ["passed", "failed"]},
+              "detail": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"valid": {"const": true}}},
+          "then": {
+            "properties": {
+              "verdict": {"const": "formal-corpus-valid"},
+              "self_scan_verdict": {
+                "enum": [
+                  "same-repository-protected-surfaces-excluded",
+                  "external-repository-target"
+                ]
+              },
+              "failure_code": {"const": ""},
+              "failure_reason": {"const": ""}
+            }
+          },
+          "else": {
+            "properties": {
+              "verdict": {"const": "rejected"},
+              "self_scan_verdict": {"const": "rejected"}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

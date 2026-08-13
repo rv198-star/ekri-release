@@ -1,0 +1,140 @@
+{
+  "schema_version": "ekri.adaptive-exploration-conformance-fixture.v1",
+  "cases": [
+    {
+      "case_id": "service-contract-change",
+      "mission": {
+        "summary": "Assess a bounded service contract change without assuming a framework-specific architecture.",
+        "decision_to_support": "Decide which contract, state and execution evidence must be inspected before implementation planning."
+      },
+      "files": {
+        "service/entrypoints.txt": "POST /orders -> submitOrder\nGET /orders/{id} -> getOrder\n",
+        "contracts/orders-api.yaml": "paths:\n  /orders:\n    post: submit order\n",
+        "data/order-schema.sql": "create table orders (id bigint primary key, state varchar(32));\n",
+        "tests/order-behavior.txt": "submit order persists NEW state and returns an order id\n"
+      },
+      "questions": [
+        {
+          "question_id": "CQ-ENTRY",
+          "question": "Which bounded execution entry evidence is relevant to the service change?",
+          "decision_relevance": "The change must start from an observed execution boundary rather than a guessed framework role.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "architecture", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        },
+        {
+          "question_id": "CQ-CONTRACT",
+          "question": "What explicit contract evidence constrains the service change?",
+          "decision_relevance": "Consumer-facing contract obligations must be known before implementation planning.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "capability", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        },
+        {
+          "question_id": "CQ-STATE",
+          "question": "What state/data evidence constrains the requested behavior?",
+          "decision_relevance": "The change must preserve observed state boundaries without inferring a domain model from file shape alone.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "repository-asset-identity", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        }
+      ],
+      "plan": {
+        "environment_interpretation": "The path surface exposes entrypoint, contract, data and test evidence candidates; no framework or language profile is asserted.",
+        "priority_order": ["CQ-ENTRY", "CQ-CONTRACT", "CQ-STATE"],
+        "operators": ["discover-entrypoints", "inspect-contracts", "inspect-state-and-data"],
+        "evidence_paths": ["service/entrypoints.txt", "contracts/orders-api.yaml", "data/order-schema.sql"]
+      }
+    },
+    {
+      "case_id": "interaction-client-change",
+      "mission": {
+        "summary": "Assess an interaction/client change where routes, local state and remote calls matter more than persistence topology.",
+        "decision_to_support": "Decide what interaction and contract evidence must be inspected before changing the client flow."
+      },
+      "files": {
+        "ui/routes.json": "{\"routes\":[\"/home\",\"/orders\"]}\n",
+        "ui/state-store.txt": "selectedOrderId; pendingRequest; navigationState\n",
+        "api/client.txt": "GET /orders/{id}\nPOST /orders\n",
+        "tests/navigation.txt": "opening /orders loads list; selecting an order loads detail\n"
+      },
+      "questions": [
+        {
+          "question_id": "CQ-ROUTE",
+          "question": "Which user-facing execution entry evidence is relevant?",
+          "decision_relevance": "The mission needs the interaction entry boundary before deeper source expansion.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "architecture", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        },
+        {
+          "question_id": "CQ-FLOW",
+          "question": "What bounded interaction flow evidence connects route, state and remote call?",
+          "decision_relevance": "The change must preserve the relevant interaction path without assuming a server-style module sequence.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "flow-handoff", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        },
+        {
+          "question_id": "CQ-API",
+          "question": "Which remote contract evidence constrains the client change?",
+          "decision_relevance": "Remote API obligations must remain explicit and source-bound.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "capability", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        }
+      ],
+      "plan": {
+        "environment_interpretation": "The path surface exposes route, local state, remote contract and interaction-test candidates; no frontend framework profile is asserted.",
+        "priority_order": ["CQ-ROUTE", "CQ-FLOW", "CQ-API"],
+        "operators": ["discover-entrypoints", "trace-flow", "inspect-contracts"],
+        "evidence_paths": ["ui/routes.json", "tests/navigation.txt", "api/client.txt"]
+      }
+    },
+    {
+      "case_id": "data-pipeline-change",
+      "mission": {
+        "summary": "Assess a data-pipeline change where datasets, job flow and quality evidence dominate the engineering decision.",
+        "decision_to_support": "Decide which data, flow and freshness evidence must be inspected before changing a pipeline step."
+      },
+      "files": {
+        "pipeline/jobs.yaml": "jobs:\n  ingest:\n    next: normalize\n  normalize:\n    next: publish\n",
+        "schemas/event.avsc": "{\"type\":\"record\",\"name\":\"Event\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"}]}\n",
+        "quality/checks.sql": "select count(*) from output where id is null;\n",
+        "README.md": "ingest -> normalize -> publish; quality checks run before publish\n"
+      },
+      "questions": [
+        {
+          "question_id": "CQ-DATA",
+          "question": "What state/data evidence constrains the pipeline change?",
+          "decision_relevance": "Dataset/schema obligations are central to this mission.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "repository-asset-identity", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        },
+        {
+          "question_id": "CQ-PIPELINE",
+          "question": "What bounded flow evidence connects the pipeline steps?",
+          "decision_relevance": "The change must preserve the observed step ordering and handoff boundary.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "flow-handoff", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        },
+        {
+          "question_id": "CQ-FRESHNESS",
+          "question": "What source freshness evidence determines whether prior knowledge can still be reused?",
+          "decision_relevance": "Pipeline decisions must not rely on stale project knowledge.",
+          "blocking": true,
+          "family_requirements": [{"family_id": "evolution-impact", "acceptable_availability": ["native-bounded"], "freshness_requirement": "exact-target"}],
+          "uncertainty_policy": "explore"
+        }
+      ],
+      "plan": {
+        "environment_interpretation": "The path surface exposes job, schema, quality and pipeline-description candidates; no service or language profile is asserted.",
+        "priority_order": ["CQ-DATA", "CQ-PIPELINE", "CQ-FRESHNESS"],
+        "operators": ["inspect-state-and-data", "trace-flow", "assess-freshness"],
+        "evidence_paths": ["schemas/event.avsc", "pipeline/jobs.yaml", "quality/checks.sql"]
+      }
+    }
+  ]
+}

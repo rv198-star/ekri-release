@@ -1,0 +1,38 @@
+{
+  "schema_version": "ekri.phase3-audit-fixture.v1",
+  "fixture_id": "wff-v1.6.2-phase3-audit-baseline",
+  "baseline": {
+    "commit": "764dc832eb7488b32ff0e24591a2018bfa719d39",
+    "tree": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1"
+  },
+  "observation": {
+    "accepted_path_count": 3045,
+    "path_set_sha256": "65696caad32b9d761a53ef9ea3aba0c12334a70193ce69217b2f2a2305840fe4"
+  },
+  "phase1": {
+    "counts": {
+      "architecture_nodes": 20,
+      "assurance_entries": 6,
+      "constraints": 7,
+      "evidence_anchors": 134,
+      "evidence_sources": 25,
+      "implementation_intents": 8,
+      "responsibility_entries": 17,
+      "target_blob_reads": 25,
+      "unknowns": 4
+    },
+    "semantic_fingerprints": {
+      "architecture_memory": "8211d09ae81ed7ec5a3c7a547ff679a513d28f4b181795dfdb778b3a29ab9050",
+      "evidence_index": "11aae00979c6795e20a90f61901ba397426d2507804c67bd12f82274ff0adcc5",
+      "reconstruction_report": "8771a9b979bd6dd08b3b8fd0225862b45238d357364037da2b582216a3c5734f",
+      "human_projection": "92ee19a0acc6950889870a85c60d38ff7388a2ad421c3bdc83f14549d8531b4a",
+      "evidence_read_paths": "b9c5cc1311fb2e78ad44accf8159078e90e228b6bee91106c96b3d970ac4a4af"
+    }
+  },
+  "phase2": {
+    "capability_count": 16,
+    "alias_count": 124,
+    "ambiguous_alias_count": 0
+  },
+  "claim_ceiling": "This fixture records stable expectations for reconstructing the fixed WFF v1.6.2 audit authority. It is not target source truth and cannot certify Phase 3 behavior by itself."
+}

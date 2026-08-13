@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WFF Core Declarative Extension Interface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "contract_id", "contract_version", "source", "extension_interface", "descriptor_type", "registration_operation", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "wff.core-extension-interface.v1"},
+    "phase": {"const": "v1.8-p1-minimal-core-contract"},
+    "status": {"const": "declarative-extension-interface-defined"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "contract_id": {"const": "wff-core-contract"},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "source": {"type": "object"},
+    "extension_interface": {
+      "type": "object",
+      "required": ["descriptor_type_id", "registration_operation_id", "required_rules", "prohibited_features", "failure_policy"],
+      "properties": {
+        "descriptor_type_id": {"const": "core.extension-descriptor.v1"},
+        "registration_operation_id": {"const": "core.register-extension.v1"},
+        "required_rules": {"type": "array", "minItems": 5, "items": {"type": "string"}},
+        "prohibited_features": {"type": "array", "minItems": 3, "items": {"type": "string"}},
+        "failure_policy": {"type": "object"}
+      }
+    },
+    "descriptor_type": {"type": "object"},
+    "registration_operation": {"type": "object"},
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  }
+}

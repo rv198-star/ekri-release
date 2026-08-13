@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WFF v1.8 P2 Core Extraction Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "profile_id",
+    "status",
+    "created_at",
+    "source",
+    "specification",
+    "physical_boundary",
+    "contract_binding",
+    "compatibility_binding",
+    "change_frontier",
+    "dependency_report",
+    "registered_change_ids",
+    "measurements",
+    "retained_unknowns",
+    "checks",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.core-extraction-audit.v1"},
+    "phase": {"const": "v1.8-p2-core-extraction"},
+    "profile_id": {"const": "wff-v1.8-p2-core-extraction"},
+    "status": {"const": "core-extraction-verified"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "required": ["target_ref", "target_commit", "target_tree", "observation_manifest_sha256", "p1_target_tree", "p1_contract_sha256"]
+    },
+    "specification": {
+      "type": "object",
+      "required": ["source", "path", "sha256", "scanner_commit", "scanner_tree", "blob_oid"]
+    },
+    "physical_boundary": {
+      "type": "object",
+      "required": ["project_root", "python_import_root", "package_source_root", "pyproject", "resolved_p0_unknown"],
+      "properties": {
+        "project_root": {"const": "wff-core"},
+        "python_import_root": {"const": "wff_core"},
+        "resolved_p0_unknown": {"const": "physical-core-home"}
+      }
+    },
+    "contract_binding": {
+      "type": "object",
+      "required": ["status", "contract_id", "contract_version", "counts"],
+      "properties": {
+        "status": {"const": "p1-contract-bound"},
+        "contract_id": {"const": "wff-core-contract"},
+        "contract_version": {"const": "1.0.0"}
+      }
+    },
+    "compatibility_binding": {
+      "type": "object",
+      "required": ["status", "descriptor_count", "alias_count", "required_entry_count", "required_entries"],
+      "properties": {
+        "status": {"const": "capability-compatibility-bound"},
+        "descriptor_count": {"const": 16},
+        "required_entry_count": {"const": 7}
+      }
+    },
+    "change_frontier": {
+      "type": "object",
+      "required": ["status", "changed_path_count", "registered_path_count", "changed_paths", "registered_paths", "missing_registered_paths", "unregistered_changed_paths", "base_commit", "target_commit", "protected_changes_excluded"],
+      "properties": {
+        "status": {"const": "registered-change-frontier-exact"},
+        "missing_registered_paths": {"const": []},
+        "unregistered_changed_paths": {"const": []},
+        "protected_changes_excluded": {"const": true}
+      }
+    },
+    "dependency_report": {
+      "type": "object",
+      "required": ["schema_version", "status", "runtime_python_file_count", "runtime_python_line_count", "runtime_python_byte_count", "third_party_runtime_dependency_count", "imports", "forbidden_imports", "forbidden_references", "dynamic_executable_features", "retained_unknown", "claim_ceiling"],
+      "properties": {
+        "schema_version": {"const": "ekri.core-physical-dependency-report.v1"},
+        "status": {"const": "core-dependency-boundary-verified"},
+        "third_party_runtime_dependency_count": {"const": 0},
+        "forbidden_imports": {"const": []},
+        "forbidden_references": {"const": []},
+        "dynamic_executable_features": {"const": []},
+        "retained_unknown": {"const": "exhaustive-code-dependency-closure"}
+      }
+    },
+    "registered_change_ids": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 2}
+    },
+    "measurements": {
+      "type": "object",
+      "required": ["required_path_count", "registered_target_path_count", "required_path_bytes", "runtime_python_files", "runtime_python_lines", "runtime_python_bytes", "third_party_runtime_dependencies", "capability_descriptors", "compatibility_aliases"],
+      "properties": {
+        "third_party_runtime_dependencies": {"const": 0},
+        "capability_descriptors": {"const": 16}
+      }
+    },
+    "retained_unknowns": {
+      "const": ["exhaustive-code-dependency-closure"]
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "status": {"const": "passed"}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  }
+}

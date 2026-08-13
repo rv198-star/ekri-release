@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Repository Authority Firewall Stress View",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "model_version",
+    "compiler_version",
+    "authority_mode",
+    "materialization_class",
+    "source",
+    "vocabulary",
+    "objects",
+    "assertions",
+    "structural_observations",
+    "authority_ceiling",
+    "firewall_checks",
+    "summary",
+    "structural_observation_fingerprint",
+    "semantic_fingerprint",
+    "projection_fingerprint",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.repository-firewall-stress-view.v1"},
+    "status": {"const": "repository-firewalls-stress-projected"},
+    "model_version": {"const": "ekri.engineering-knowledge-model.v0.1"},
+    "compiler_version": {"const": "ekri.repository-firewall-stress-compiler.v0.1"},
+    "authority_mode": {"const": "derived-non-authoritative"},
+    "materialization_class": {"const": "rebuildable-derived-view"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset_identity", "ownership_boundary", "lifecycle_observation"],
+      "properties": {
+        "asset_identity": {"$ref": "#/$defs/source"},
+        "ownership_boundary": {"$ref": "#/$defs/source"},
+        "lifecycle_observation": {"$ref": "#/$defs/source"}
+      }
+    },
+    "vocabulary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_types", "roles", "predicates", "structural_observation_class"],
+      "properties": {
+        "object_types": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "roles": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "predicates": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "structural_observation_class": {"const": "raw-rebuildable-structural-observation"}
+      }
+    },
+    "objects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/object"}
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/assertion"}
+    },
+    "structural_observations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/structural_observation"}
+    },
+    "authority_ceiling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_authority_source",
+        "structural_observations_semantic_authority",
+        "owner_evidence_is_authority",
+        "structural_neighborhood_can_resolve_owner",
+        "retirement_authorized",
+        "physical_separation_authorized",
+        "lifecycle_governance_authority",
+        "deletion_decisions_allowed",
+        "absence_can_authorize_retirement"
+      ],
+      "properties": {
+        "semantic_authority_source": {"const": "specialized-v0.9-models-preserved"},
+        "structural_observations_semantic_authority": {"const": false},
+        "owner_evidence_is_authority": {"const": false},
+        "structural_neighborhood_can_resolve_owner": {"const": false},
+        "retirement_authorized": {"const": false},
+        "physical_separation_authorized": {"const": false},
+        "lifecycle_governance_authority": {"const": false},
+        "deletion_decisions_allowed": {"const": false},
+        "absence_can_authorize_retirement": {"const": false}
+      }
+    },
+    "firewall_checks": {"type": "object"},
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_object_count",
+        "repository_asset_object_count",
+        "compatibility_surface_object_count",
+        "object_count",
+        "semantic_assertion_count",
+        "raw_structural_observation_count"
+      ],
+      "properties": {
+        "context_object_count": {"type": "integer", "minimum": 1},
+        "repository_asset_object_count": {"type": "integer", "minimum": 1},
+        "compatibility_surface_object_count": {"type": "integer", "minimum": 0},
+        "object_count": {"type": "integer", "minimum": 1},
+        "semantic_assertion_count": {"type": "integer", "minimum": 1},
+        "raw_structural_observation_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "structural_observation_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "projection_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_ceiling": {"type": "string", "minLength": 120}
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "schema_version", "semantic_source_fingerprint", "projection_source_fingerprint"],
+      "properties": {
+        "commit": {"type": "string", "minLength": 40},
+        "tree": {"type": "string", "minLength": 40},
+        "schema_version": {"type": "string", "minLength": 4},
+        "semantic_source_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "projection_source_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_id", "types", "roles", "identity", "contexts", "manifestations"],
+      "properties": {
+        "semantic_id": {"type": "string", "minLength": 3},
+        "types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "identity": {"type": "object"},
+        "facets": {"type": "object"},
+        "contexts": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "manifestations": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "assertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "subject_ref", "predicate", "value", "qualifications"],
+      "properties": {
+        "record_id": {"type": "string", "minLength": 12},
+        "subject_ref": {"type": "string", "minLength": 3},
+        "predicate": {"type": "string", "minLength": 3},
+        "value": {},
+        "qualifications": {"$ref": "#/$defs/qualifications"}
+      }
+    },
+    "qualifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_modality",
+        "epistemic_posture",
+        "normative_posture",
+        "validity",
+        "scope",
+        "completeness",
+        "reliance",
+        "authority_mode",
+        "semantic_authority",
+        "context_ref",
+        "source_family"
+      ],
+      "properties": {
+        "semantic_modality": {"enum": ["descriptive", "normative-ceiling"]},
+        "epistemic_posture": {"enum": ["observed", "inferred"]},
+        "normative_posture": {"enum": ["not-specified", "not-authorized"]},
+        "validity": {"const": "source-context-bound"},
+        "scope": {"const": "repository-authority-firewall-stress"},
+        "completeness": {"const": "bounded-source-projection"},
+        "reliance": {"type": "string", "minLength": 3},
+        "authority_mode": {"const": "derived-non-authoritative"},
+        "semantic_authority": {"const": false},
+        "context_ref": {"type": "string", "minLength": 3},
+        "source_family": {"enum": ["repository-asset-identity", "repository-ownership-boundary", "repository-lifecycle-observation"]}
+      }
+    },
+    "structural_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id",
+        "observation_kind",
+        "subject_ref",
+        "object_ref",
+        "source_path",
+        "target_path",
+        "evidence",
+        "knowledge_state",
+        "context_ref",
+        "materialization_class",
+        "semantic_authority",
+        "reliance"
+      ],
+      "properties": {
+        "observation_id": {"type": "string", "minLength": 12},
+        "observation_kind": {"enum": ["python-ast-import", "exact-path-reference", "profile-exclusion-reference", "profile-declaration-reference"]},
+        "subject_ref": {"type": "string", "minLength": 3},
+        "object_ref": {"type": "string", "minLength": 3},
+        "source_path": {"type": "string"},
+        "target_path": {"type": "string"},
+        "evidence": {"type": "string"},
+        "knowledge_state": {"type": "string", "minLength": 3},
+        "context_ref": {"type": "string", "minLength": 3},
+        "materialization_class": {"const": "raw-rebuildable-structural-observation"},
+        "semantic_authority": {"const": false},
+        "reliance": {"const": "candidate-expansion-only"}
+      }
+    }
+  }
+}

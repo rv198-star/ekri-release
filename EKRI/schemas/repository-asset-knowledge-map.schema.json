@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Repository Asset Knowledge Map",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "status",
+    "created_at",
+    "source",
+    "control_plane_boundary",
+    "identity_policy",
+    "summary",
+    "assets",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.repository-asset-knowledge-map.v1"},
+    "status": {"const": "repository-asset-identity-reconstructed"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "required": ["requested_ref", "commit", "tree", "observation_manifest_sha256", "accepted_path_count", "self_scan_verdict"],
+      "properties": {
+        "requested_ref": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "observation_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "accepted_path_count": {"type": "integer", "minimum": 0},
+        "self_scan_verdict": {"type": "string", "minLength": 1}
+      }
+    },
+    "control_plane_boundary": {
+      "type": "object",
+      "required": ["protected_prefixes", "excluded_path_count", "policy"],
+      "properties": {
+        "protected_prefixes": {"type": "array", "items": {"type": "string"}},
+        "excluded_path_count": {"type": "integer", "minimum": 0},
+        "policy": {"type": "string", "minLength": 20}
+      }
+    },
+    "identity_policy": {"type": "object"},
+    "summary": {
+      "type": "object",
+      "required": ["asset_count", "asset_type_counts", "observed_role_counts", "lifecycle_observation_counts", "mixed_role_asset_count", "owner_unresolved_count", "ownership_observation_counts", "focus_text_reference_asset_count"],
+      "properties": {
+        "asset_count": {"type": "integer", "minimum": 0},
+        "asset_type_counts": {"type": "object"},
+        "observed_role_counts": {"type": "object"},
+        "lifecycle_observation_counts": {"type": "object"},
+        "mixed_role_asset_count": {"type": "integer", "minimum": 0},
+        "owner_unresolved_count": {"type": "integer", "minimum": 0},
+        "ownership_observation_counts": {"type": "object"},
+        "focus_text_reference_asset_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id",
+          "identity_basis",
+          "current_paths",
+          "asset_type",
+          "git_identity",
+          "observed_roles",
+          "lifecycle_observation_status",
+          "formal_profile_membership",
+          "analysis_profile_declarations",
+          "maintainer_bundle_member",
+          "ownership_refs",
+          "owner_evidence_labels",
+          "ownership_observation_status",
+          "capability_refs",
+          "dependency_refs",
+          "evidence_refs",
+          "unknowns",
+          "retirement_authorized"
+        ],
+        "properties": {
+          "asset_id": {"type": "string", "pattern": "^asset-[0-9a-f]{24}$"},
+          "identity_basis": {
+            "type": "object",
+            "required": ["namespace", "baseline_path"],
+            "properties": {
+              "namespace": {"type": "string", "minLength": 1},
+              "baseline_path": {"type": "string", "minLength": 1}
+            }
+          },
+          "current_paths": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"type": "string"}},
+          "asset_type": {"enum": ["code", "test", "package-asset", "proof-asset", "historical-asset", "documentation-asset", "configuration-asset", "other"]},
+          "git_identity": {
+            "type": "object",
+            "required": ["mode", "object_type", "blob_oid"],
+            "properties": {
+              "mode": {"type": "string"},
+              "object_type": {"type": "string"},
+              "blob_oid": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"}
+            }
+          },
+          "observed_roles": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"enum": ["active-formal-distribution", "active-maintainer", "active-analysis-internal", "assurance", "proof-retained", "historical", "compatibility", "external-or-reference"]}
+          },
+          "lifecycle_observation_status": {"enum": ["single-role-observed", "mixed-role-observed", "unknown"]},
+          "formal_profile_membership": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "analysis_profile_declarations": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "maintainer_bundle_member": {"type": "boolean"},
+          "ownership_refs": {"type": "array", "items": {"type": "object"}},
+          "owner_evidence_labels": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "ownership_observation_status": {"enum": ["single-owner-evidence", "multi-owner-evidence", "unresolved"]},
+          "capability_refs": {"type": "array", "items": {"type": "object"}},
+          "dependency_refs": {"type": "array", "items": {"type": "object"}},
+          "evidence_refs": {"type": "array", "items": {"type": "object"}},
+          "unknowns": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "retirement_authorized": {"const": false}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

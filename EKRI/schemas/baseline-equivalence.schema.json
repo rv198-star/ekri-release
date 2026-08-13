@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI WFF v1.8 P0 Baseline Equivalence Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "status",
+    "created_at",
+    "authority",
+    "target",
+    "delta",
+    "architecture_refresh",
+    "supplemental_evidence",
+    "verdict",
+    "knowledge_state",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.baseline-equivalence.v1"},
+    "phase": {"const": "v1.8-p0-core-boundary-reconstruction"},
+    "status": {"const": "mainline-runtime-equivalence-verified"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_id", "commit", "tree"],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 10},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tag", "commit", "tree", "observation_manifest_sha256"],
+      "properties": {
+        "tag": {"const": "v1.7"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "observation_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changed_path_count",
+        "changed_paths",
+        "ekri_delta_path_count",
+        "ekri_delta_paths",
+        "metadata_delta_path_count",
+        "metadata_delta_paths",
+        "unexpected_path_count",
+        "unexpected_paths",
+        "runtime_invariant_change_count",
+        "runtime_invariant_changed_paths"
+      ],
+      "properties": {
+        "changed_path_count": {"type": "integer", "minimum": 1},
+        "changed_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "ekri_delta_path_count": {"type": "integer", "minimum": 1},
+        "ekri_delta_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^EKRI/"}},
+        "metadata_delta_path_count": {"type": "integer", "minimum": 1},
+        "metadata_delta_paths": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "unexpected_path_count": {"const": 0},
+        "unexpected_paths": {"type": "array", "maxItems": 0},
+        "runtime_invariant_change_count": {"const": 0},
+        "runtime_invariant_changed_paths": {"type": "array", "maxItems": 0}
+      }
+    },
+    "architecture_refresh": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "architecture_projection_equal",
+        "evidence_reference_set_equal",
+        "authority_evidence_ref_count",
+        "target_evidence_ref_count",
+        "section_digests",
+        "target_probe_counts"
+      ],
+      "properties": {
+        "mode": {"const": "authority-revalidation-plus-target-equivalence-probe"},
+        "architecture_projection_equal": {"const": true},
+        "evidence_reference_set_equal": {"const": true},
+        "authority_evidence_ref_count": {"type": "integer", "minimum": 1},
+        "target_evidence_ref_count": {"type": "integer", "minimum": 1},
+        "section_digests": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["authority", "target"],
+          "properties": {
+            "authority": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "target": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        "target_probe_counts": {"type": "object", "minProperties": 1}
+      }
+    },
+    "supplemental_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_count", "evidence_ref_count", "evidence_refs", "sources", "read_paths"],
+      "properties": {
+        "source_count": {"type": "integer", "minimum": 1},
+        "evidence_ref_count": {"type": "integer", "minimum": 1},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 3}},
+        "sources": {"type": "array", "minItems": 1},
+        "read_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "verdict": {"const": "wff-v1.6.2-mainline-equals-v1.7-mainline"},
+    "knowledge_state": {"const": "observed-fact"},
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

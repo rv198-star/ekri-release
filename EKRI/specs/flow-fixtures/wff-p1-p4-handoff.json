@@ -1,0 +1,91 @@
+{
+  "schema_version": "ekri.flow-conformance-fixture.v1",
+  "fixture_id": "wff-p1-p4-handoff",
+  "profile_id": "wff",
+  "status": "bounded-conformance-fixture",
+  "binding_mode": "architecture-semantic-ids",
+  "source_context": {
+    "context_id": "context:wff-core-contract:1.0.0",
+    "kind": "accepted-contract-fixture-context",
+    "semantic_identity": "wff-core-contract@1.0.0",
+    "external_sources": [
+      {
+        "semantic_identity": "wff-core-contract@1.0.0",
+        "path": "wff-core/src/wff_core/contracts/wff-core-contract.json",
+        "sha256": "2dbebd6892aab338401ed0ebb60d96471b040c2dde7ecd26ca0a172b7b585edb",
+        "required_tokens": [
+          "handoff-contract",
+          "core.handoff-packet.v1",
+          "handoff-never-infers-missing-truth",
+          "reentry-return-contract"
+        ]
+      }
+    ]
+  },
+  "flow_definition": {
+    "id": "flow:wff:p1-p4-handoff",
+    "name": "WFF P1-P4 bounded handoff flow"
+  },
+  "participants": [
+    {"id": "phase1-requirements", "name": "Phase 1 Product Requirements", "concept_type": "EngineeringStep"},
+    {"id": "phase2-architecture", "name": "Phase 2 Design and Architecture", "concept_type": "EngineeringStep"},
+    {"id": "phase3-implementation", "name": "Phase 3 Implementation Delivery", "concept_type": "EngineeringStep"},
+    {"id": "phase4-validation", "name": "Phase 4 Validation Closure", "concept_type": "EngineeringStep"}
+  ],
+  "artifacts": [
+    {"id": "artifact:wff:p1-authority", "name": "Accepted P1 product authority packet", "concept_type": "Artifact"},
+    {"id": "artifact:wff:p2-authority", "name": "Accepted P2 architecture handoff", "concept_type": "Artifact"},
+    {"id": "artifact:wff:p3-delivery", "name": "P3 implementation and evidence handoff", "concept_type": "Artifact"}
+  ],
+  "authority_refs": [
+    {"id": "authority:wff:p1-product", "name": "P1 product truth authority", "concept_type": "AuthorityReference"},
+    {"id": "authority:wff:p2-architecture", "name": "P2 architecture truth authority", "concept_type": "AuthorityReference"},
+    {"id": "authority:wff:p3-implementation", "name": "P3 implementation truth authority", "concept_type": "AuthorityReference"}
+  ],
+  "entry_occurrence_ids": ["handoff:wff:p1-p2"],
+  "handoffs": [
+    {
+      "id": "handoff:wff:p1-p2",
+      "route_kind": "forward",
+      "from_ref": "phase1-requirements",
+      "to_ref": "phase2-architecture",
+      "carried_refs": ["artifact:wff:p1-authority"],
+      "authority_refs": ["authority:wff:p1-product"],
+      "allowed_reliance": ["consume accepted product commitments and explicit review-bound limits"],
+      "unresolved_items": ["architecture decisions remain owned by the P2 Agentic architecture authority"],
+      "forbidden_assumptions": ["P2 must not rewrite P1 product truth merely because it receives the handoff"],
+      "consumer_scope": ["architecture reconstruction and design decisions"],
+      "evidence_refs": ["wff-core:handoff-contract", "wff-core:handoff-never-infers-missing-truth"],
+      "next_occurrence_ids": ["handoff:wff:p2-p3"]
+    },
+    {
+      "id": "handoff:wff:p2-p3",
+      "route_kind": "forward",
+      "from_ref": "phase2-architecture",
+      "to_ref": "phase3-implementation",
+      "carried_refs": ["artifact:wff:p2-authority"],
+      "authority_refs": ["authority:wff:p2-architecture"],
+      "allowed_reliance": ["implement accepted contracts, boundaries and explicit unresolved architecture limits"],
+      "unresolved_items": ["implementation details remain owned by the P3 implementation authority"],
+      "forbidden_assumptions": ["P3 must not invent missing architecture truth or silently broaden accepted contracts"],
+      "consumer_scope": ["implementation generation, tests and runtime evidence"],
+      "evidence_refs": ["wff-core:core.handoff-packet.v1", "wff-core:handoff-never-infers-missing-truth"],
+      "next_occurrence_ids": ["handoff:wff:p3-p4"]
+    },
+    {
+      "id": "handoff:wff:p3-p4",
+      "route_kind": "stop",
+      "from_ref": "phase3-implementation",
+      "to_ref": "phase4-validation",
+      "carried_refs": ["artifact:wff:p3-delivery"],
+      "authority_refs": ["authority:wff:p3-implementation"],
+      "allowed_reliance": ["validate delivered implementation and evidence without becoming implementation truth owner"],
+      "unresolved_items": ["review-bound evidence remains visible and may require an explicit remediation return"],
+      "forbidden_assumptions": ["P4 validation cannot manufacture missing P1/P2/P3 truth or production approval"],
+      "consumer_scope": ["validation closure, evidence review and remediation routing"],
+      "evidence_refs": ["wff-core:core.handoff-packet.v1", "wff-core:reentry-return-contract"],
+      "next_occurrence_ids": []
+    }
+  ],
+  "claim_ceiling": "This WFF fixture proves only that accepted WFF handoff semantics can be reconstructed through the general EKRI Flow/Handoff model. It is a bounded conformance fixture, not evidence that these exact fixture occurrences happened in a production or user project."
+}

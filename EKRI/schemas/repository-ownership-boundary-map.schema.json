@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Repository Ownership Boundary Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "created_at",
+    "source",
+    "authority_boundary",
+    "summary",
+    "assets",
+    "structural_edges",
+    "python_ast_parse_failure_records",
+    "focus_impact_frontiers",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.repository-ownership-boundary-map.v1"},
+    "status": {"const": "repository-ownership-boundary-reconstructed"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested_ref", "commit", "tree", "self_scan_verdict", "p1_asset_map_canonical_sha256", "p1_asset_count"],
+      "properties": {
+        "requested_ref": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "self_scan_verdict": {"type": "string", "minLength": 1},
+        "p1_asset_map_canonical_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "p1_asset_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "authority_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule",
+        "p1_ownership_observation_counts",
+        "structural_owner_neighborhood_semantic_authority",
+        "physical_separation_authorized",
+        "retirement_authorized"
+      ],
+      "properties": {
+        "rule": {"type": "string", "minLength": 40},
+        "p1_ownership_observation_counts": {"type": "object"},
+        "structural_owner_neighborhood_semantic_authority": {"const": false},
+        "physical_separation_authorized": {"const": false},
+        "retirement_authorized": {"const": false}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_count",
+        "structural_edge_count",
+        "python_import_edge_count",
+        "exact_path_reference_edge_count",
+        "profile_exclusion_reference_edge_count",
+        "profile_declaration_reference_edge_count",
+        "python_import_observation_count",
+        "python_non_target_import_observation_count",
+        "python_ast_parse_failure_count",
+        "boundary_flag_counts",
+        "decoupling_requirement_counts",
+        "assets_with_structural_owner_neighborhood",
+        "focus_frontier_count",
+        "physical_separation_authorized_count",
+        "retirement_authorized_count"
+      ],
+      "properties": {
+        "asset_count": {"type": "integer", "minimum": 1},
+        "structural_edge_count": {"type": "integer", "minimum": 0},
+        "python_import_edge_count": {"type": "integer", "minimum": 0},
+        "exact_path_reference_edge_count": {"type": "integer", "minimum": 0},
+        "profile_exclusion_reference_edge_count": {"type": "integer", "minimum": 0},
+        "profile_declaration_reference_edge_count": {"type": "integer", "minimum": 0},
+        "python_import_observation_count": {"type": "integer", "minimum": 0},
+        "python_non_target_import_observation_count": {"type": "integer", "minimum": 0},
+        "python_ast_parse_failure_count": {"type": "integer", "minimum": 0},
+        "boundary_flag_counts": {"type": "object"},
+        "decoupling_requirement_counts": {"type": "object"},
+        "assets_with_structural_owner_neighborhood": {"type": "integer", "minimum": 0},
+        "focus_frontier_count": {"type": "integer", "minimum": 0},
+        "physical_separation_authorized_count": {"const": 0},
+        "retirement_authorized_count": {"const": 0}
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_id",
+          "path",
+          "p1_authority_digest",
+          "p1_ownership_observation_status",
+          "p1_owner_evidence_labels",
+          "p1_capability_ids",
+          "p1_responsibility_family_ids",
+          "observed_roles",
+          "boundary_flags",
+          "boundary_state",
+          "incoming_structural_edge_count",
+          "outgoing_structural_edge_count",
+          "incoming_active_import_consumer_count",
+          "incoming_formal_import_consumer_count",
+          "incoming_maintainer_import_consumer_count",
+          "incoming_analysis_import_consumer_count",
+          "incoming_proof_history_import_consumer_count",
+          "incoming_formal_path_reference_count",
+          "incoming_maintainer_path_reference_count",
+          "incoming_analysis_path_reference_count",
+          "incoming_proof_history_path_reference_count",
+          "incoming_profile_exclusion_reference_count",
+          "incoming_profile_declaration_reference_count",
+          "structural_owner_neighborhood",
+          "decoupling_requirements",
+          "physical_separation_authorized",
+          "retirement_authorized"
+        ],
+        "properties": {
+          "asset_id": {"type": "string", "pattern": "^asset-[0-9a-f]{24}$"},
+          "path": {"type": "string", "minLength": 1},
+          "p1_authority_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "p1_ownership_observation_status": {"type": "string", "minLength": 1},
+          "p1_owner_evidence_labels": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "p1_capability_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "p1_responsibility_family_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "observed_roles": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "boundary_flags": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "boundary_state": {"type": "string", "minLength": 1},
+          "incoming_structural_edge_count": {"type": "integer", "minimum": 0},
+          "outgoing_structural_edge_count": {"type": "integer", "minimum": 0},
+          "incoming_active_import_consumer_count": {"type": "integer", "minimum": 0},
+          "incoming_formal_import_consumer_count": {"type": "integer", "minimum": 0},
+          "incoming_maintainer_import_consumer_count": {"type": "integer", "minimum": 0},
+          "incoming_analysis_import_consumer_count": {"type": "integer", "minimum": 0},
+          "incoming_proof_history_import_consumer_count": {"type": "integer", "minimum": 0},
+          "incoming_formal_path_reference_count": {"type": "integer", "minimum": 0},
+          "incoming_maintainer_path_reference_count": {"type": "integer", "minimum": 0},
+          "incoming_analysis_path_reference_count": {"type": "integer", "minimum": 0},
+          "incoming_proof_history_path_reference_count": {"type": "integer", "minimum": 0},
+          "incoming_profile_exclusion_reference_count": {"type": "integer", "minimum": 0},
+          "incoming_profile_declaration_reference_count": {"type": "integer", "minimum": 0},
+          "structural_owner_neighborhood": {"type": "array"},
+          "decoupling_requirements": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "physical_separation_authorized": {"const": false},
+          "retirement_authorized": {"const": false}
+        }
+      }
+    },
+    "structural_edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_asset_id", "source_path", "target_asset_id", "target_path", "edge_type", "evidence", "knowledge_state", "semantic_authority"],
+        "properties": {
+          "source_asset_id": {"type": "string"},
+          "source_path": {"type": "string"},
+          "target_asset_id": {"type": "string"},
+          "target_path": {"type": "string"},
+          "edge_type": {"enum": ["python-ast-import", "exact-path-reference", "profile-exclusion-reference", "profile-declaration-reference"]},
+          "evidence": {"type": "string"},
+          "knowledge_state": {"const": "observed-structural-fact"},
+          "semantic_authority": {"const": false}
+        }
+      }
+    },
+    "python_ast_parse_failure_records": {"type": "array"},
+    "focus_impact_frontiers": {"type": "array"},
+    "evidence_input_receipts": {"type": "object"},
+    "output": {"type": "string"},
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

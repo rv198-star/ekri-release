@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.0 Release Candidate Gate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "gate_version",
+    "authority_mode",
+    "source",
+    "product",
+    "m0_baseline",
+    "current_metrics",
+    "semantic_writer_inventory",
+    "peer_authority_posture",
+    "retirement",
+    "reconciliation_ledger",
+    "complexity_interpretation",
+    "query_surface",
+    "public_surface",
+    "nonwff_conformance",
+    "publication",
+    "checks",
+    "claim_ceiling",
+    "report_fingerprint"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.v100-release-gate.v1"},
+    "status": {"const": "v100-release-candidate-ready"},
+    "gate_version": {"const": "ekri.v100-release-gate.v0.1"},
+    "authority_mode": {"const": "release-evidence-only"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "scanner_commit", "scanner_tree", "runtime_matches_commit", "scanner_surface_path_count"],
+      "properties": {
+        "commit": {"type": "string", "minLength": 40},
+        "tree": {"type": "string", "minLength": 40},
+        "scanner_commit": {"type": "string", "minLength": 40},
+        "scanner_tree": {"type": "string", "minLength": 40},
+        "runtime_matches_commit": {"const": true},
+        "scanner_surface_path_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "product": {
+      "type": "object",
+      "required": ["version", "changelog", "release_notes", "supported_product_contract", "surface_classification"],
+      "properties": {"version": {"const": "1.0.0"}}
+    },
+    "m0_baseline": {"type": "object"},
+    "current_metrics": {"type": "object"},
+    "semantic_writer_inventory": {
+      "type": "object",
+      "required": ["major_writer_path_count", "primary_output_family_count", "writers"],
+      "properties": {
+        "major_writer_path_count": {"const": 6},
+        "primary_output_family_count": {"const": 7},
+        "writers": {"type": "array", "minItems": 6, "maxItems": 6}
+      }
+    },
+    "peer_authority_posture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture_view", "capability_authority", "capability_query_index", "flow_query_model", "repository_firewall_stress"],
+      "properties": {
+        "architecture_view": {"const": "derived-non-authoritative"},
+        "capability_authority": {"const": "ontology-authoritative"},
+        "capability_query_index": {"const": "derived-non-authoritative"},
+        "flow_query_model": {"const": "derived-non-authoritative"},
+        "repository_firewall_stress": {"const": "derived-non-authoritative"}
+      }
+    },
+    "retirement": {
+      "type": "object",
+      "required": ["retired_symbols", "remaining_definitions", "remaining_references", "retired_reconciliation_path_count"],
+      "properties": {
+        "remaining_definitions": {"const": []},
+        "remaining_references": {"const": []},
+        "retired_reconciliation_path_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "reconciliation_ledger": {"type": "array", "minItems": 5, "maxItems": 5},
+    "complexity_interpretation": {
+      "type": "object",
+      "required": ["overall_loc_reduction_claimed", "writer_path_count_m0", "writer_path_count_v100", "real_retirement_proved", "interpretation"],
+      "properties": {
+        "overall_loc_reduction_claimed": {"const": false},
+        "writer_path_count_m0": {"const": 6},
+        "writer_path_count_v100": {"const": 6},
+        "real_retirement_proved": {"const": true}
+      }
+    },
+    "query_surface": {"type": "object"},
+    "public_surface": {"type": "object"},
+    "nonwff_conformance": {
+      "type": "object",
+      "required": ["status", "fixture_id", "report_fingerprint", "query_observations"],
+      "properties": {"status": {"const": "nonwff-product-conformance-passed"}}
+    },
+    "publication": {
+      "type": "object",
+      "required": ["state", "release_tag", "release_tag_exists", "rc_tags", "publication_requires_explicit_approval"],
+      "properties": {
+        "state": {"const": "not-published"},
+        "release_tag": {"const": "ekri/v1.0.0"},
+        "release_tag_exists": {"const": false},
+        "rc_tags": {"const": []},
+        "publication_requires_explicit_approval": {"const": true}
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "check": {"type": "string", "minLength": 1},
+          "status": {"const": "passed"},
+          "detail": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 100},
+    "report_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

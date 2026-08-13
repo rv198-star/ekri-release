@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI P5 Flow Semantic Model",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model_version", "status", "authority_mode", "materialization_class", "compiler_version", "source", "flow_definition_ref", "entry_occurrence_ids", "objects", "occurrences", "assertions", "summary", "semantic_fingerprint", "projection_fingerprint", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.flow-semantic-model.v1"},
+    "model_version": {"const": "ekri.engineering-knowledge-model.v0.1"},
+    "status": {"const": "flow-semantic-model-derived"},
+    "authority_mode": {"const": "derived-non-authoritative"},
+    "materialization_class": {"const": "ephemeral-rebuildable-query-model"},
+    "compiler_version": {"const": "ekri.flow-query-compiler.v0.1"},
+    "source": {"$ref": "#/$defs/source"},
+    "flow_definition_ref": {"type": "string", "minLength": 2},
+    "entry_occurrence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+    "objects": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/object"}},
+    "occurrences": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/occurrence"}},
+    "assertions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/assertion"}},
+    "summary": {"$ref": "#/$defs/summary"},
+    "semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "projection_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_id", "profile_id", "binding_mode", "context_id", "context_semantic_identity", "external_semantic_identities", "external_source_receipts", "architecture_binding_verified"],
+      "properties": {
+        "fixture_id": {"type": "string", "minLength": 2},
+        "profile_id": {"type": "string", "minLength": 2},
+        "binding_mode": {"enum": ["architecture-semantic-ids", "self-contained-fixture"]},
+        "context_id": {"type": "string", "minLength": 2},
+        "context_semantic_identity": {"type": "string", "minLength": 2},
+        "external_semantic_identities": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "external_source_receipts": {"type": "array", "items": {"type": "object"}},
+        "architecture_binding_verified": {"type": "boolean"}
+      }
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_id", "types", "roles", "identity", "contexts"],
+      "properties": {
+        "semantic_id": {"type": "string", "minLength": 2},
+        "types": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"enum": ["Context", "FlowDefinition", "EngineeringStep", "Artifact", "AuthorityReference"]}},
+        "roles": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "identity": {"type": "object"},
+        "contexts": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}}
+      }
+    },
+    "occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_id", "occurrence_type", "occurrence_posture", "route_kind", "contexts"],
+      "properties": {
+        "semantic_id": {"type": "string", "minLength": 2},
+        "occurrence_type": {"const": "HandoffOccurrence"},
+        "occurrence_posture": {"const": "fixture-conformance"},
+        "route_kind": {"enum": ["forward", "branch", "stop", "return", "reentry"]},
+        "contexts": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}}
+      }
+    },
+    "assertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "statement_key", "subject_ref", "predicate", "object_ref", "value", "qualifications"],
+      "properties": {
+        "record_id": {"type": "string", "minLength": 2},
+        "statement_key": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "subject_ref": {"type": "string", "minLength": 2},
+        "predicate": {"enum": ["partOfFlow", "routesFrom", "routesTo", "carries", "reliesOnAuthority", "allowsReliance", "hasUnresolvedItem", "forbidsAssumption", "hasConsumerScope", "supportedByEvidence", "precedes"]},
+        "object_ref": {"type": "string"},
+        "value": {"type": "string"},
+        "qualifications": {"$ref": "#/$defs/qualifications"}
+      }
+    },
+    "qualifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_modality", "epistemic_posture", "normative_posture", "validity", "scope", "completeness", "reliance", "authority_mode", "semantic_authority", "context_ref", "source_family"],
+      "properties": {
+        "semantic_modality": {"const": "descriptive"},
+        "epistemic_posture": {"const": "observed"},
+        "normative_posture": {"const": "not-specified"},
+        "validity": {"const": "fixture-context-bound"},
+        "scope": {"const": "bounded-flow-handoff-conformance"},
+        "completeness": {"const": "fixture-bounded"},
+        "reliance": {"const": "conformance-only"},
+        "authority_mode": {"const": "derived-non-authoritative"},
+        "semantic_authority": {"const": false},
+        "context_ref": {"type": "string", "minLength": 2},
+        "source_family": {"type": "string", "minLength": 2}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_count", "occurrence_count", "assertion_count", "route_kind_counts", "unresolved_item_count"],
+      "properties": {
+        "object_count": {"type": "integer", "minimum": 1},
+        "occurrence_count": {"type": "integer", "minimum": 1},
+        "assertion_count": {"type": "integer", "minimum": 1},
+        "route_kind_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["branch", "forward", "reentry", "return", "stop"],
+          "properties": {
+            "branch": {"type": "integer", "minimum": 0},
+            "forward": {"type": "integer", "minimum": 0},
+            "reentry": {"type": "integer", "minimum": 0},
+            "return": {"type": "integer", "minimum": 0},
+            "stop": {"type": "integer", "minimum": 0}
+          }
+        },
+        "unresolved_item_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

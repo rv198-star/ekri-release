@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI WFF v1.8 P3 Core Migration Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "profile_id",
+    "status",
+    "created_at",
+    "source",
+    "specification",
+    "change_frontier",
+    "physical_core",
+    "capability_consumers",
+    "assurance_consumers",
+    "support_and_adaptation_consumers",
+    "distribution",
+    "compatibility_fallback",
+    "measurements",
+    "retained_unknowns",
+    "checks",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.core-migration-audit.v1"},
+    "phase": {"const": "v1.8-p3-core-consumer-assurance-distribution-migration"},
+    "profile_id": {"const": "wff-v1.8-p3-core-migration"},
+    "status": {"const": "core-migration-verified"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "required": ["base_main_commit", "base_main_tree", "target_commit", "target_tree", "observation_manifest_sha256", "p2_authority_status", "p2_authority_target_tree"],
+      "properties": {
+        "base_main_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "base_main_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "observation_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "p2_authority_status": {"const": "core-extraction-verified"},
+        "p2_authority_target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"}
+      },
+      "additionalProperties": false
+    },
+    "specification": {"type": "object"},
+    "change_frontier": {
+      "type": "object",
+      "required": ["status", "changed_path_count", "registered_path_count", "missing_registered_paths", "unregistered_changed_paths", "groups"],
+      "properties": {
+        "status": {"const": "registered-change-frontier-exact"},
+        "changed_path_count": {"type": "integer", "minimum": 1},
+        "registered_path_count": {"type": "integer", "minimum": 1},
+        "missing_registered_paths": {"type": "array", "maxItems": 0},
+        "unregistered_changed_paths": {"type": "array", "maxItems": 0},
+        "groups": {"type": "array", "minItems": 4, "maxItems": 4}
+      }
+    },
+    "physical_core": {
+      "type": "object",
+      "required": ["status", "changed_paths", "contract_id", "contract_version", "p1_semantic_projection_sha256"],
+      "properties": {
+        "status": {"const": "p2-physical-core-unchanged"},
+        "changed_paths": {"type": "array", "maxItems": 0},
+        "contract_id": {"const": "wff-core-contract"},
+        "contract_version": {"const": "1.0.0"},
+        "p1_semantic_projection_sha256": {"const": "22a93eb1d2fabdddd2cc24bcf001aff14c6593e0a9ce6434b8c2c7feed7b4d9e"}
+      }
+    },
+    "capability_consumers": {"type": "object"},
+    "assurance_consumers": {"type": "object"},
+    "support_and_adaptation_consumers": {"type": "object"},
+    "distribution": {"type": "object"},
+    "compatibility_fallback": {"type": "object"},
+    "measurements": {
+      "type": "object",
+      "required": ["registered_non_ekri_paths", "capability_consumer_count", "assurance_consumer_count", "support_consumer_count", "buildable_profile_count", "descriptor_count", "alias_count", "required_route_count"],
+      "properties": {
+        "registered_non_ekri_paths": {"type": "integer", "minimum": 1},
+        "capability_consumer_count": {"const": 7},
+        "assurance_consumer_count": {"const": 2},
+        "support_consumer_count": {"const": 3},
+        "buildable_profile_count": {"const": 11},
+        "descriptor_count": {"const": 16},
+        "alias_count": {"const": 36},
+        "required_route_count": {"const": 7}
+      }
+    },
+    "retained_unknowns": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 3,
+      "items": {"type": "string"}
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "check": {"type": "string"},
+          "status": {"const": "passed"},
+          "detail": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

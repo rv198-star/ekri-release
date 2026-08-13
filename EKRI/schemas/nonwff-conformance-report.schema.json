@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.0 Non-WFF Product Conformance Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "conformance_version",
+    "authority_mode",
+    "fixture",
+    "supported_general_surfaces",
+    "profile_specific_compatibility_surfaces",
+    "semantic_identity",
+    "checks",
+    "query_observations",
+    "claim_ceiling",
+    "report_fingerprint"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.nonwff-conformance-report.v1"},
+    "status": {"const": "nonwff-product-conformance-passed"},
+    "conformance_version": {"const": "ekri.nonwff-conformance.v0.1"},
+    "authority_mode": {"const": "conformance-evidence-only"},
+    "fixture": {"type": "object"},
+    "supported_general_surfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture_view", "capability_authority", "capability_queries", "flow_query", "progressive_disclosure"],
+      "properties": {
+        "architecture_view": {"const": "ekri.architecture-view.v1"},
+        "capability_authority": {"const": "ekri.capability-semantic-authority.v1"},
+        "capability_queries": {
+          "const": ["find-capability", "get-realizations", "explain-authority", "get-evidence"]
+        },
+        "flow_query": {"const": "trace-flow"},
+        "progressive_disclosure": {"const": ["L0", "L1", "L2", "L3"]}
+      }
+    },
+    "profile_specific_compatibility_surfaces": {
+      "type": "array",
+      "contains": {"const": "before-generate"}
+    },
+    "semantic_identity": {"type": "object"},
+    "checks": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "detail"],
+        "properties": {
+          "check": {"type": "string", "minLength": 1},
+          "status": {"const": "passed"},
+          "detail": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "query_observations": {"type": "object"},
+    "claim_ceiling": {"type": "string", "minLength": 80},
+    "report_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

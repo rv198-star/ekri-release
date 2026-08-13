@@ -1,0 +1,129 @@
+{
+  "schema_version": "ekri.wff-core-migration-spec.v1",
+  "profile_id": "wff-v1.8-p3-core-migration",
+  "base_main_commit": "7e49b79171413832fb3cc2513160e4d0ea47ca72",
+  "base_main_tree": "ffa5ee4c9d1850c5bcdaf866c4bda62e870674ff",
+  "p2_contract": {
+    "contract_id": "wff-core-contract",
+    "contract_version": "1.0.0",
+    "p1_semantic_projection_sha256": "22a93eb1d2fabdddd2cc24bcf001aff14c6593e0a9ce6434b8c2c7feed7b4d9e",
+    "physical_source_prefix": "wff-core/src/wff_core/",
+    "physical_source_change_policy": "unchanged-in-p3"
+  },
+  "registration_file": "EKRI/registrations/issue-865-p3-core-migration.json",
+  "impact_file": "EKRI/registrations/issue-865-p3-core-migration-impacts.json",
+  "consumer_runtime_path": "scripts/common/wff_core_runtime.py",
+  "compatibility_fallback": {
+    "path": "scripts/common/wff_core_compat.py",
+    "required_status": "temporary-source-checkout-fallback",
+    "retirement_issue": "#866",
+    "install_pack_allowed_import_mode": "packaged-core",
+    "repository_allowed_import_mode": "repository-compat-fallback"
+  },
+  "capability_consumers": [
+    {
+      "extension_id": "product-requirements",
+      "phase_id": "P1",
+      "route_key": "wff-req",
+      "runtime_path": "scripts/phase1/run_phase1_source_to_prd.py",
+      "skill_path": "skills/wff-req/SKILL.md",
+      "required_contracts": ["phase-contract", "handoff-contract", "artifact-identity-contract", "evidence-contract", "claim-state-contract"]
+    },
+    {
+      "extension_id": "architecture-design",
+      "phase_id": "P2",
+      "route_key": "phase-2",
+      "runtime_path": "scripts/phase2/phase2_first_version_runtime.py",
+      "skill_path": "skills/wff-arch/SKILL.md",
+      "required_contracts": ["phase-contract", "handoff-contract", "artifact-identity-contract", "evidence-contract", "claim-state-contract"]
+    },
+    {
+      "extension_id": "implementation-delivery",
+      "phase_id": "P3",
+      "route_key": "phase-3",
+      "runtime_path": "scripts/phase3/run_impl.py",
+      "skill_path": "skills/wff-impl/SKILL.md",
+      "required_contracts": ["phase-contract", "handoff-contract", "artifact-identity-contract", "evidence-contract", "claim-state-contract"]
+    },
+    {
+      "extension_id": "validation-closure",
+      "phase_id": "P4",
+      "route_key": "phase-4",
+      "runtime_path": "scripts/phase4/run_phase4_first_version.py",
+      "skill_path": "skills/wff-validation/SKILL.md",
+      "required_contracts": ["phase-contract", "handoff-contract", "evidence-contract", "claim-state-contract", "reentry-return-contract"]
+    },
+    {
+      "extension_id": "brownfield-assessment",
+      "phase_id": "PX",
+      "route_key": "wff-x",
+      "runtime_path": "scripts/phasex/scaffold_phasex_case.py",
+      "skill_path": "skills/wff-x/SKILL.md",
+      "required_contracts": ["lifecycle-route-contract", "phase-contract", "handoff-contract", "artifact-identity-contract", "evidence-contract", "claim-state-contract", "reentry-return-contract"]
+    }
+  ],
+  "route_and_intake_skills": [
+    {"extension_id": "lifecycle-routing", "skill_path": "skills/using-wff/SKILL.md"},
+    {"extension_id": "requirements-intake", "skill_path": "skills/wff-req-chat/SKILL.md"}
+  ],
+  "assurance_consumers": [
+    {
+      "extension_id": "evidence-assurance",
+      "runtime_path": "scripts/common/claim_control_contract.py",
+      "required_contracts": ["evidence-contract", "claim-state-contract", "agentic-boundary-contract"],
+      "truth_boundary": "proof-and-claim-ceiling-only"
+    },
+    {
+      "extension_id": "human-review",
+      "runtime_path": "scripts/common/human_review_sidecar.py",
+      "required_contracts": ["artifact-identity-contract", "evidence-contract", "claim-state-contract", "agentic-boundary-contract"],
+      "truth_boundary": "read-only-decision-projection"
+    }
+  ],
+  "support_and_adaptation_consumers": [
+    {
+      "extension_id": "role-agent-adaptation",
+      "runtime_path": "scripts/release/wff_agent.py",
+      "skill_path": "skills/wff-role-agents/SKILL.md",
+      "required_contracts": ["lifecycle-route-contract", "extension-registration-contract", "agentic-boundary-contract"]
+    },
+    {
+      "extension_id": "project-context",
+      "runtime_path": "scripts/release/wff_init.py",
+      "required_contracts": ["artifact-identity-contract", "evidence-contract", "agentic-boundary-contract"]
+    },
+    {
+      "extension_id": "traceability",
+      "runtime_path": "scripts/release/wff_init.py",
+      "required_contracts": ["artifact-identity-contract", "handoff-contract", "evidence-contract"]
+    }
+  ],
+  "distribution": {
+    "install_profile_manifest": "config/wff-install-profiles.json",
+    "required_resource_module_id": "wff-core-runtime",
+    "supported_build_profile_count": 11,
+    "install_builder": "scripts/release/build_skill_install_pack.py",
+    "install_auditor": "scripts/release/audit_skill_install_pack.py",
+    "release_bundle_builder": "scripts/release/build_skill_release_bundle.py",
+    "release_bundle_auditor": "scripts/release/audit_skill_release_bundle.py",
+    "packaged_core_path": "scripts/wff_core",
+    "required_descriptor_count": 16,
+    "required_alias_count": 36,
+    "required_routes": {
+      "using-wff": "lifecycle-routing",
+      "wff-req-chat": "requirements-intake",
+      "wff-req": "product-requirements",
+      "wff-arch": "architecture-design",
+      "wff-impl": "implementation-delivery",
+      "wff-validation": "validation-closure",
+      "wff-x": "brownfield-assessment"
+    }
+  },
+  "required_skill_heading": "## WFF Core Contract Binding",
+  "retained_unknowns": [
+    "exhaustive-code-dependency-closure",
+    "final-three-scenario-p1-p4-and-four-scenario-px-parity",
+    "compatibility-fallback-retirement"
+  ],
+  "claim_ceiling": "This P3 specification governs migration of current WFF capability, assurance, support, adaptation, install-profile, and release-bundle consumers to the accepted Core contract. It does not prove full scenario parity, exhaustive dynamic dependency closure, compatibility-fallback retirement, Python 3.12 release validation, or v1.8 release readiness."
+}

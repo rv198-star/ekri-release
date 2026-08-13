@@ -1,0 +1,290 @@
+{
+  "schema_version": "ekri.nonwff-conformance-fixture.v1",
+  "fixture_id": "mercury-ci-service",
+  "profile_id": "generic-software-delivery",
+  "status": "bounded-product-conformance-fixture",
+  "target_root": "EKRI/audit-fixtures/nonwff-mercury-ci/target",
+  "evidence_sources": [
+    {
+      "id": "mercury-readme",
+      "path": "README.md",
+      "anchors": [
+        {"id": "delivery-chain", "contains": "source revision -> build artifact -> test report -> deployment admission"},
+        {"id": "test-not-approval", "contains": "Deployment approval is intentionally not implied by build or test success"}
+      ]
+    },
+    {
+      "id": "mercury-pipeline",
+      "path": "pipeline.yaml",
+      "anchors": [
+        {"id": "build-owner", "contains": "owner: build-automation"},
+        {"id": "test-owner", "contains": "owner: verification-automation"},
+        {"id": "deploy-owner-release", "contains": "owner: release-automation"},
+        {"id": "test-not-approval", "contains": "test_success_implies_deployment_approval: false"}
+      ]
+    },
+    {
+      "id": "mercury-policy",
+      "path": "deployment-policy.md",
+      "anchors": [
+        {"id": "deploy-owner-platform", "contains": "Platform Operations owns the final production deployment admission decision"},
+        {"id": "owner-conflict", "contains": "Until that conflict is reconciled, downstream consumers must preserve both owner claims"},
+        {"id": "test-not-approval", "contains": "Test success is necessary evidence but is not production approval"}
+      ]
+    }
+  ],
+  "architecture_memory": {
+    "schema_version": "ekri.architecture-memory.v1",
+    "profile_id": "generic-mercury-ci",
+    "system_architecture_tree": [
+      {
+        "id": "mercury-build",
+        "name": "Build Worker",
+        "kind": "service",
+        "parent_id": "mercury-system",
+        "responsibility": "Build the exact admitted source revision into an immutable build artifact.",
+        "non_responsibilities": ["Does not establish test success or deployment approval."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The committed pipeline declares the build stage and its owner.",
+        "evidence_refs": ["mercury-pipeline.build-owner"]
+      },
+      {
+        "id": "mercury-deploy-admission",
+        "name": "Deployment Admission",
+        "kind": "governance-boundary",
+        "parent_id": "mercury-system",
+        "responsibility": "Evaluate whether a verified deployment candidate may proceed to production deployment.",
+        "non_responsibilities": ["Does not infer production approval from test success."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "Both pipeline and policy identify a distinct deployment-admission boundary.",
+        "evidence_refs": ["mercury-policy.test-not-approval", "mercury-readme.test-not-approval"]
+      },
+      {
+        "id": "mercury-source",
+        "name": "Source Control Boundary",
+        "kind": "system-boundary",
+        "parent_id": "mercury-system",
+        "responsibility": "Own exact source revision identity supplied to the delivery flow.",
+        "non_responsibilities": ["Does not prove that build, test, or deployment will succeed."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The service description starts the delivery chain from a source revision.",
+        "evidence_refs": ["mercury-readme.delivery-chain"]
+      },
+      {
+        "id": "mercury-system",
+        "name": "Mercury CI Service",
+        "kind": "system",
+        "parent_id": null,
+        "responsibility": "Coordinate source, build, verification, and deployment-admission boundaries without collapsing their authorities.",
+        "non_responsibilities": ["Does not grant production approval."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The source description and deployment policy define a bounded software-delivery service.",
+        "evidence_refs": ["mercury-readme.delivery-chain", "mercury-policy.test-not-approval"]
+      },
+      {
+        "id": "mercury-test",
+        "name": "Test Runner",
+        "kind": "service",
+        "parent_id": "mercury-system",
+        "responsibility": "Verify the exact build artifact and produce a bounded test result.",
+        "non_responsibilities": ["Does not authorize production deployment."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The pipeline and policy distinguish test evidence from deployment authority.",
+        "evidence_refs": ["mercury-pipeline.test-owner", "mercury-policy.test-not-approval"]
+      }
+    ],
+    "module_responsibility_map": [
+      {
+        "id": "build-owner",
+        "subject": "Build execution and build artifact",
+        "owner": "Build Automation",
+        "responsibility": "Own build execution for the admitted source revision.",
+        "non_responsibilities": ["Does not own verification or deployment approval."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The pipeline explicitly assigns the build stage to build automation.",
+        "evidence_refs": ["mercury-pipeline.build-owner"]
+      },
+      {
+        "id": "deploy-owner-platform",
+        "subject": "Production deployment admission",
+        "owner": "Platform Operations",
+        "responsibility": "Own the final production deployment admission decision.",
+        "non_responsibilities": ["Does not rewrite build or test evidence."],
+        "knowledge_state": "conflicting",
+        "confidence": "not-applicable",
+        "rationale": "Deployment policy assigns final admission to Platform Operations while the pipeline names release automation.",
+        "evidence_refs": ["mercury-policy.deploy-owner-platform", "mercury-policy.owner-conflict"]
+      },
+      {
+        "id": "deploy-owner-release",
+        "subject": "Production deployment admission",
+        "owner": "Release Automation",
+        "responsibility": "Prepare and submit deployment candidates and is currently named as the pipeline deploy-admission owner.",
+        "non_responsibilities": ["Must not be treated as sole accepted production deployment authority while the policy conflict remains."],
+        "knowledge_state": "conflicting",
+        "confidence": "not-applicable",
+        "rationale": "The committed pipeline and deployment policy disagree about final admission ownership.",
+        "evidence_refs": ["mercury-pipeline.deploy-owner-release", "mercury-policy.owner-conflict"]
+      },
+      {
+        "id": "source-owner",
+        "subject": "Source revision identity",
+        "owner": "Source Control",
+        "responsibility": "Own exact source revision identity entering the delivery chain.",
+        "non_responsibilities": [],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The service description defines source revision as the first bounded input.",
+        "evidence_refs": ["mercury-readme.delivery-chain"]
+      },
+      {
+        "id": "test-owner",
+        "subject": "Verification result",
+        "owner": "Verification Automation",
+        "responsibility": "Own the bounded test result for the exact build artifact.",
+        "non_responsibilities": ["Does not own production deployment approval."],
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "rationale": "The pipeline assigns test execution to verification automation.",
+        "evidence_refs": ["mercury-pipeline.test-owner", "mercury-policy.test-not-approval"]
+      }
+    ],
+    "implementation_intent_summary": [
+      {
+        "id": "artifact-immutability",
+        "subject": "Build and test binding",
+        "statement": "Verification must consume the exact build artifact produced from the admitted source revision.",
+        "rationale": "The delivery chain separates revision, build artifact, and test report identities.",
+        "knowledge_state": "inferred-knowledge",
+        "confidence": "high",
+        "evidence_refs": ["mercury-readme.delivery-chain"]
+      },
+      {
+        "id": "deployment-separation",
+        "subject": "Deployment governance",
+        "statement": "Deployment admission remains a separate decision after verification.",
+        "rationale": "Both README and deployment policy deny test-success-as-approval semantics.",
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "evidence_refs": ["mercury-policy.test-not-approval", "mercury-readme.test-not-approval"]
+      }
+    ],
+    "validation_assurance_ownership": [
+      {
+        "id": "build-assurance",
+        "subject": "Build artifact production",
+        "owner": "Build Automation",
+        "responsibility": "Produce the bounded build artifact for downstream verification.",
+        "rationale": "Pipeline ownership is explicit.",
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "evidence_refs": ["mercury-pipeline.build-owner"]
+      },
+      {
+        "id": "test-assurance",
+        "subject": "Verification result",
+        "owner": "Verification Automation",
+        "responsibility": "Produce test evidence without escalating it into production approval.",
+        "rationale": "Policy explicitly caps the test claim.",
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "evidence_refs": ["mercury-policy.test-not-approval"]
+      }
+    ],
+    "constraints": [
+      {
+        "id": "deployment-approval-constraint",
+        "subject": "Deployment admission",
+        "statement": "Test success is not production approval.",
+        "rationale": "Deployment policy requires an independent admission decision.",
+        "knowledge_state": "observed-fact",
+        "confidence": "verified",
+        "evidence_refs": ["mercury-policy.test-not-approval", "mercury-readme.test-not-approval"]
+      },
+      {
+        "id": "source-identity-constraint",
+        "subject": "Build input",
+        "statement": "Build execution is bound to the exact admitted source revision.",
+        "rationale": "The delivery chain begins from source revision identity.",
+        "knowledge_state": "inferred-knowledge",
+        "confidence": "high",
+        "evidence_refs": ["mercury-readme.delivery-chain"]
+      }
+    ],
+    "unknowns": [
+      {
+        "id": "production-approval-unknown",
+        "subject": "Current production approval",
+        "statement": "No fixture evidence establishes that a production deployment has been approved.",
+        "rationale": "The fixture defines the decision boundary but contains no actual approval occurrence.",
+        "knowledge_state": "unknown",
+        "confidence": "not-applicable",
+        "evidence_refs": ["mercury-policy.test-not-approval"]
+      }
+    ],
+    "claim_ceiling": "This fixture establishes only bounded architecture, responsibility, evidence and authority semantics for a generic software-delivery service. It does not prove a real deployment, current production approval, exhaustive ownership, or operational readiness."
+  },
+  "capability_profile": {
+    "schema_version": "ekri.capability-profile.v1",
+    "profile_id": "generic-mercury-ci",
+    "capabilities": [
+      {
+        "id": "artifact-build",
+        "name": "Immutable artifact build",
+        "aliases": ["build artifact", "build"],
+        "architecture_node_ids": ["mercury-build", "mercury-source"],
+        "responsibility_ids": ["build-owner", "source-owner"],
+        "constraint_ids": ["source-identity-constraint"],
+        "intent_ids": ["artifact-immutability"],
+        "assurance_ids": ["build-assurance"],
+        "locations": ["pipeline.yaml"],
+        "mainline_impact": "direct-mainline",
+        "mainline_rationale": "Artifact build is a direct step in the service delivery chain.",
+        "mainline_evidence_refs": ["mercury-pipeline.build-owner", "mercury-readme.delivery-chain"]
+      },
+      {
+        "id": "deployment-admission",
+        "name": "Deployment admission",
+        "aliases": ["deploy admission", "production admission"],
+        "architecture_node_ids": ["mercury-deploy-admission"],
+        "responsibility_ids": ["deploy-owner-platform", "deploy-owner-release"],
+        "constraint_ids": ["deployment-approval-constraint"],
+        "intent_ids": ["deployment-separation"],
+        "assurance_ids": ["test-assurance"],
+        "locations": ["deployment-policy.md", "pipeline.yaml"],
+        "mainline_impact": "direct-mainline",
+        "mainline_rationale": "Deployment admission is a direct but independently governed delivery boundary.",
+        "mainline_evidence_refs": ["mercury-pipeline.deploy-owner-release", "mercury-policy.deploy-owner-platform", "mercury-policy.owner-conflict"]
+      },
+      {
+        "id": "verification",
+        "name": "Build verification",
+        "aliases": ["test verification", "test"],
+        "architecture_node_ids": ["mercury-test"],
+        "responsibility_ids": ["test-owner"],
+        "constraint_ids": ["deployment-approval-constraint"],
+        "intent_ids": ["artifact-immutability", "deployment-separation"],
+        "assurance_ids": ["test-assurance"],
+        "locations": ["pipeline.yaml", "deployment-policy.md"],
+        "mainline_impact": "direct-mainline",
+        "mainline_rationale": "Verification is a direct evidence-producing step in the service delivery chain.",
+        "mainline_evidence_refs": ["mercury-pipeline.test-owner", "mercury-policy.test-not-approval"]
+      }
+    ]
+  },
+  "flow_fixture": "EKRI/specs/flow-fixtures/ci-build-test-deploy.json",
+  "expectations": {
+    "architecture_node_count": 5,
+    "capability_count": 3,
+    "conflicting_capability_id": "deployment-admission",
+    "unknown_id": "production-approval-unknown",
+    "flow_occurrence_count": 3
+  },
+  "claim_ceiling": "This non-WFF conformance fixture proves only that the supported general EKRI Architecture View, Capability Authority/L0-L3 queries and Flow/Handoff query can preserve exact evidence, identity, unknown and conflicting authority posture for an unrelated software-delivery system."
+}

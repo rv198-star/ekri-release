@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 3 Audit Fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "fixture_id", "baseline", "observation", "phase1", "phase2", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.phase3-audit-fixture.v1"},
+    "fixture_id": {"const": "wff-v1.6.2-phase3-audit-baseline"},
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": {"const": "764dc832eb7488b32ff0e24591a2018bfa719d39"},
+        "tree": {"const": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1"}
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accepted_path_count", "path_set_sha256"],
+      "properties": {
+        "accepted_path_count": {"const": 3045},
+        "path_set_sha256": {"const": "65696caad32b9d761a53ef9ea3aba0c12334a70193ce69217b2f2a2305840fe4"}
+      }
+    },
+    "phase1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["counts", "semantic_fingerprints"],
+      "properties": {
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["architecture_nodes", "assurance_entries", "constraints", "evidence_anchors", "evidence_sources", "implementation_intents", "responsibility_entries", "target_blob_reads", "unknowns"],
+          "properties": {
+            "architecture_nodes": {"const": 20},
+            "assurance_entries": {"const": 6},
+            "constraints": {"const": 7},
+            "evidence_anchors": {"const": 134},
+            "evidence_sources": {"const": 25},
+            "implementation_intents": {"const": 8},
+            "responsibility_entries": {"const": 17},
+            "target_blob_reads": {"const": 25},
+            "unknowns": {"const": 4}
+          }
+        },
+        "semantic_fingerprints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["architecture_memory", "evidence_index", "reconstruction_report", "human_projection", "evidence_read_paths"],
+          "properties": {
+            "architecture_memory": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "evidence_index": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "reconstruction_report": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "human_projection": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "evidence_read_paths": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        }
+      }
+    },
+    "phase2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability_count", "alias_count", "ambiguous_alias_count"],
+      "properties": {
+        "capability_count": {"const": 16},
+        "alias_count": {"const": 124},
+        "ambiguous_alias_count": {"const": 0}
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  }
+}

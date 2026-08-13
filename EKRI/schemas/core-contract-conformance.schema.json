@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WFF Core Contract Conformance Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "contract_id", "contract_version", "source", "rule_count", "passed_count", "results", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "wff.core-contract-conformance.v1"},
+    "phase": {"const": "v1.8-p1-minimal-core-contract"},
+    "status": {"const": "contract-conformance-passed"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "contract_id": {"const": "wff-core-contract"},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "source": {"type": "object"},
+    "rule_count": {"type": "integer", "minimum": 8},
+    "passed_count": {"type": "integer", "minimum": 8},
+    "results": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "statement", "status", "verification", "proof_boundary"],
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {"type": "string"},
+          "statement": {"type": "string", "minLength": 12},
+          "status": {"const": "passed"},
+          "verification": {"type": "string", "minLength": 24},
+          "proof_boundary": {"const": "structural-reference-and-dependency-contract-only"}
+        }
+      }
+    },
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Phase 3 Architecture Evolution Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "status", "created_at", "source", "verified_event_count", "architecture_evolution", "pending_registration_count", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.architecture-evolution-map.v1"},
+    "phase": {"const": "phase3-evolution-and-impact-intelligence"},
+    "status": {"const": "architecture-evolution-map-built"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline_commit", "baseline_tree", "target_commit", "target_tree", "scan_id"],
+      "properties": {
+        "baseline_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "baseline_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "scan_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "verified_event_count": {"type": "integer", "minimum": 0},
+    "architecture_evolution": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["event_id", "change_id", "capability_id", "state", "verification_scope", "observed_fact", "registered_intent", "decision_reference", "baseline_tree", "target_tree", "matched_changes", "evidence", "verified_at", "claim_ceiling"],
+        "properties": {
+          "event_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "change_id": {"type": "string", "minLength": 2},
+          "capability_id": {"type": "string", "minLength": 2},
+          "state": {"const": "verified"},
+          "verification_scope": {"const": "repository-surface"},
+          "observed_fact": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["knowledge_state", "statement", "matched_path_count"],
+            "properties": {
+              "knowledge_state": {"const": "observed-fact"},
+              "statement": {"type": "string", "minLength": 20},
+              "matched_path_count": {"type": "integer", "minimum": 1}
+            }
+          },
+          "registered_intent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["change_kind", "summary", "knowledge_state", "semantic_claim_state"],
+            "properties": {
+              "change_kind": {"enum": ["capability-addition", "capability-replacement", "capability-removal", "responsibility-migration", "validation-ownership-change", "architecture-boundary-change"]},
+              "summary": {"type": "string", "minLength": 8},
+              "knowledge_state": {"const": "registered-change"},
+              "semantic_claim_state": {"const": "not-independently-proven"}
+            }
+          },
+          "decision_reference": {"type": "string"},
+          "baseline_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+          "target_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+          "matched_changes": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+          "evidence": {
+            "type": "array", "minItems": 1,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["evidence_ref", "path", "scan_id"],
+              "properties": {
+                "evidence_ref": {"type": "string", "minLength": 10},
+                "path": {"type": "string", "minLength": 1},
+                "scan_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+              }
+            }
+          },
+          "verified_at": {"type": "string", "format": "date-time"},
+          "claim_ceiling": {"type": "string", "minLength": 40}
+        }
+      }
+    },
+    "pending_registration_count": {"type": "integer", "minimum": 0},
+    "claim_ceiling": {"type": "string", "minLength": 40}
+  }
+}

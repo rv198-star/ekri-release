@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI P5 Flow/Handoff Conformance Fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "fixture_id", "profile_id", "status", "binding_mode", "source_context", "flow_definition", "participants", "artifacts", "authority_refs", "entry_occurrence_ids", "handoffs", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.flow-conformance-fixture.v1"},
+    "fixture_id": {"type": "string", "minLength": 2},
+    "profile_id": {"type": "string", "minLength": 2},
+    "status": {"const": "bounded-conformance-fixture"},
+    "binding_mode": {"enum": ["architecture-semantic-ids", "self-contained-fixture"]},
+    "source_context": {"$ref": "#/$defs/source_context"},
+    "flow_definition": {"$ref": "#/$defs/flow_definition"},
+    "participants": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/typed_object"}},
+    "artifacts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/typed_object"}},
+    "authority_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/typed_object"}},
+    "entry_occurrence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+    "handoffs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/handoff"}},
+    "claim_ceiling": {"type": "string", "minLength": 80}
+  },
+  "$defs": {
+    "string_list": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "source_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context_id", "kind", "semantic_identity", "external_sources"],
+      "properties": {
+        "context_id": {"type": "string", "minLength": 2},
+        "kind": {"type": "string", "minLength": 2},
+        "semantic_identity": {"type": "string", "minLength": 2},
+        "external_sources": {"type": "array", "items": {"$ref": "#/$defs/external_source"}}
+      }
+    },
+    "external_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_identity", "path", "sha256", "required_tokens"],
+      "properties": {
+        "semantic_identity": {"type": "string", "minLength": 2},
+        "path": {"type": "string", "minLength": 2},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "required_tokens": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "flow_definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "name": {"type": "string", "minLength": 2}
+      }
+    },
+    "typed_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "concept_type"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "name": {"type": "string", "minLength": 2},
+        "concept_type": {"enum": ["EngineeringStep", "Artifact", "AuthorityReference"]}
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "route_kind", "from_ref", "to_ref", "carried_refs", "authority_refs", "allowed_reliance", "unresolved_items", "forbidden_assumptions", "consumer_scope", "evidence_refs", "next_occurrence_ids"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "route_kind": {"enum": ["forward", "branch", "stop", "return", "reentry"]},
+        "from_ref": {"type": "string", "minLength": 2},
+        "to_ref": {"type": "string", "minLength": 2},
+        "carried_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "authority_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "allowed_reliance": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "unresolved_items": {"$ref": "#/$defs/string_list"},
+        "forbidden_assumptions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "consumer_scope": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}},
+        "next_occurrence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+      }
+    }
+  }
+}

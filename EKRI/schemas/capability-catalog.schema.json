@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Capability Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phase", "profile_id", "created_at", "status", "source", "specification", "capability_count", "capabilities", "alias_index", "ambiguous_aliases", "checks", "claim_ceiling"],
+  "properties": {
+    "schema_version": {"const": "ekri.capability-catalog.v1"},
+    "phase": {"const": "phase2-existing-capability-intelligence"},
+    "profile_id": {"const": "wff-v1.6.2-existing-capability"},
+    "created_at": {"type": "string", "minLength": 1},
+    "status": {"const": "capability-catalog-built"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_id", "commit", "tree", "phase1_human_projection_sha256"],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "minLength": 40},
+        "tree": {"type": "string", "minLength": 40},
+        "phase1_human_projection_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "specification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "path", "sha256", "scanner_commit", "scanner_tree", "blob_oid"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scanner_commit": {"type": "string"},
+        "scanner_tree": {"type": "string"},
+        "blob_oid": {"type": "string"}
+      }
+    },
+    "capability_count": {"type": "integer", "minimum": 1},
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/capability"}
+    },
+    "alias_index": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {"type": "string", "minLength": 2}
+      }
+    },
+    "ambiguous_aliases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "uniqueItems": true,
+        "items": {"type": "string", "minLength": 2}
+      }
+    },
+    "checks": {"type": "array", "minItems": 4, "items": {"$ref": "#/$defs/check"}},
+    "claim_ceiling": {"type": "string", "minLength": 20}
+  },
+  "$defs": {
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check", "status", "detail"],
+      "properties": {
+        "check": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "blocked", "failed"]},
+        "detail": {"type": "string", "minLength": 1}
+      }
+    },
+    "knowledgeBase": {
+      "type": "object",
+      "required": ["id", "knowledge_state", "confidence", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "knowledge_state": {"enum": ["observed-fact", "inferred-knowledge", "unknown"]},
+        "confidence": {"enum": ["verified", "high", "medium", "low", "not-applicable"]},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+      }
+    },
+    "architecture": {
+      "allOf": [
+        {"$ref": "#/$defs/knowledgeBase"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "knowledge_state", "confidence", "evidence_refs", "name", "kind", "parent_id", "responsibility", "non_responsibilities"],
+          "properties": {
+            "id": {"type": "string"},
+            "knowledge_state": {"type": "string"},
+            "confidence": {"type": "string"},
+            "evidence_refs": {"type": "array", "items": {"type": "string"}},
+            "name": {"type": "string", "minLength": 1},
+            "kind": {"type": "string", "minLength": 1},
+            "parent_id": {"type": "string"},
+            "responsibility": {"type": "string", "minLength": 1},
+            "non_responsibilities": {"type": "array", "items": {"type": "string", "minLength": 1}}
+          }
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "aliases", "existence", "knowledge_state", "confidence", "architecture_nodes", "responsibilities", "constraints", "implementation_intents", "assurance_ownership", "locations", "reuse_limitations", "mainline_impact", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 2},
+        "name": {"type": "string", "minLength": 2},
+        "aliases": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "existence": {"enum": ["confirmed-existing", "inferred-existing", "unknown"]},
+        "knowledge_state": {"enum": ["observed-fact", "inferred-knowledge", "unknown"]},
+        "confidence": {"enum": ["verified", "high", "medium", "low", "not-applicable"]},
+        "architecture_nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/architecture"}},
+        "responsibilities": {"type": "array", "items": {"type": "object"}},
+        "constraints": {"type": "array", "items": {"type": "object"}},
+        "implementation_intents": {"type": "array", "items": {"type": "object"}},
+        "assurance_ownership": {"type": "array", "items": {"type": "object"}},
+        "locations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "reuse_limitations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "source_id", "statement"],
+            "properties": {
+              "kind": {"enum": ["non-responsibility", "constraint"]},
+              "source_id": {"type": "string", "minLength": 2},
+              "statement": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "mainline_impact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification", "knowledge_state", "confidence", "rationale", "evidence_refs"],
+          "properties": {
+            "classification": {"enum": ["direct-mainline", "conditional-mainline", "supporting-mainline", "outside-runtime-mainline"]},
+            "knowledge_state": {"const": "inferred-knowledge"},
+            "confidence": {"const": "high"},
+            "rationale": {"type": "string", "minLength": 12},
+            "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+          }
+        },
+        "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 2}}
+      }
+    }
+  }
+}

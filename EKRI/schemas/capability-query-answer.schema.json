@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI Capability Named Query Answer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "authority_mode",
+    "query_kind",
+    "disclosure_level",
+    "source",
+    "resolution",
+    "answer",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.capability-query-answer.v1"},
+    "status": {"const": "capability-query-answered"},
+    "authority_mode": {"const": "derived-non-authoritative"},
+    "query_kind": {
+      "enum": [
+        "find-capability",
+        "get-realizations",
+        "explain-authority",
+        "get-evidence",
+        "before-generate"
+      ]
+    },
+    "disclosure_level": {"enum": ["L0", "L1", "L2", "L3"]},
+    "source": {"$ref": "#/$defs/source"},
+    "resolution": {"$ref": "#/$defs/resolution"},
+    "answer": {"type": "object"},
+    "claim_ceiling": {"type": "string", "minLength": 60}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"query_kind": {"const": "find-capability"}}},
+      "then": {
+        "properties": {
+          "disclosure_level": {"const": "L0"},
+          "answer": {"$ref": "#/$defs/find_answer"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"query_kind": {"const": "get-realizations"}}},
+      "then": {
+        "properties": {
+          "disclosure_level": {"const": "L1"},
+          "answer": {"$ref": "#/$defs/realization_answer"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"query_kind": {"const": "explain-authority"}}},
+      "then": {
+        "properties": {
+          "disclosure_level": {"const": "L2"},
+          "answer": {"$ref": "#/$defs/authority_answer"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"query_kind": {"const": "get-evidence"}}},
+      "then": {
+        "properties": {
+          "disclosure_level": {"const": "L3"},
+          "answer": {"$ref": "#/$defs/evidence_answer"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"query_kind": {"const": "before-generate"}}},
+      "then": {
+        "properties": {
+          "disclosure_level": {"const": "L2"},
+          "answer": {"$ref": "#/$defs/before_generate_answer"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_id",
+        "commit",
+        "tree",
+        "input_mode",
+        "project_asset_id",
+        "architecture_view_semantic_fingerprint",
+        "capability_authority_semantic_fingerprint",
+        "query_index_semantic_fingerprint",
+        "specification_sha256"
+      ],
+      "properties": {
+        "snapshot_id": {"type": "string", "minLength": 8},
+        "commit": {"type": "string", "minLength": 40},
+        "tree": {"type": "string", "minLength": 40},
+        "input_mode": {"enum": ["provided-verified-view", "verified-local-phase1", "verified-project-asset"]},
+        "project_asset_id": {"type": "string"},
+        "architecture_view_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "capability_authority_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "query_index_semantic_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "specification_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "normalized_query",
+        "candidate_capability_ids",
+        "matched_capability_id",
+        "matched_capability_name"
+      ],
+      "properties": {
+        "status": {"enum": ["matched", "ambiguous", "not-found"]},
+        "normalized_query": {"type": "string"},
+        "candidate_capability_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 2}
+        },
+        "matched_capability_id": {"type": "string"},
+        "matched_capability_name": {"type": "string"}
+      }
+    },
+    "find_answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "existence",
+        "knowledge_state",
+        "confidence",
+        "owners",
+        "locations",
+        "mainline_impact",
+        "absence_proven"
+      ],
+      "properties": {
+        "existence": {"enum": ["confirmed-existing", "inferred-existing", "unknown"]},
+        "knowledge_state": {"enum": ["observed-fact", "inferred-knowledge", "unknown", "conflicting"]},
+        "confidence": {"enum": ["verified", "high", "medium", "low", "not-applicable"]},
+        "owners": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "locations": {"type": "array", "items": {"type": "string"}},
+        "mainline_impact": {"type": "string"},
+        "absence_proven": {"const": false}
+      }
+    },
+    "realization_answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture_nodes", "locations", "implementation_intents", "realization_posture"],
+      "properties": {
+        "architecture_nodes": {"type": "array", "items": {"type": "object"}},
+        "locations": {"type": "array", "items": {"type": "string"}},
+        "implementation_intents": {"type": "array", "items": {"type": "object"}},
+        "realization_posture": {"const": "semantic-authority-derived-realization"}
+      }
+    },
+    "authority_answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owners",
+        "responsibilities",
+        "reuse_limitations",
+        "constraints",
+        "assurance_ownership",
+        "mainline_impact",
+        "authority_posture"
+      ],
+      "properties": {
+        "owners": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "responsibilities": {"type": "array", "items": {"type": "object"}},
+        "reuse_limitations": {"type": "array", "items": {"type": "object"}},
+        "constraints": {"type": "array", "items": {"type": "object"}},
+        "assurance_ownership": {"type": "array", "items": {"type": "object"}},
+        "mainline_impact": {"type": "object"},
+        "authority_posture": {"const": "ontology-authoritative-capability-slice"}
+      }
+    },
+    "evidence_answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_refs",
+        "evidence_refs_by_semantic_family",
+        "source_commit",
+        "source_tree",
+        "exact_source_expansion"
+      ],
+      "properties": {
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "evidence_refs_by_semantic_family": {"type": "object"},
+        "source_commit": {"type": "string", "minLength": 40},
+        "source_tree": {"type": "string", "minLength": 40},
+        "exact_source_expansion": {"const": "resolve-through-verified-evidence-index"}
+      }
+    },
+    "before_generate_answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability_exists",
+        "where_it_exists",
+        "why_reuse_may_be_limited",
+        "trigger_basis",
+        "wff_mainline_impact",
+        "reuse_recommendation",
+        "boundary"
+      ],
+      "properties": {
+        "capability_exists": {"type": "object"},
+        "where_it_exists": {"type": "object"},
+        "why_reuse_may_be_limited": {"type": "object"},
+        "trigger_basis": {"type": "object"},
+        "wff_mainline_impact": {"type": "object"},
+        "reuse_recommendation": {"type": "object"},
+        "boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["decision_allowed", "decision_status"],
+          "properties": {
+            "decision_allowed": {"type": "boolean"},
+            "decision_status": {"enum": ["actionable", "blocked-insufficient-evidence"]}
+          }
+        }
+      }
+    }
+  }
+}

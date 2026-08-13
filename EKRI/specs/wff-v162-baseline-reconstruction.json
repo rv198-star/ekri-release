@@ -1,0 +1,993 @@
+{
+  "schema_version": "ekri.wff-baseline-reconstruction-spec.v1",
+  "profile_id": "wff-v1.6.2-baseline",
+  "target": {
+    "commit": "764dc832eb7488b32ff0e24591a2018bfa719d39",
+    "tree": "e7bd7082e1674cce1f2d2e2f11f5978555f973b1"
+  },
+  "evidence_sources": [
+    {
+      "id": "agents-control",
+      "path": "AGENTS.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "workflow-order", "contains": "Workflow owns global engineering order."},
+        {"id": "agentic-judgment", "contains": "Agentic owns uncertainty, business semantics, and generation judgment."},
+        {"id": "template-boundary", "contains": "Templates / TVG shape depth and direction without deciding the answer."},
+        {"id": "evidence-ceiling", "contains": "Evidence / Gates prove claims, expose defects, and cap formal state."},
+        {"id": "release-ceiling", "contains": "Default WFF release claims are development / pre-production workflow claims"},
+        {"id": "role-boundary", "contains": "Optional role agents are entry / adaptation surfaces over existing skills and"},
+        {"id": "profile-boundary", "contains": "Install profiles and scenario packs are supported package surfaces, not proof"}
+      ]
+    },
+    {
+      "id": "readme-product",
+      "path": "README.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "framework-purpose", "contains": "WFF 是给 AI Agent 用的软件生命周期框架。"},
+        {"id": "decomposition-method", "contains": "把复杂问题拆小，把每一步留下证据，把每个产物接回原始需求和设计来源"},
+        {"id": "three-entries", "contains": "WFF 对外只有三个入口：`wff-req-chat`、`wff-req`、`wff-x`。"},
+        {"id": "brownfield-code-backed", "contains": "`wff-x` 是 code-backed existing-system assessment。"},
+        {"id": "review-index", "contains": "如果输出目录里有 `human-review/INDEX.md`，先看它。"},
+        {"id": "install-unit", "contains": "WFF 的安装单位是完整 skill 目录和配套资源，不是单个 `SKILL.md`。"}
+      ]
+    },
+    {
+      "id": "orientation",
+      "path": "docs/public/wff-orientation-map.zh-CN.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "entry-boundary", "contains": "WFF 对外只有三个入口：`wff-req-chat`、`wff-req`、`wff-x`。"},
+        {"id": "layer-model", "contains": "它由四个层次组成："},
+        {"id": "control-boundary", "contains": "真正的控制边界仍然是：路线决定顺序，skills 执行能力，证据限制声明"},
+        {"id": "greenfield-route", "contains": "当你从想法、材料、PRD 或设计开始，通常走 P1-P4："},
+        {"id": "brownfield-route", "contains": "当你接手的是已有代码库、数据库、接口、线下流程或历史包袱"},
+        {"id": "profile-no-methodology", "contains": "安装组合只是打包方式。它不改变 P1/P2/P3/P4/PX 的责任边界。"},
+        {"id": "role-adapter", "contains": "Role Agents 只是入口和适配层。"},
+        {"id": "p4-not-production", "contains": "P4 通过等于生产可用"}
+      ]
+    },
+    {
+      "id": "responsibility-matrix",
+      "path": "docs/governance/v1.3-workflow-agentic-evidence-responsibility-matrix-v0.1.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "workflow-row", "contains": "| Workflow | lifecycle phases, route choice, branch boundaries"},
+        {"id": "agentic-row", "contains": "| Agentic | context sufficiency judgment, source-truth interpretation"},
+        {"id": "template-row", "contains": "| Templates / TVG | required questions, output direction"},
+        {"id": "evidence-row", "contains": "| Evidence / Gates | trace proof, build/test/runtime proof"},
+        {"id": "phase-p1", "contains": "| P1 | intake route, required source surfaces"},
+        {"id": "phase-p2", "contains": "| P2 | architecture phase order"},
+        {"id": "phase-p3", "contains": "| P3 | implementation package order"},
+        {"id": "phase-p4", "contains": "| P4 | read-only validation order"},
+        {"id": "pseudo-agentic", "contains": "A script pass is used as proof that product value, architecture judgment, or implementation meaning is complete."}
+      ]
+    },
+    {
+      "id": "skill-catalog",
+      "path": "config/wff-skill-catalog.json",
+      "media_type": "application/json",
+      "extractor": "wff-skill-catalog",
+      "anchors": [
+        {"id": "schema", "contains": "\"schema_version\": \"v1.0-wff-skill-catalog\""},
+        {"id": "using-wff", "contains": "\"name\": \"using-wff\""},
+        {"id": "phase1-entry", "contains": "\"name\": \"wff-req\""},
+        {"id": "phase2-entry", "contains": "\"name\": \"wff-arch\""},
+        {"id": "phase3-entry", "contains": "\"name\": \"wff-impl\""},
+        {"id": "phase4-entry", "contains": "\"name\": \"wff-validation\""},
+        {"id": "phasex-entry", "contains": "\"name\": \"wff-x\""},
+        {"id": "project-context", "contains": "\"name\": \"wff-project-context\""},
+        {"id": "traceability", "contains": "\"name\": \"wff-base-traceability-management\""},
+        {"id": "reader-translation", "contains": "\"name\": \"wff-base-reader-translation\""},
+        {"id": "interaction-map", "contains": "\"name\": \"wff-interaction-map\""},
+        {"id": "role-agent", "contains": "\"name\": \"wff-role-agents\""}
+      ]
+    },
+    {
+      "id": "install-profiles",
+      "path": "config/wff-install-profiles.json",
+      "media_type": "application/json",
+      "extractor": "wff-install-profiles",
+      "anchors": [
+        {"id": "default-profile", "contains": "\"default_profile\": \"full-pack\""},
+        {"id": "usage-router", "contains": "\"id\": \"usage-router\""},
+        {"id": "phase1-package", "contains": "\"id\": \"phase1-mainline\""},
+        {"id": "phase2-package", "contains": "\"id\": \"phase2-mainline\""},
+        {"id": "phase3-package", "contains": "\"id\": \"phase3-mainline\""},
+        {"id": "phase4-package", "contains": "\"id\": \"phase4-mainline\""},
+        {"id": "phasex-package", "contains": "\"id\": \"phasex-brownfield-runtime\""},
+        {"id": "project-context-package", "contains": "\"id\": \"project-context-base\""},
+        {"id": "traceability-package", "contains": "\"id\": \"traceability-base\""},
+        {"id": "reader-package", "contains": "\"id\": \"reader-translation-lane\""},
+        {"id": "interaction-package", "contains": "\"id\": \"interaction-map-kernel\""},
+        {"id": "role-package", "contains": "\"id\": \"role-agent-companion\""}
+      ]
+    },
+    {
+      "id": "output-policy",
+      "path": "config/generated-output-policy.json",
+      "media_type": "application/json",
+      "extractor": "generated-output-policy",
+      "anchors": [
+        {"id": "locale", "contains": "\"human_reviewed_output_locale\": \"zh-CN\""},
+        {"id": "repository-sidecar", "contains": "\"repository_default\": false"},
+        {"id": "release-sidecar", "contains": "\"release_package_default\": true"},
+        {"id": "mainline-nonblocking", "contains": "\"mainline_waits\": false"},
+        {"id": "stale-blocked", "contains": "\"stale_publication_allowed\": false"}
+      ]
+    },
+    {
+      "id": "using-wff-route",
+      "path": "skills/using-wff/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "external-only", "contains": "These are the only external WFF entry routes."},
+        {"id": "rough-route", "contains": "| Rough idea, chat history, scattered notes, or unstable facts | `wff-req-chat`"},
+        {"id": "stable-route", "contains": "| Stable demand, source brief, accepted input packet, or direct PRD generation need | `wff-req`"},
+        {"id": "existing-route", "contains": "| Existing codebase, code-backed existing-system assessment"},
+        {"id": "internal-only", "contains": "These routes are available only inside an already-admitted WFF chain."},
+        {"id": "p1-to-p2", "contains": "| Accepted WFF P1 PRD or accepted WFF business truth package | `wff-arch`"},
+        {"id": "p2-to-p3", "contains": "| Accepted WFF P2 handoff / ESP / `phase-3-implementation-entry.md` | `wff-impl`"},
+        {"id": "p3-to-p4", "contains": "| WFF P3 implementation output and evidence package | `wff-validation`"}
+      ]
+    },
+    {
+      "id": "req-chat-entry",
+      "path": "skills/wff-req-chat/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "pre-phase1", "contains": "`wff-req-chat` is a pre-Phase-1 conversational intake skill."},
+        {"id": "not-prd", "contains": "It is not a Phase-1 execution skill. It must not generate PRD"},
+        {"id": "source-brief", "contains": "The output is a `P1 source brief`, not a PRD."}
+      ]
+    },
+    {
+      "id": "phase1-entry",
+      "path": "skills/wff-req/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "official-entry", "contains": "This is the official Phase-1 entry skill."},
+        {"id": "product-truth", "contains": "Phase-1 owns product truth, business pressure, scope boundaries, acceptance intent"},
+        {"id": "preserve-authority", "contains": "Preserve source authority. Do not invent missing product truth"},
+        {"id": "evidence-capped", "contains": "Product outputs are evidence-capped."}
+      ]
+    },
+    {
+      "id": "phase2-entry",
+      "path": "skills/wff-arch/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "official-entry", "contains": "This is the official Phase-2 entry skill."},
+        {"id": "architecture-owner", "contains": "Phase-2 owns architecture translation, source absorption, risk posture, data/API contracts"},
+        {"id": "upstream-authority", "contains": "Consume Phase-1 truth as upstream authority."},
+        {"id": "machine-pass-limit", "contains": "Treat machine-pass as structural evidence only."}
+      ]
+    },
+    {
+      "id": "phase3-entry",
+      "path": "skills/wff-impl/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "official-entry", "contains": "This is the official Phase-3 entry skill."},
+        {"id": "runnable-delivery", "contains": "It turns the accepted Phase-2 handoff into runnable implementation, tests, runtime evidence"},
+        {"id": "return-upstream", "contains": "Return upstream instead of inventing missing product or architecture truth."},
+        {"id": "failing-tests", "contains": "Generate or preserve failing tests before implementation."},
+        {"id": "bounded-packages", "contains": "Implement by bounded work package or packet"},
+        {"id": "weakest-evidence", "contains": "Cap formal state by the weakest missing runtime, infrastructure, UI, manual, or external evidence."}
+      ]
+    },
+    {
+      "id": "phase4-entry",
+      "path": "skills/wff-validation/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "official-entry", "contains": "This is the official Phase-4 entry skill."},
+        {"id": "read-only", "contains": "Phase-4 is read-only over upstream artifacts."},
+        {"id": "missing-review-bound", "contains": "missing evidence becomes `review-bound`, not fake green."},
+        {"id": "external-production", "contains": "Production approval, owner sign-off, online UAT, go-live"},
+        {"id": "route-owner", "contains": "Every return must name the owning phase, evidence reference, minimum rerun boundary"}
+      ]
+    },
+    {
+      "id": "phasex-entry",
+      "path": "skills/wff-x/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "official-entry", "contains": "This is the official existing-system entry skill."},
+        {"id": "sidecar-route", "contains": "PhaseX is not a default phase after Phase-4. It is a sidecar route"},
+        {"id": "code-backed", "contains": "PX is a code-backed existing-system assessment."},
+        {"id": "truth-separation", "contains": "Separate observed facts, inferred semantics, unknowns, conflicts, and review-bound items."},
+        {"id": "safety-net", "contains": "Build safety-net expectations before recommending risky change."}
+      ]
+    },
+    {
+      "id": "phase1-runtime",
+      "path": "scripts/phase1/run_phase1_source_to_prd.py",
+      "media_type": "text/x-python",
+      "anchors": [
+        {"id": "source-admission", "contains": "def evaluate_phase1_source_admission(source_text: str) -> dict[str, Any]:"},
+        {"id": "orchestration-parser", "contains": "parser = argparse.ArgumentParser(description=\"Run the Phase-1 source-to-PRD orchestration\")"},
+        {"id": "gate-command", "contains": "def build_phase1_gate_command(context: Phase1SourceToPrdContext, *, output_json_path: Path) -> list[str]:"}
+      ]
+    },
+    {
+      "id": "phase2-runtime",
+      "path": "scripts/phase2/phase2_first_version_runtime.py",
+      "media_type": "text/x-python",
+      "anchors": [
+        {"id": "source-admission", "contains": "def run_phase2_first_version_source_admission_preflight(context: Phase2FirstVersionContext) -> dict[str, Any]:"},
+        {"id": "mainline", "contains": "def run_phase2_first_version(context: Phase2FirstVersionContext) -> Phase2FirstVersionResult:"},
+        {"id": "claim-sidecars", "contains": "def emit_phase2_first_version_claim_control_sidecars("}
+      ]
+    },
+    {
+      "id": "phase3-runtime",
+      "path": "scripts/phase3/phase3_first_version_runtime.py",
+      "media_type": "text/x-python",
+      "anchors": [
+        {"id": "source-admission", "contains": "def run_phase3_source_admission_preflight(context: Phase3RunnerContext) -> dict[str, object]:"},
+        {"id": "mainline", "contains": "def run_phase3_foundation_mainline(args: argparse.Namespace, context: Phase3RunnerContext) -> int:"},
+        {"id": "output-contamination", "contains": "def run_phase3_generated_output_contamination_gate("}
+      ]
+    },
+    {
+      "id": "phase4-runtime",
+      "path": "scripts/phase4/run_phase4_first_version.py",
+      "media_type": "text/x-python",
+      "anchors": [
+        {"id": "source-admission", "contains": "def run_phase4_source_admission_preflight(context: Phase4RunnerContext) -> dict[str, Any]:"},
+        {"id": "mainline", "contains": "def run_phase4_mainline(context: Phase4RunnerContext) -> Phase4RunnerResult:"},
+        {"id": "claim-control", "contains": "def update_phase4_runner_metadata_with_claim_control(context: Phase4RunnerContext) -> dict[str, Any]:"}
+      ]
+    },
+    {
+      "id": "phasex-runtime",
+      "path": "scripts/phasex/validate_phasex_case.py",
+      "media_type": "text/x-python",
+      "anchors": [
+        {"id": "case-inspection", "contains": "def inspect_case(output_dir: Path) -> dict[str, Any]:"},
+        {"id": "authored-valid", "contains": "status = \"authored-valid\""},
+        {"id": "legacy-reject", "contains": "legacy PhaseX PX-SK files are no longer accepted:"}
+      ]
+    },
+    {
+      "id": "install-builder",
+      "path": "scripts/release/build_skill_install_pack.py",
+      "media_type": "text/x-python",
+      "anchors": [
+        {"id": "build-entry", "contains": "def build_install_pack("},
+        {"id": "profile-selection", "contains": "profile = profile_by_id(install_profiles, profile_id)"},
+        {"id": "dependency-closure", "contains": "script_closure = resolve_script_dependency_closure("},
+        {"id": "content-policy", "contains": "asset_map, content_boundary_removed_paths = filter_asset_map_for_content_policy(asset_map, profile)"}
+      ]
+    },
+    {
+      "id": "project-context",
+      "path": "skills/wff-project-context/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "maintains-context", "contains": "`wff-project-context` maintains `.wff/PROJECT_CONTEXT.md`."},
+        {"id": "durable-facts", "contains": "It tells WFF agents the durable project facts, constraints, and reference entry points"},
+        {"id": "not-formal-truth", "contains": "It is not a new lifecycle phase and not a formal truth artifact."},
+        {"id": "conflict-routing", "contains": "If project context conflicts with lifecycle artifacts, record the conflict"}
+      ]
+    },
+    {
+      "id": "traceability",
+      "path": "skills/wff-base-traceability-management/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "registry-mechanism", "contains": "document registry management mechanism"},
+        {"id": "documents-source", "contains": "It does not replace documents as the source of truth."},
+        {"id": "identity-owner", "contains": "Documents own meaning. This skill owns identity, bindings, and link integrity."},
+        {"id": "derived-sqlite", "contains": "SQLite stays derived and project-bound"}
+      ]
+    },
+    {
+      "id": "reader-translation",
+      "path": "skills/wff-base-reader-translation/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "release-facing", "contains": "This is the release-facing skill surface for localized reader artifacts."},
+        {"id": "canonical-authority", "contains": "The canonical source remains authoritative."},
+        {"id": "reader-edition", "contains": "Produce a reader-facing edition, not a literal translation."},
+        {"id": "no-claim-upgrade", "contains": "Do not add external validation, sign-off, budget approval, UAT, or production readiness claims"}
+      ]
+    },
+    {
+      "id": "interaction-map",
+      "path": "skills/wff-interaction-map/SKILL.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "optional-companion", "contains": "This is an optional Beta companion used by human-review artifacts."},
+        {"id": "no-authority", "contains": "lifecycle phase, content author, evidence acceptance mechanism, gate, or claim"},
+        {"id": "structure-only", "contains": "Validation proves packet structure only; it does not prove that the"},
+        {"id": "mechanical-projection", "contains": "render_interactive_map.py` owns mechanical HTML/SVG projection only."}
+      ]
+    },
+    {
+      "id": "human-review",
+      "path": "docs/public/human-review-surface.zh-CN.md",
+      "media_type": "text/markdown",
+      "anchors": [
+        {"id": "additive-surface", "contains": "阶段 runner 会额外生成一个加法目录"},
+        {"id": "canonical-unchanged", "contains": "原有 canonical artifact 路径不移动、不改名"},
+        {"id": "no-replace", "contains": "`human-review/` 不替代 PRD、ESP、Action Card"},
+        {"id": "no-ceiling-increase", "contains": "`human-review/` 不提升 claim ceiling。"},
+        {"id": "read-only-projection", "contains": "只是 P1/P2/P3 数据链的只读人工审阅投影"}
+      ]
+    }
+  ],
+  "architecture_tree": [
+    {
+      "id": "wff-system",
+      "name": "WFF Engineering Lifecycle System",
+      "kind": "system",
+      "parent_id": "",
+      "responsibility": "Coordinate evidence-linked software lifecycle work for AI agents through bounded routes, phase handoffs, support capabilities, and claim ceilings.",
+      "non_responsibilities": ["It does not replace product, architecture, implementation, or acceptance judgment with one deterministic script."],
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "The product description and control matrix consistently define a lifecycle framework whose value comes from decomposition, handoff, and evidence rather than one monolithic generator.",
+      "evidence_refs": ["readme-product.framework-purpose", "readme-product.decomposition-method", "orientation.control-boundary", "agents-control.workflow-order"]
+    },
+    {
+      "id": "routing",
+      "name": "Admission and Route Control",
+      "kind": "route",
+      "parent_id": "wff-system",
+      "responsibility": "Determine whether work enters WFF, which external route applies, and whether downstream continuation has an accepted WFF-native handoff.",
+      "non_responsibilities": ["It does not create missing product or architecture truth while routing."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The router skill names exactly three external routes and separates them from internal continuation routes.",
+      "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only", "readme-product.three-entries"]
+    },
+    {
+      "id": "external-entry-routing",
+      "name": "External Entry Routing",
+      "kind": "route",
+      "parent_id": "routing",
+      "responsibility": "Route rough material to requirements intake, stable demand to formal P1, and code-backed existing systems to PhaseX.",
+      "non_responsibilities": ["It does not expose P2, P3, or P4 as direct external entry routes."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The external route table explicitly binds input state to wff-req-chat, wff-req, or wff-x.",
+      "evidence_refs": ["using-wff-route.rough-route", "using-wff-route.stable-route", "using-wff-route.existing-route", "orientation.entry-boundary"]
+    },
+    {
+      "id": "internal-continuation",
+      "name": "Accepted Handoff Continuation",
+      "kind": "route",
+      "parent_id": "routing",
+      "responsibility": "Permit P2, P3, and P4 only when their required WFF-native upstream artifacts and evidence are accepted.",
+      "non_responsibilities": ["It does not promote standalone non-WFF documents into accepted downstream truth."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The continuation table explicitly requires accepted P1, P2, and P3 handoff surfaces.",
+      "evidence_refs": ["using-wff-route.internal-only", "using-wff-route.p1-to-p2", "using-wff-route.p2-to-p3", "using-wff-route.p3-to-p4"]
+    },
+    {
+      "id": "greenfield-lifecycle",
+      "name": "P1-P4 Greenfield Mainline",
+      "kind": "lifecycle",
+      "parent_id": "wff-system",
+      "responsibility": "Move accepted demand through requirements, architecture, implementation, and validation closure with explicit handoffs and evidence.",
+      "non_responsibilities": ["It does not treat mechanical completion of every phase as production approval."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The orientation map names the P1-P4 mainline and the downstream phase skills define their distinct ownership.",
+      "evidence_refs": ["orientation.greenfield-route", "responsibility-matrix.phase-p1", "responsibility-matrix.phase-p2", "responsibility-matrix.phase-p3", "responsibility-matrix.phase-p4"]
+    },
+    {
+      "id": "pre-phase1-intake",
+      "name": "Pre-P1 Requirements Intake",
+      "kind": "phase",
+      "parent_id": "greenfield-lifecycle",
+      "responsibility": "Turn rough ideas and mixed source material into a truth-state-marked P1 source brief and admission decision.",
+      "non_responsibilities": ["It does not generate the official PRD or claim P1 completion."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "wff-req-chat declares itself a pre-Phase-1 intake and explicitly rejects PRD authority.",
+      "evidence_refs": ["req-chat-entry.pre-phase1", "req-chat-entry.not-prd", "req-chat-entry.source-brief"]
+    },
+    {
+      "id": "phase1-requirements",
+      "name": "Phase 1 Product Requirements",
+      "kind": "phase",
+      "parent_id": "greenfield-lifecycle",
+      "responsibility": "Own product truth, business pressure, scope, acceptance intent, and the design handoff while preserving source authority and visible gaps.",
+      "non_responsibilities": ["It does not decide architecture, database, code, or implementation plan."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The official P1 skill states its truth authority and evidence-capped boundary, and the committed runner implements source admission, orchestration, and gate-command construction.",
+      "evidence_refs": ["phase1-entry.official-entry", "phase1-entry.product-truth", "phase1-entry.preserve-authority", "phase1-entry.evidence-capped", "phase1-runtime.source-admission", "phase1-runtime.orchestration-parser", "phase1-runtime.gate-command"]
+    },
+    {
+      "id": "phase2-architecture",
+      "name": "Phase 2 Design and Architecture",
+      "kind": "phase",
+      "parent_id": "greenfield-lifecycle",
+      "responsibility": "Translate accepted P1 truth into architecture boundaries, risk posture, data/API contracts, and implementation-facing handoff.",
+      "non_responsibilities": ["It does not rediscover product truth or treat machine pass as architecture value."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P2 entry names architecture ownership and requires P1 truth as upstream authority; the runtime implements source admission, the mainline, and claim-control sidecars.",
+      "evidence_refs": ["phase2-entry.official-entry", "phase2-entry.architecture-owner", "phase2-entry.upstream-authority", "phase2-entry.machine-pass-limit", "phase2-runtime.source-admission", "phase2-runtime.mainline", "phase2-runtime.claim-sidecars"]
+    },
+    {
+      "id": "phase3-implementation",
+      "name": "Phase 3 Implementation Delivery",
+      "kind": "phase",
+      "parent_id": "greenfield-lifecycle",
+      "responsibility": "Turn accepted P2 contracts into bounded runnable implementation, tests, runtime evidence, and delivery handoff.",
+      "non_responsibilities": ["It does not invent missing product or architecture truth or equate script pass with delivery readiness."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P3 entry explicitly requires accepted P2 input, bounded packages, prior failing tests, and weakest-evidence claim capping; the runtime implements source admission, mainline execution, and generated-output contamination checks.",
+      "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.return-upstream", "phase3-entry.failing-tests", "phase3-entry.bounded-packages", "phase3-entry.weakest-evidence", "phase3-runtime.source-admission", "phase3-runtime.mainline", "phase3-runtime.output-contamination"]
+    },
+    {
+      "id": "phase4-validation",
+      "name": "Phase 4 Validation Closure",
+      "kind": "phase",
+      "parent_id": "greenfield-lifecycle",
+      "responsibility": "Read upstream delivery evidence, judge closure under a claim ceiling, and route defects to their owning phase with a minimum rerun boundary.",
+      "non_responsibilities": ["It does not mutate upstream artifacts, repair missing truth, or grant production approval without external evidence."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P4 entry defines read-only validation, review-bound missing evidence, explicit production exclusions, and ownership routing; the runner implements source admission, mainline execution, and claim-control emission.",
+      "evidence_refs": ["phase4-entry.read-only", "phase4-entry.missing-review-bound", "phase4-entry.external-production", "phase4-entry.route-owner", "phase4-runtime.source-admission", "phase4-runtime.mainline", "phase4-runtime.claim-control"]
+    },
+    {
+      "id": "brownfield-route",
+      "name": "PhaseX Brownfield Assessment",
+      "kind": "route",
+      "parent_id": "wff-system",
+      "responsibility": "Establish code-backed current-system facts, uncertainty, compatibility constraints, risks, safety nets, and an honest re-entry route.",
+      "non_responsibilities": ["It is not a default phase after P4 and does not accept standalone documents as system truth."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The PhaseX skill defines itself as a code-backed side route and requires fact/inference/unknown separation plus safety-net planning; the validator distinguishes authored-valid cases and rejects legacy PX-SK surfaces.",
+      "evidence_refs": ["phasex-entry.official-entry", "phasex-entry.sidecar-route", "phasex-entry.code-backed", "phasex-entry.truth-separation", "phasex-entry.safety-net", "phasex-runtime.case-inspection", "phasex-runtime.authored-valid", "phasex-runtime.legacy-reject"]
+    },
+    {
+      "id": "shared-support",
+      "name": "Shared Lifecycle Support",
+      "kind": "support",
+      "parent_id": "wff-system",
+      "responsibility": "Provide reusable project context, traceability, reader translation, and interaction-map capabilities consumed across routes and phases.",
+      "non_responsibilities": ["Support capabilities do not become new lifecycle phases or content-truth owners."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The skill catalog and install-profile configuration explicitly register these four cross-phase support capabilities and their composition packages.",
+      "evidence_refs": ["skill-catalog.project-context", "skill-catalog.traceability", "skill-catalog.reader-translation", "skill-catalog.interaction-map", "install-profiles.project-context-package", "install-profiles.traceability-package", "install-profiles.reader-package", "install-profiles.interaction-package"]
+    },
+    {
+      "id": "project-context-support",
+      "name": "Durable Project Context",
+      "kind": "support",
+      "parent_id": "shared-support",
+      "responsibility": "Maintain concise durable project facts, constraints, references, and conflict notes that help agents make cross-task judgments.",
+      "non_responsibilities": ["It does not replace P1-P4/PX truth or silently override human-maintained context."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The project-context skill names its maintained artifact, durable-context purpose, non-authoritative status, and conflict-routing behavior.",
+      "evidence_refs": ["project-context.maintains-context", "project-context.durable-facts", "project-context.not-formal-truth", "project-context.conflict-routing"]
+    },
+    {
+      "id": "traceability-support",
+      "name": "Artifact Identity and Traceability",
+      "kind": "support",
+      "parent_id": "shared-support",
+      "responsibility": "Manage canonical IDs, file and anchor bindings, upstream/downstream links, integrity checks, and project-bound derived registry records.",
+      "non_responsibilities": ["It does not replace documents as source truth or derive accepted claims from rendered projections."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The traceability skill explicitly separates document meaning from registry identity/link ownership and keeps SQLite derived and project-bound.",
+      "evidence_refs": ["traceability.registry-mechanism", "traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "reader-translation-support",
+      "name": "Localized Reader Translation",
+      "kind": "support",
+      "parent_id": "shared-support",
+      "responsibility": "Produce reader-facing localized editions of canonical lifecycle artifacts while preserving technical anchors, facts, decisions, and claim ceilings.",
+      "non_responsibilities": ["It does not replace the canonical source or add validation, UAT, sign-off, or production claims."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The reader-translation contract defines a release-facing localized projection with canonical authority and explicit non-escalation rules.",
+      "evidence_refs": ["reader-translation.release-facing", "reader-translation.canonical-authority", "reader-translation.reader-edition", "reader-translation.no-claim-upgrade"]
+    },
+    {
+      "id": "interaction-map-support",
+      "name": "Interaction Map Rendering",
+      "kind": "support",
+      "parent_id": "shared-support",
+      "responsibility": "Validate and render source-labeled P1/P2 interaction-map packets as deterministic human-review projections.",
+      "non_responsibilities": ["It does not author product or architecture truth, accept evidence, operate a gate, or raise claim ceilings."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The interaction-map skill defines an optional rendering companion whose validation is structural and whose renderer owns projection only.",
+      "evidence_refs": ["interaction-map.optional-companion", "interaction-map.no-authority", "interaction-map.structure-only", "interaction-map.mechanical-projection"]
+    },
+    {
+      "id": "assurance",
+      "name": "Evidence and Assurance",
+      "kind": "assurance",
+      "parent_id": "wff-system",
+      "responsibility": "Capture tests, traces, runtime proof, validation reports, review surfaces, and formal gates that prove or cap claims.",
+      "non_responsibilities": ["Assurance does not create product, architecture, or implementation truth."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The governance matrix assigns proof and claim ceilings to Evidence/Gates and explicitly forbids content-truth creation.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row", "responsibility-matrix.pseudo-agentic"]
+    },
+    {
+      "id": "human-review-projection",
+      "name": "AI / External Review Projection",
+      "kind": "assurance",
+      "parent_id": "assurance",
+      "responsibility": "Provide an additive human-readable review entry over canonical artifacts, evidence, risks, and review-bound decisions.",
+      "non_responsibilities": ["It does not replace canonical artifacts, become gate truth, or raise the claim ceiling."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The public review-surface contract states that canonical paths remain authoritative and the projection is additive and non-escalating.",
+      "evidence_refs": ["human-review.additive-surface", "human-review.canonical-unchanged", "human-review.no-replace", "human-review.no-ceiling-increase", "human-review.read-only-projection"]
+    },
+    {
+      "id": "distribution",
+      "name": "Capability Packaging and Distribution",
+      "kind": "distribution",
+      "parent_id": "wff-system",
+      "responsibility": "Compose skills and resource modules into install profiles and release packages for specific user or maintainer scenarios.",
+      "non_responsibilities": ["Packaging does not alter lifecycle truth or prove universal standalone installability."],
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "The profile configuration organizes capability packages, resource modules, and scenario profiles, while the builder implements profile selection, script dependency closure, and content-policy trimming under governance claim limits.",
+      "evidence_refs": ["install-profiles.default-profile", "agents-control.profile-boundary", "orientation.profile-no-methodology", "readme-product.install-unit", "install-builder.build-entry", "install-builder.profile-selection", "install-builder.dependency-closure", "install-builder.content-policy"]
+    },
+    {
+      "id": "role-agent-adaptation",
+      "name": "Role-Agent Adaptation",
+      "kind": "support",
+      "parent_id": "distribution",
+      "responsibility": "Export role-oriented entry surfaces that route users back to existing WFF skills, profiles, and evidence boundaries.",
+      "non_responsibilities": ["Role agents do not replace phase responsibility, source truth, architecture truth, implementation truth, or evidence gates."],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Governance and orientation consistently define role agents as optional adapters rather than a new runtime or methodology.",
+      "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter", "skill-catalog.role-agent", "install-profiles.role-package"]
+    }
+  ],
+  "responsibility_map": [
+    {
+      "id": "workflow-control",
+      "subject": "Global engineering order",
+      "owner": "Workflow",
+      "responsibility": "Own lifecycle route selection, stage order, required inputs/outputs, handoff contracts, return paths, repeatable execution, and evidence capture.",
+      "non_responsibilities": ["Business truth", "Architecture trade-offs", "Implementation meaning", "Generated code and test body content"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The governing control matrix assigns global order and interfaces to Workflow and excludes content truth.",
+      "evidence_refs": ["agents-control.workflow-order", "responsibility-matrix.workflow-row"]
+    },
+    {
+      "id": "agentic-control",
+      "subject": "Uncertainty and engineering judgment",
+      "owner": "Agentic reasoning",
+      "responsibility": "Interpret source truth, judge context sufficiency, decide product and architecture semantics, author implementation meaning, and perform bounded review judgment.",
+      "non_responsibilities": ["Formal proof", "Claim escalation", "Skipping required evidence", "Unbounded hidden side effects"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The governing control matrix directly assigns uncertainty and semantic judgment to Agentic reasoning.",
+      "evidence_refs": ["agents-control.agentic-judgment", "responsibility-matrix.agentic-row"]
+    },
+    {
+      "id": "template-control",
+      "subject": "Depth and review guidance",
+      "owner": "Templates / TVG",
+      "responsibility": "Ask bounded questions, direct output depth, and surface review concerns where agentic work risks becoming shallow.",
+      "non_responsibilities": ["Deciding answers", "Replacing Agentic judgment", "Creating hidden workflow control", "Owning pass/fail truth"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Governance explicitly limits Templates/TVG to direction and depth without answer authority.",
+      "evidence_refs": ["agents-control.template-boundary", "responsibility-matrix.template-row"]
+    },
+    {
+      "id": "evidence-control",
+      "subject": "Proof and formal claim state",
+      "owner": "Evidence / Gates",
+      "responsibility": "Prove behavior and execution, expose defects, route failures, and cap formal claims according to available evidence.",
+      "non_responsibilities": ["Creating content truth", "Automatically repairing outputs", "Equating script pass with product or architecture quality"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Governance gives Evidence/Gates proof authority but expressly denies content-truth ownership.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row", "responsibility-matrix.pseudo-agentic"]
+    },
+    {
+      "id": "route-control",
+      "subject": "External admission and downstream continuation",
+      "owner": "using-wff route layer",
+      "responsibility": "Select among requirements intake, formal P1, and code-backed PhaseX, and require accepted upstream artifacts for P2-P4 continuation.",
+      "non_responsibilities": ["Direct external P2/P3/P4 entry", "Promotion of standalone non-WFF artifacts into accepted truth"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The route skill defines only three external entries and a separate accepted-handoff continuation table.",
+      "evidence_refs": ["using-wff-route.external-only", "using-wff-route.internal-only", "using-wff-route.p1-to-p2", "using-wff-route.p2-to-p3", "using-wff-route.p3-to-p4"]
+    },
+    {
+      "id": "p1-control",
+      "subject": "Product requirements truth",
+      "owner": "Phase 1 / wff-req",
+      "responsibility": "Own product truth, business pressure, scope, acceptance intent, source-authority preservation, and design handoff.",
+      "non_responsibilities": ["Architecture design", "Database decisions", "Implementation planning", "Production approval"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P1 skill explicitly names product-truth authority and evidence-capped outputs.",
+      "evidence_refs": ["phase1-entry.product-truth", "phase1-entry.preserve-authority", "phase1-entry.evidence-capped"]
+    },
+    {
+      "id": "p2-control",
+      "subject": "Architecture and design truth",
+      "owner": "Phase 2 / wff-arch",
+      "responsibility": "Own architecture translation, boundaries, risk posture, data/API contracts, dependencies, and implementation handoff from accepted P1 truth.",
+      "non_responsibilities": ["Rediscovering product truth", "Making machine pass equal architecture value", "Implementation body generation"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P2 skill assigns architecture ownership and binds it to accepted P1 authority.",
+      "evidence_refs": ["phase2-entry.architecture-owner", "phase2-entry.upstream-authority", "phase2-entry.machine-pass-limit"]
+    },
+    {
+      "id": "p3-control",
+      "subject": "Runnable implementation delivery",
+      "owner": "Phase 3 / wff-impl",
+      "responsibility": "Own bounded implementation packages, tests, runtime evidence, and delivery handoff under accepted P2 contracts.",
+      "non_responsibilities": ["Inventing product truth", "Inventing architecture truth", "Claiming readiness beyond the weakest evidence"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P3 skill requires accepted P2 input, returns upstream on missing truth, and caps claims by evidence.",
+      "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.return-upstream", "phase3-entry.weakest-evidence"]
+    },
+    {
+      "id": "p4-control",
+      "subject": "Validation closure and remediation routing",
+      "owner": "Phase 4 / wff-validation",
+      "responsibility": "Consume upstream evidence read-only, judge validation closure, preserve review-bound gaps, and route defects to the responsible phase.",
+      "non_responsibilities": ["Mutating Phase 3", "Repairing missing evidence", "Granting production or owner approval without external proof"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P4 skill defines a read-only validation and routing boundary with explicit external-evidence exclusions.",
+      "evidence_refs": ["phase4-entry.read-only", "phase4-entry.missing-review-bound", "phase4-entry.external-production", "phase4-entry.route-owner"]
+    },
+    {
+      "id": "px-control",
+      "subject": "Existing-system truth and re-entry",
+      "owner": "PhaseX / wff-x",
+      "responsibility": "Recover code-backed current-state facts, separate uncertainty, identify compatibility risk and safety nets, and recommend the honest P1/P2/P3/protect-first route.",
+      "non_responsibilities": ["Default post-P4 execution", "Treating standalone documents as system truth", "Replacing downstream phase authority"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The PhaseX skill declares a code-backed side route and explicit fact/uncertainty/safety-net responsibilities.",
+      "evidence_refs": ["phasex-entry.sidecar-route", "phasex-entry.code-backed", "phasex-entry.truth-separation", "phasex-entry.safety-net"]
+    },
+    {
+      "id": "project-context-control",
+      "subject": "Durable project context",
+      "owner": "wff-project-context",
+      "responsibility": "Maintain concise cross-task project facts, constraints, reference entry points, and explicit conflict notes in `.wff/PROJECT_CONTEXT.md`.",
+      "non_responsibilities": ["P1 product truth", "P2 architecture truth", "P3/PX runtime truth", "P4 claim ceilings", "Silent override of human context"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The project-context contract explicitly defines both the maintained surface and its non-authoritative lifecycle boundary.",
+      "evidence_refs": ["project-context.maintains-context", "project-context.durable-facts", "project-context.not-formal-truth", "project-context.conflict-routing"]
+    },
+    {
+      "id": "traceability-control",
+      "subject": "Artifact identity and links",
+      "owner": "wff-base-traceability-management",
+      "responsibility": "Own canonical artifact IDs, file/anchor bindings, dependency links, integrity checks, and a derived project-bound registry.",
+      "non_responsibilities": ["Document meaning", "Accepted claim derivation", "Automatic claim correction", "Global multi-project truth database"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The traceability contract explicitly states that documents own meaning while the registry owns identity, bindings, and link integrity.",
+      "evidence_refs": ["traceability.registry-mechanism", "traceability.documents-source", "traceability.identity-owner", "traceability.derived-sqlite"]
+    },
+    {
+      "id": "reader-translation-control",
+      "subject": "Localized reader editions",
+      "owner": "wff-base-reader-translation",
+      "responsibility": "Translate canonical lifecycle artifacts into reader-facing localized editions while preserving technical anchors and factual/claim fidelity.",
+      "non_responsibilities": ["Canonical source authority", "New external validation", "UAT or sign-off claims", "Production-readiness escalation"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The reader-translation contract explicitly keeps canonical authority and forbids claim upgrades.",
+      "evidence_refs": ["reader-translation.release-facing", "reader-translation.canonical-authority", "reader-translation.reader-edition", "reader-translation.no-claim-upgrade"]
+    },
+    {
+      "id": "interaction-map-control",
+      "subject": "Interaction-map validation and rendering",
+      "owner": "wff-interaction-map",
+      "responsibility": "Perform structural packet validation, deterministic layout checks, and mechanical HTML/SVG projection for human review.",
+      "non_responsibilities": ["Lifecycle phase authority", "Content authorship", "Evidence acceptance", "Gate or claim authority"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The interaction-map contract sharply limits its scripts to structure, layout, and mechanical projection.",
+      "evidence_refs": ["interaction-map.optional-companion", "interaction-map.no-authority", "interaction-map.structure-only", "interaction-map.mechanical-projection"]
+    },
+    {
+      "id": "packaging-control",
+      "subject": "Scenario packaging",
+      "owner": "Install profiles and release packaging",
+      "responsibility": "Compose capability packages, skills, scripts, templates, reference packages, and resource modules for supported scenarios.",
+      "non_responsibilities": ["Changing lifecycle responsibility", "Proving every skill standalone-installable", "Creating a second methodology"],
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "The configuration explicitly models capability packages and profiles, while governance defines packaging as a supported surface rather than proof of universal independence.",
+      "evidence_refs": ["install-profiles.default-profile", "install-profiles.phase1-package", "install-profiles.phase2-package", "install-profiles.phase3-package", "install-profiles.phase4-package", "agents-control.profile-boundary", "orientation.profile-no-methodology"]
+    },
+    {
+      "id": "review-control",
+      "subject": "Human-readable review projection",
+      "owner": "Human Review surface",
+      "responsibility": "Project canonical artifacts and evidence into a prioritized review entry while preserving source paths, risks, and review-bound decisions.",
+      "non_responsibilities": ["Replacing canonical artifacts", "Becoming trace or gate truth", "Increasing claim ceiling"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The review contract repeatedly identifies the surface as additive, read-only, and non-escalating.",
+      "evidence_refs": ["human-review.canonical-unchanged", "human-review.no-replace", "human-review.no-ceiling-increase", "human-review.read-only-projection"]
+    },
+    {
+      "id": "role-control",
+      "subject": "Role-oriented user entry",
+      "owner": "Role-agent adapter",
+      "responsibility": "Expose PM, architect, programmer, QA, and reviewer-style entry surfaces over the existing skill/profile system.",
+      "non_responsibilities": ["New LLM runtime", "Phase responsibility replacement", "Truth or gate replacement"],
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Governance and orientation define role agents as optional entry/adaptation surfaces.",
+      "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter", "skill-catalog.role-agent"]
+    }
+  ],
+  "implementation_intents": [
+    {
+      "id": "bounded-context-intent",
+      "subject": "Bounded context instead of monolithic prompting",
+      "statement": "WFF is designed to reduce long-context failure by decomposing work into bounded phases and modules whose outputs reconnect through explicit evidence and handoffs.",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "The product README directly explains decomposition and evidence linkage as the mechanism for avoiding context loss, while the route and phase model operationalize that mechanism.",
+      "evidence_refs": ["readme-product.decomposition-method", "orientation.greenfield-route", "agents-control.workflow-order"]
+    },
+    {
+      "id": "source-authority-intent",
+      "subject": "Source truth remains upstream authority",
+      "statement": "Each phase is intended to consume accepted upstream truth, preserve unresolved gaps, and return rather than invent missing product or architecture meaning.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "P1, P2, and P3 contracts explicitly preserve source authority and require upstream return on missing truth.",
+      "evidence_refs": ["phase1-entry.preserve-authority", "phase2-entry.upstream-authority", "phase3-entry.return-upstream", "using-wff-route.internal-only"]
+    },
+    {
+      "id": "agentic-middle-intent",
+      "subject": "Agentic reasoning owns the semantic middle",
+      "statement": "The framework intentionally uses workflow and schemas for order and evidence while reserving uncertain product, architecture, implementation, and review judgment for an agentic layer.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The highest project principle and responsibility matrix explicitly divide these control responsibilities.",
+      "evidence_refs": ["agents-control.workflow-order", "agents-control.agentic-judgment", "agents-control.template-boundary", "agents-control.evidence-ceiling", "responsibility-matrix.agentic-row"]
+    },
+    {
+      "id": "runtime-boundary-intent",
+      "subject": "Lifecycle contracts are backed by executable boundary controls",
+      "statement": "The committed P1-P4 runtime surfaces implement source-admission checks and phase-specific gate, claim-control, or contamination-control paths rather than leaving those boundaries only in prose.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The admitted runner implementations contain explicit source-admission functions and concrete gate, claim-control, mainline, or generated-output contamination paths for each phase.",
+      "evidence_refs": ["phase1-runtime.source-admission", "phase1-runtime.gate-command", "phase2-runtime.source-admission", "phase2-runtime.claim-sidecars", "phase3-runtime.source-admission", "phase3-runtime.output-contamination", "phase4-runtime.source-admission", "phase4-runtime.claim-control"]
+    },
+    {
+      "id": "implementation-proof-intent",
+      "subject": "Implementation progresses through bounded work and evidence",
+      "statement": "Phase 3 is intended to freeze accepted contracts, establish failing tests, implement bounded packages, and accumulate differentiated test/runtime/delivery evidence before raising formal state.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P3 entry directly names failing tests, bounded packages, runnable delivery, and weakest-evidence capping.",
+      "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.failing-tests", "phase3-entry.bounded-packages", "phase3-entry.weakest-evidence"]
+    },
+    {
+      "id": "read-only-validation-intent",
+      "subject": "Validation is read-only and route-producing",
+      "statement": "Phase 4 is intended to consume and judge inherited evidence without silently repairing upstream artifacts, then return deficiencies to the phase that owns them.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P4 contract explicitly defines read-only operation, review-bound missing evidence, and routed remediation ownership.",
+      "evidence_refs": ["phase4-entry.read-only", "phase4-entry.missing-review-bound", "phase4-entry.route-owner"]
+    },
+    {
+      "id": "configuration-packaging-intent",
+      "subject": "Distribution is configuration-led capability composition",
+      "statement": "Install packaging is intended to compose stable capability packages and resource modules into scenario-specific profiles without redefining lifecycle semantics.",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "The profile configuration explicitly separates capability packages, profiles, and resource modules, and the public orientation document denies that profiles create a new methodology.",
+      "evidence_refs": ["install-profiles.default-profile", "install-profiles.usage-router", "install-profiles.phase1-package", "install-profiles.phase2-package", "install-profiles.phase3-package", "install-profiles.phase4-package", "orientation.profile-no-methodology"]
+    },
+    {
+      "id": "review-projection-intent",
+      "subject": "Human Review is an additive decision surface",
+      "statement": "The Human Review lane is intended to make canonical artifacts and evidence easier to judge without becoming a second source of lifecycle, trace, or gate truth.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The review contract explicitly preserves canonical paths and labels the dossier as a read-only projection with no claim-ceiling increase.",
+      "evidence_refs": ["human-review.additive-surface", "human-review.canonical-unchanged", "human-review.no-replace", "human-review.no-ceiling-increase", "human-review.read-only-projection"]
+    }
+  ],
+  "assurance_ownership": [
+    {
+      "id": "test-assurance",
+      "subject": "Implementation behavior proof",
+      "owner": "Tests and implementation evidence",
+      "responsibility": "Demonstrate behavior, contracts, scenarios, persistence, and bounded runtime outcomes produced by implementation work.",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "P3 owns runnable implementation and differentiated evidence, while the global matrix assigns proof rather than content truth to Evidence/Gates.",
+      "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.failing-tests", "agents-control.evidence-ceiling", "responsibility-matrix.evidence-row"]
+    },
+    {
+      "id": "runtime-assurance",
+      "subject": "Execution claim proof",
+      "owner": "Runtime evidence",
+      "responsibility": "Support claims that generated implementation actually executes in the tested environment and expose missing infrastructure or UI evidence.",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "P3 distinguishes runtime and weakest-evidence boundaries, and WFF describes Harness evidence as execution proof rather than complete delivery truth.",
+      "evidence_refs": ["phase3-entry.runnable-delivery", "phase3-entry.weakest-evidence", "readme-product.decomposition-method"]
+    },
+    {
+      "id": "gate-assurance",
+      "subject": "Formal state and claim ceiling",
+      "owner": "Evidence / Gates",
+      "responsibility": "Block, route, or cap formal state based on traces, tests, runtime proof, validation reports, and unresolved defects.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The governing control model directly assigns this authority to Evidence/Gates.",
+      "evidence_refs": ["agents-control.evidence-ceiling", "responsibility-matrix.evidence-row"]
+    },
+    {
+      "id": "validation-assurance",
+      "subject": "Cross-evidence closure judgment",
+      "owner": "Phase 4",
+      "responsibility": "Aggregate inherited evidence read-only, classify missing proof, determine the bounded closure state, and route remediation.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The P4 contract names read-only validation and explicit routing responsibilities.",
+      "evidence_refs": ["phase4-entry.read-only", "phase4-entry.missing-review-bound", "phase4-entry.route-owner"]
+    },
+    {
+      "id": "human-review-assurance",
+      "subject": "Independent decision readability",
+      "owner": "AI / external reviewer through Human Review surface",
+      "responsibility": "Help a reviewer inspect canonical decisions, sources, risks, evidence, and review questions without replacing the underlying artifacts or formal gates.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The Human Review contract defines an additive, source-preserving, non-escalating projection.",
+      "evidence_refs": ["human-review.canonical-unchanged", "human-review.no-replace", "human-review.no-ceiling-increase", "human-review.read-only-projection"]
+    },
+    {
+      "id": "architecture-review-assurance",
+      "subject": "Architecture decision quality",
+      "owner": "Agentic architecture judgment plus review evidence",
+      "responsibility": "Judge architecture trade-offs and unresolved risk while using structural checks and source links as evidence rather than answer generators.",
+      "knowledge_state": "inferred-knowledge",
+      "confidence": "high",
+      "rationale": "The responsibility matrix assigns architecture trade-offs to Agentic reasoning, P2 limits machine-pass authority, and Evidence/Gates remain proof owners.",
+      "evidence_refs": ["responsibility-matrix.agentic-row", "phase2-entry.architecture-owner", "phase2-entry.machine-pass-limit", "responsibility-matrix.evidence-row"]
+    }
+  ],
+  "constraints": [
+    {
+      "id": "external-entry-constraint",
+      "subject": "External route boundary",
+      "statement": "Only wff-req-chat, wff-req, and wff-x are external WFF entry routes; P2, P3, and P4 require accepted WFF-native upstream artifacts.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Both the public README and router skill state this boundary explicitly.",
+      "evidence_refs": ["readme-product.three-entries", "using-wff-route.external-only", "using-wff-route.internal-only"]
+    },
+    {
+      "id": "content-truth-constraint",
+      "subject": "Deterministic control cannot own semantic truth",
+      "statement": "Workflow, templates, schemas, validators, reports, and gates must not replace agentic ownership of uncertain product, architecture, or implementation meaning.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The highest project principle and responsibility matrix explicitly prohibit this drift.",
+      "evidence_refs": ["agents-control.agentic-judgment", "agents-control.template-boundary", "agents-control.evidence-ceiling", "responsibility-matrix.pseudo-agentic"]
+    },
+    {
+      "id": "claim-ceiling-constraint",
+      "subject": "Default release claim ceiling",
+      "statement": "Default WFF evidence supports development or pre-production workflow claims, not real UAT, production approval, owner sign-off, go-live, or production risk acceptance unless named external evidence exists.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Repository governance and the P4 contract explicitly list excluded production-level claims.",
+      "evidence_refs": ["agents-control.release-ceiling", "phase4-entry.external-production", "orientation.p4-not-production"]
+    },
+    {
+      "id": "role-agent-constraint",
+      "subject": "Role-agent authority ceiling",
+      "statement": "Role agents are optional entry/adaptation surfaces and cannot replace phase responsibility, source truth, architecture truth, implementation truth, evidence gates, or claim ceilings.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "This boundary is explicit in governance and the public orientation map.",
+      "evidence_refs": ["agents-control.role-boundary", "orientation.role-adapter"]
+    },
+    {
+      "id": "profile-constraint",
+      "subject": "Install-profile authority ceiling",
+      "statement": "Install profiles and scenario packages are composition surfaces; they do not define a new lifecycle methodology or prove that every skill is independently installable.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "Governance and public documentation explicitly constrain profile claims.",
+      "evidence_refs": ["agents-control.profile-boundary", "orientation.profile-no-methodology", "readme-product.install-unit"]
+    },
+    {
+      "id": "human-review-constraint",
+      "subject": "Human Review projection ceiling",
+      "statement": "Human Review outputs remain read-only projections over canonical artifacts and cannot replace trace/gate truth or increase claim ceilings.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The review contract explicitly states these non-ownership boundaries.",
+      "evidence_refs": ["human-review.no-replace", "human-review.no-ceiling-increase", "human-review.read-only-projection"]
+    },
+    {
+      "id": "brownfield-constraint",
+      "subject": "Brownfield evidence admission",
+      "statement": "PhaseX requires code, runtime, or system facts; standalone PRDs, diagrams, API notes, test reports, or other documents are supporting material rather than sufficient current-system truth.",
+      "knowledge_state": "observed-fact",
+      "confidence": "verified",
+      "rationale": "The public README and PhaseX contract both define a code-backed assessment boundary.",
+      "evidence_refs": ["readme-product.brownfield-code-backed", "phasex-entry.code-backed"]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "production-readiness-unknown",
+      "subject": "Production readiness and real UAT",
+      "statement": "The v1.6.2 repository evidence inspected by this baseline does not establish real UAT, production approval, go-live readiness, owner sign-off, or production risk acceptance.",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "rationale": "Governance explicitly caps default claims below these states; absence of such authority is retained as an unknown rather than inferred success.",
+      "evidence_refs": ["agents-control.release-ceiling", "phase4-entry.external-production", "orientation.p4-not-production"]
+    },
+    {
+      "id": "deployment-topology-unknown",
+      "subject": "Authoritative production deployment topology",
+      "statement": "This Phase 1 architecture memory does not establish an authoritative organization-specific production deployment topology, operational ownership model, or live environment inventory.",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "rationale": "The selected evidence describes framework routes, capabilities, packaging, and claim controls rather than a deployed production instance.",
+      "evidence_refs": ["readme-product.framework-purpose", "agents-control.release-ceiling"]
+    },
+    {
+      "id": "business-owner-unknown",
+      "subject": "External business and organizational ownership",
+      "statement": "The repository-level architecture evidence does not identify real project-specific business owners, approval authorities, budgets, or production operators for downstream WFF use cases.",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "rationale": "WFF defines lifecycle responsibilities and evidence boundaries, but those are not substitutes for external business ownership evidence.",
+      "evidence_refs": ["agents-control.release-ceiling", "phase1-entry.product-truth"]
+    },
+    {
+      "id": "standalone-skill-unknown",
+      "subject": "Universal standalone skill installability",
+      "statement": "The baseline does not prove that each individual WFF skill can operate as an independently installable unit without its declared support resources and profile composition.",
+      "knowledge_state": "unknown",
+      "confidence": "not-applicable",
+      "rationale": "The documented install unit is a complete skill directory plus support resources, and governance explicitly denies universal standalone-installability claims.",
+      "evidence_refs": ["readme-product.install-unit", "agents-control.profile-boundary"]
+    }
+  ],
+  "claim_ceiling": "This snapshot reconstructs a bounded, evidence-linked architecture memory for the fixed WFF v1.6.2 Git tree. It supports orientation, responsibility, implementation-intent, assurance-ownership, and constraint understanding for the named baseline only. It does not prove exhaustive architecture completeness, author intent beyond labeled inference, runtime or production readiness, real UAT, owner sign-off, universal standalone skill installability, capability reuse fitness, architecture evolution, or future change impact."
+}

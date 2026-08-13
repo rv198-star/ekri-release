@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EKRI v1.1 Mission Exploration Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "authority_mode",
+    "materialization_class",
+    "plan_id",
+    "plan_revision",
+    "mission_context_fingerprint",
+    "sufficiency_report_fingerprint",
+    "target",
+    "repository_environment_fingerprint",
+    "environment_interpretation",
+    "priority_order",
+    "priority_rationale",
+    "slices",
+    "deferred_nonblocking_question_ids",
+    "budget",
+    "stop_conditions",
+    "return_conditions",
+    "forbidden_claims",
+    "claim_ceiling",
+    "plan_fingerprint"
+  ],
+  "properties": {
+    "schema_version": {"const": "ekri.mission-exploration-plan.v1"},
+    "status": {"const": "mission-exploration-plan-ready"},
+    "authority_mode": {"const": "acquisition-non-authoritative"},
+    "materialization_class": {"const": "ephemeral-rebuildable-control-record"},
+    "plan_id": {"type": "string", "minLength": 1},
+    "plan_revision": {"type": "integer", "minimum": 1},
+    "mission_context_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sufficiency_report_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "target": {"type": "object"},
+    "repository_environment_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "environment_interpretation": {"type": "string", "minLength": 1},
+    "priority_order": {"type": "array", "uniqueItems": true},
+    "priority_rationale": {"type": "object"},
+    "slices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slice_id",
+          "question_ids",
+          "operator_id",
+          "scope_refs",
+          "expected_information_gain",
+          "required_evidence_kinds",
+          "slice_budget",
+          "success_condition",
+          "failure_posture"
+        ],
+        "properties": {
+          "slice_id": {"type": "string", "minLength": 1},
+          "question_ids": {"type": "array", "minItems": 1, "uniqueItems": true},
+          "operator_id": {"type": "string", "minLength": 1},
+          "scope_refs": {"type": "array", "minItems": 1, "uniqueItems": true},
+          "expected_information_gain": {"type": "string", "minLength": 1},
+          "required_evidence_kinds": {"type": "array", "minItems": 1, "uniqueItems": true},
+          "slice_budget": {"type": "object"},
+          "success_condition": {"type": "string", "minLength": 1},
+          "failure_posture": {"enum": ["record-unknown", "record-conflicting", "return-remediate", "block"]}
+        }
+      }
+    },
+    "deferred_nonblocking_question_ids": {"type": "array", "uniqueItems": true},
+    "budget": {"type": "object"},
+    "stop_conditions": {"type": "array", "minItems": 3, "uniqueItems": true},
+    "return_conditions": {"type": "array", "minItems": 1, "uniqueItems": true},
+    "forbidden_claims": {"type": "array", "uniqueItems": true},
+    "claim_ceiling": {"type": "string", "minLength": 80},
+    "plan_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
