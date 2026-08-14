@@ -130,13 +130,15 @@ cd ~/.local/share/ekri
 git checkout v1.1.0
 ```
 
-下面假设你的项目位于：
+### 2. 指向你的项目，建立可信的项目版本边界
+
+假设你的项目位于：
 
 ```text
 /workspace/my-project
 ```
 
-### 2. 第一次接入时，先确认项目版本
+执行：
 
 ```bash
 python3 ~/.local/share/ekri/EKRI/scripts/validate_observation_boundary.py \
@@ -144,86 +146,35 @@ python3 ~/.local/share/ekri/EKRI/scripts/validate_observation_boundary.py \
   --target-ref HEAD
 ```
 
-这一步会确认 EKRI 当前观察的是哪一个 Git 版本，并排除 EKRI 自己的运行文件，避免把扫描工具本身混进项目知识。
+这一步会确认 EKRI 当前观察的是哪一个 Git 版本，并排除 EKRI 自己的运行文件，避免把工具本身混进项目知识。
 
-如果只想检查、不写入项目运行状态，可以加：
+完成第一次接入后，后续查询、已有知识验证和 L0–L3 逐层展开，可以按当前任务需要使用，不必在首页一次看完所有命令。
 
-```bash
---no-write
-```
+详细入口见：
 
-### 3. 如果项目已经有 EKRI 知识，先验证再使用
-
-项目可能已经保存了：
-
-```text
-.EKRI/project/<asset-id>/
-```
-
-这时不要重新扫描整个项目，先验证已有知识：
-
-```bash
-python3 ~/.local/share/ekri/EKRI/scripts/manage_project_assets.py verify \
-  --repository-root /workspace/my-project \
-  --asset-id <asset-id>
-```
-
-验证通过后，应优先复用已有知识，只对缺失、过期或有冲突的部分继续查看源码。
-
-### 4. 先从 L0 定位，再按需要逐层展开
-
-例如，在准备增加一个功能前，先查询项目里是否已经有类似能力：
-
-```bash
-python3 ~/.local/share/ekri/EKRI/scripts/query_capability.py \
-  --repository-root /workspace/my-project \
-  --source-tree <git-tree> \
-  --query-kind find-capability \
-  --query "你要查找的能力"
-```
-
-这是 L0 级别的定位。
-
-如果命中，再按需要继续查询：
-
-```text
-L0  有没有这个能力？
- ↓
-L1  具体实现在哪里？
- ↓
-L2  有哪些责任、依赖、约束和边界？
- ↓
-L3  具体证据和源码依据是什么？
-```
-
-不需要为了回答一个简单问题，一开始就把完整调用链和大量源码读进上下文。
-
-> EKRI v1.1.0 还不是“一条命令自动读懂任何项目”的工具。不同任务需要了解的项目知识不同，EKRI 更适合由 AI 根据当前任务选择需要查询和补充的部分。
+- [EKRI 技术说明](./EKRI/README.md)
+- [更新记录](./CHANGELOG.md)
 
 ---
 
-## 在 AI Skill 里怎么接入
+## 在 AI Skill 或项目规则中接入
 
-如果你的 AI 开发环境支持 Skill 或项目级规则，可以让自己的 Skill 把 EKRI 当成外部项目知识工具。
+如果你的 AI 开发环境支持 Skill、Rules 或项目级指令，可以把 EKRI 作为**独立的项目知识工具**接入，而不是把 EKRI 源码复制进业务项目的 Skill 目录。
 
-推荐原则：
+推荐给 AI 的使用原则很简单：
 
 ```text
 处理已有项目时：
 
 1. 先确认目标 Git 版本。
-2. 如果项目已有 .EKRI/project，先验证并复用。
-3. 在大范围读取源码前，先查询 EKRI 已有知识。
-4. 从 L0 开始，只有当前任务需要时才继续展开到 L1 / L2 / L3。
-5. 只有知识缺失、过期、有冲突时，才扩大源码探索范围。
-6. 搜索没有找到结果，不等于项目里不存在。
-7. 新发现的项目结论要保留来源，不能只凭文件名、调用关系或猜测当成事实。
-8. 当前任务需要的信息已经足够时，停止继续扩大扫描范围。
+2. 在大范围读取源码前，先查询 EKRI 已有知识。
+3. 从 L0 开始，只有当前任务需要时才继续展开到 L1 / L2 / L3。
+4. 只有知识缺失、过期或有冲突时，才扩大源码探索范围。
+5. 搜索没有找到结果，不等于项目里不存在。
+6. 当前任务需要的信息已经足够时，停止继续扩大扫描范围。
 ```
 
-**v1.1.0 目前还没有提供一个官方通用的 `SKILL.md` 安装包。**
-
-当前推荐的接入方式是：Skill 负责当前任务和调用时机，EKRI 负责项目知识的保存、验证和查询。
+Skill 负责当前任务和调用时机，EKRI 负责项目知识的保存、验证和查询。
 
 ---
 
