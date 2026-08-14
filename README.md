@@ -2,15 +2,11 @@
 
 **让 AI 不必每次重新“读懂整个项目”，而是基于一份可信、精简、持续更新的工程知识资产工作。**
 
-EKRI（Engineering Knowledge Reconstruction and Intelligence）面向大型、长期演化的软件项目，将代码库中的工程事实、结构关系、能力、所有权、生命周期、流程和变化信息，重建为一份：
+EKRI（Engineering Knowledge Reconstruction and Intelligence）面向大型、长期演化的软件项目，将代码库中的工程事实、结构关系、已有能力、资产身份、所有权、生命周期、流程和变化信息，重建为一份可复用、可验证、可渐进展开的 **Project Engineering Knowledge Asset**。
 
-- **精简的**：不把整个代码库或完整调用图塞进长期知识；
-- **渐进披露的**：先回答“有没有、在哪里、归谁、有什么约束”，需要时再向证据和源码展开；
-- **证据绑定的**：知识绑定精确 Git commit / tree / blob 与可验证证据；
-- **与项目演化同步的**：能够识别 stale / missing / conflicting knowledge，并按任务增量刷新；
-- **面向 AI 消费的**：优先服务 Agent 查询、决策和生成前检查，而不是把内部模型做成人类文档系统。
+它的目标不是保存“更多代码信息”，而是让 AI 在面对一个已有项目时，能够更快回答：
 
-> EKRI 的核心不是“扫描代码”，而是维护一份可靠的 **Project Engineering Knowledge Asset**。
+> 项目已经有什么？在哪里？为什么可信？当前版本还成立吗？为了这次任务还缺什么知识？
 
 当前公开版本：**EKRI v1.1.0**。
 
@@ -18,377 +14,285 @@ EKRI（Engineering Knowledge Reconstruction and Intelligence）面向大型、�
 
 ## EKRI 解决什么问题
 
-大型存量项目里，AI 最昂贵、也最危险的行为之一，是每次任务都从源码重新建立项目认知。
+大型存量项目里，AI 很容易陷入一种高成本模式：每个新任务都重新搜索入口、顺调用链、猜模块职责、重新判断已有能力，再把大量源码塞进上下文。
 
-典型问题包括：
+EKRI 主要针对这些问题：
 
-- **重复理解**：每个新会话都重新搜索入口、调用链、模块关系和已有能力；
-- **上下文浪费**：大量源码进入上下文，但真正影响决策的边界、能力、约束和所有权只占很小一部分；
-- **知识漂移**：昨天正确的项目理解，在代码重构、移动、拆分后可能已经过期；
-- **重复造轮子**：Agent 不知道项目已经存在某个 Capability，于是重新生成平行实现；
-- **重构风险不透明**：知道某几个文件相似，却不知道各自消费者、owner、兼容面、生命周期与真实职责；
-- **虚假确定性**：结构引用、测试、文档或历史信息被错误升级成语义真相；
-- **项目接手成本高**：AI 或工程师需要大量时间才能形成“这个系统到底有什么、怎么协作、哪里不能乱动”的基本认知。
+- **重复理解项目**：不同会话、不同 Agent 一遍遍重新摸索同一套结构和能力；
+- **上下文浪费**：真正影响工程决策的信息很少，却需要读取大量无关实现细节；
+- **知识漂移**：旧结论随着移动、重构、拆分和版本演化逐渐失效；
+- **重复造轮子**：Agent 不知道项目已经存在某项 Capability，于是生成平行实现；
+- **重构风险不可见**：只看到结构相似，却看不到消费者、owner、兼容面、生命周期和证据边界；
+- **虚假确定性**：把 import、调用关系、测试、文档或搜索 miss 错误升级成业务或架构真相；
+- **项目接手成本高**：在真正开始改代码之前，需要花大量时间建立基本工程认知。
 
-EKRI 的目标是把这些一次性的认知成本，转化为**可复用、可验证、可增量维护的工程知识基础设施**。
+EKRI 希望把这种一次性的认知成本，转化为长期可复用的工程知识基础设施。
 
 ---
 
-## 产品定位
+## EKRI 是什么
 
 EKRI 可以理解为 AI 软件工程中的一个 **Engineering Knowledge Substrate（工程知识底座）**。
 
-它回答的不是单纯的：
+它维护的不是完整源码副本，也不是一张永久 Code Graph，而是一份精简的、带证据和来源身份的工程知识资产。
 
-> “代码里有哪些类和函数？”
+这份知识资产具有几个核心特征：
 
-而是更接近：
+- **精简**：长期保存高复用知识、稳定身份、证据指针和可信边界，而不是所有扫描中间结果；
+- **渐进披露**：先回答“有没有、在哪里、归谁、有什么约束”，需要时再展开到实现、消费者和源码证据；
+- **证据绑定**：知识绑定精确 Git commit / tree / blob 和可验证 evidence；
+- **可感知新鲜度**：能够区分 exact、stale、unknown、conflicting、blocked，而不是假装旧知识永远有效；
+- **技术栈无关**：核心知识模型不以 Java、Spring、Go、Python、React 等技术栈作为语义前提；
+- **面向 Agent 消费**：优先服务 AI 查询、变更前判断、项目接手和工程分析，而不是把内部模型直接做成人类架构文档。
 
-> “这个项目已经知道什么？这个结论为什么可信？当前版本还成立吗？如果我要做这次工程任务，还缺哪些知识？”
+### EKRI 维护哪些工程知识
 
-### EKRI 不是
-
-- 不是传统代码搜索或全文索引；
-- 不是一个永久保存全部 Code Graph 的数据库；
-- 不是 Architecture Markdown / UML 文档生成器；
-- 不是 WFF PX 的竞争实现；
-- 不是自动重构、自动删除或自动 ownership 判定器；
-- 不是依赖 Java / Spring / Go / Python 等固定技术栈 Profile 的扫描框架；
-- 不把“没有发现”自动解释成“不存在”。
-
-### EKRI 与 WFF / PX
-
-WFF 负责软件工程生命周期和任务推进；PX 负责当前变更的存量系统评估与路径选择；EKRI 负责可复用的项目工程知识。
-
-```text
-WFF / PX / Engineering Agent
-            │
-            │ query / knowledge sufficiency
-            ▼
-     EKRI Project Knowledge
-            │
-            │ missing / stale / conflicting
-            ▼
- Adaptive Knowledge Acquisition
-            │
-            │ bounded evidence refresh
-            ▼
-     EKRI Project Knowledge
-```
-
-因此更准确的关系是：
-
-> **EKRI 是 PX / Agent 可以消费的知识底座之一，而不是替代 PX 的 Workflow。**
-
----
-
-## EKRI 维护什么知识
-
-EKRI v1.x 的 Project Knowledge 采用相对稳定、技术栈无关的工程知识抽象。
-
-主要知识切片包括：
-
-| Knowledge Family | 回答的问题 |
+| Knowledge Family | 主要回答的问题 |
 |---|---|
-| **Architecture** | 系统主要边界、职责和结构如何组织？ |
-| **Capability** | 项目已经具备哪些工程/产品能力？如何实现？ |
-| **Asset Identity** | 一个工程资产是谁，而不仅仅是“现在在哪个路径”？ |
-| **Ownership Boundary** | 哪些 owner / responsibility 有证据支持，哪些仍未确定？ |
-| **Lifecycle Observation** | 资产当前是否被正式分发、维护、兼容或观察到使用？ |
-| **Evolution / Impact** | 什么发生了变化？哪些区域可能受到影响？ |
+| **Architecture** | 系统的重要边界、职责与结构如何组织？ |
+| **Capability** | 项目已经具备哪些能力？这些能力由什么实现？ |
+| **Asset Identity** | 一个工程资产是谁，而不仅仅是“当前在哪个路径”？ |
+| **Ownership Boundary** | owner / responsibility 有什么证据？哪些仍未确定？ |
+| **Lifecycle Observation** | 资产当前被如何使用、维护、分发或兼容？ |
+| **Evolution / Impact** | 什么发生了变化？哪些区域可能受影响？ |
 | **Flow / Handoff** | 关键流程和交接关系如何发生？ |
-| **Evidence / Authority** | 每条知识的证据、来源、可信边界是什么？ |
+| **Evidence / Authority** | 结论来自哪里？可信到什么程度？ |
 
-知识状态不会被强行压成“对/错”二元值。EKRI 显式保留：
-
-```text
-observed
-inferred
-unknown
-conflicting
-blocked / stale
-```
-
-这意味着：**不知道就是不知道，有冲突就保留冲突，而不是为了得到一张漂亮的架构图制造确定性。**
+EKRI 不把所有知识强行压成“事实”。它会显式保留 `observed`、`inferred`、`unknown`、`conflicting`、`stale` 等状态。
 
 ---
 
-## 核心架构
+# 如何在一个已有项目里使用 EKRI
 
-```mermaid
-flowchart TD
-    A[Target Git Repository] --> B[Exact Source Identity\ncommit / tree / blob]
-    B --> C[Evidence Acquisition]
-    C --> D[Evidence / Authority Boundary]
-    D --> E[EKRI Project Knowledge Asset]
+EKRI 推荐作为一个**独立的 scanner-control repository** 使用，不需要把 EKRI 源码复制进你的业务项目。
 
-    E --> F[Architecture]
-    E --> G[Capability]
-    E --> H[Asset / Ownership / Lifecycle]
-    E --> I[Evolution / Impact]
-    E --> J[Flow / Evidence / Unknown]
-
-    E --> K[Named Query / Progressive Disclosure]
-    K --> L[AI Engineering Agent]
-    L --> M[WFF / PX / Refactoring / Project Takeover / Change Tasks]
-
-    M --> N{Knowledge sufficient?}
-    N -- yes --> K
-    N -- no --> O[Adaptive Knowledge Acquisition]
-    O --> C
-```
-
-核心边界是：
+假设你的已有项目位于：
 
 ```text
-动态：如何探索、先看哪里、看多深、用什么证据
-稳定：知识语义、Identity、Evidence、Authority、Unknown/Conflicting
+/workspace/my-project
 ```
 
-探索过程可以灵活，但进入 EKRI 的知识必须经过稳定的证据与权威约束。
+## 1. 安装 EKRI
 
----
-
-## v1.1：Adaptive Knowledge Acquisition
-
-EKRI v1.0 建立了稳定的 Engineering Knowledge System；v1.1 的重点不是增加新的语义知识体系，而是让 AI **更聪明地获取和刷新知识**。
-
-v1.1 不维护：
-
-```text
-profiles/java/
-profiles/go/
-profiles/python/
-profiles/react/
-...
-```
-
-相反，它维护一套稳定的探索原则和通用操作符，让 Agent 针对当前任务动态生成一次性探索计划。
-
-### 自适应探索链
-
-```mermaid
-flowchart TD
-    A[Mission] --> E[Mission Context]
-    B[Current Project Knowledge] --> E
-    C[Exact Source Context] --> E
-    D[Budget] --> E
-
-    E --> F[Knowledge Sufficiency Assessment]
-    F --> G{Knowledge sufficient?}
-    G -- yes --> H[Reuse Existing Knowledge]
-    G -- no --> I[Ephemeral Mission Exploration Plan]
-
-    I --> J[Generic Exploration Operators]
-    J --> K[Bounded Evidence Acquisition]
-    K --> L[WAE Loop]
-
-    L --> M[Challenge]
-    M --> N[Reconcile]
-    N --> O{Enough for Mission?}
-    O -- no --> I
-    O -- yes --> P[Candidate Knowledge Delta]
-
-    P --> Q[Family Authority Routing]
-    Q --> R[EKRI Project Knowledge Refresh]
-```
-
-### WAE 在这里负责什么
-
-WAE 用于 bounded iterative deepening：
-
-```text
-assess
-→ select highest-value gap
-→ acquire bounded evidence
-→ challenge
-→ reconcile
-→ re-assess
-→ converge / return / block
-```
-
-它解决“固定阶段”和“需要迭代”之间的矛盾。
-
-探索深度不是提前硬编码成“必须读 500 个文件”，而是在 Mission、风险、知识缺口、信息增益和预算约束下逐轮收敛。
-
-### 动态的是计划，不是知识语义
-
-v1.1 的重要原则：
-
-> **探索计划可以不稳定，知识语义必须稳定。**
-
-两个 Agent 可以采用不同探索顺序，但它们不能因为计划不同就随意改变：
-
-- semantic identity；
-- evidence requirements；
-- authority ownership；
-- unknown / conflicting 的处理方式；
-- source binding；
-- Project Knowledge family 的含义。
-
----
-
-## 不依赖技术栈 Profile
-
-EKRI v1.1 使用通用探索操作符，例如：
-
-```text
-discover-entrypoints
-inspect-contracts
-inspect-state-and-data
-trace-flow
-assess-freshness
-map-ownership
-expand-structural-neighborhood
-locate-unknowns-and-conflicts
-```
-
-具体项目中的 Java annotation、Python route、TypeScript API client、DDL、Kubernetes manifest 等，只是可选择的**证据来源或轻量 Collector**，不能直接制造语义真相。
-
-v1.1 的异构 conformance 使用同一套 Constitution / Plan / WAE contract，分别处理了：
-
-- service / contract / state；
-- interaction client；
-- data pipeline；
-
-不需要维护三套技术 Profile。
-
----
-
-## 为什么要渐进披露
-
-EKRI 不是让 Agent 每次加载完整项目模型。
-
-普通问题通常只需要：
-
-```text
-有没有这个 Capability？
-在哪里？
-由谁负责？
-哪些限制已知？
-当前知识是否新鲜？
-```
-
-只有需要时才继续展开：
-
-```text
-realizations
-→ related assets
-→ consumers / owners
-→ flow / lifecycle
-→ evidence
-→ exact Git source
-```
-
-这使大型项目的工程知识可以长期丰富，但单次 Agent 上下文仍保持小而相关。
-
----
-
-## v1.1 的一个实际收益证明
-
-在同一 WFF v1.9.2 target、同一组 7 个工程知识问题上：
-
-```text
-From zero:
-7 questions → 7 exploration gaps → 7 planned slices
-
-Reuse existing EKRI Project Knowledge:
-6 questions → existing knowledge reusable
-Architecture → explicit blocked-source-contract-drift
-→ only 1 planned exploration slice
-```
-
-对应 planned ceilings：
-
-```text
-planned slices             7 → 1
-planned tool-call ceiling  7 → 1
-planned source expansions 28 → 4
-```
-
-这个审计证明的是 **planned exploration economy**，不是对实际 token、时间或金钱节省的夸大声明。
-
-同时，已知的 Architecture gap 没有为了提高“复用率”而被隐藏。
-
----
-
-## 版本与发布模型
-
-从 EKRI v1.1 开始，源码与公开分发明确分离：
-
-```text
-rv198-star/software-lifecycle-skills
-    source tag: ekri/vX.Y.Z
-              │
-              │ audited release pack
-              ▼
-rv198-star/ekri-release
-    public main: unpacked runtime/source distribution
-    public tag:  vX.Y.Z
-    GitHub Release: ZIP + manifest + SHA256SUMS
-```
-
-当前版本：
-
-```text
-EKRI v1.1.0
-source tag: ekri/v1.1.0
-public tag: v1.1.0
-```
-
-`EKRI_RELEASE_PACK_MANIFEST.json` 是 release pack 的权威文件清单和 source identity 记录。
-
----
-
-## 快速验证
-
-EKRI Formal Scanner 使用 Git-backed scanner-control trust model。
+推荐直接克隆公开发行仓库并固定到一个正式版本：
 
 ```bash
-python3 EKRI/scripts/validate_observation_boundary.py \
-  --repository-root /path/to/target-repository \
+git clone https://github.com/rv198-star/ekri-release.git ~/.local/share/ekri
+cd ~/.local/share/ekri
+git checkout v1.1.0
+```
+
+`vX.Y.Z` tag 对应经过审计的精确分发版本。
+
+也可以从 GitHub Release 下载 ZIP。若使用 ZIP，Formal Scanner 要求其 `EKRI/` implementation surface 处于一个已提交的 Git scanner-control repository 中，因此解压后需要初始化并提交：
+
+```bash
+git init
+git add .
+git commit -m "install EKRI v1.1.0"
+```
+
+当前验证环境以 **Python 3.12** 为准。
+
+---
+
+## 2. 先建立项目的可信 observation boundary
+
+对任何已有 Git 项目，第一步都应先绑定精确源码身份，而不是直接开始大范围读代码：
+
+```bash
+python3 ~/.local/share/ekri/EKRI/scripts/validate_observation_boundary.py \
+  --repository-root /workspace/my-project \
   --target-ref HEAD
 ```
 
-Formal Scanner 会在以下情况 fail closed：
+这一步会：
 
-- active EKRI implementation 未提交或 dirty；
-- scanner provenance 无法解析；
-- target Git identity 无法验证；
-- protected EKRI / `.EKRI` surface 试图进入正式 observation corpus。
+- 解析目标项目的 exact commit / tree；
+- 固定 EKRI scanner 自身的 Git provenance；
+- 在正式 observation corpus 中排除 `EKRI/**` 和 `.EKRI/**`；
+- 建立后续知识、证据和刷新操作的 source identity 基线。
 
-更多入口：
+如果只想检查而不写入项目本地 runtime state：
+
+```bash
+python3 ~/.local/share/ekri/EKRI/scripts/validate_observation_boundary.py \
+  --repository-root /workspace/my-project \
+  --target-ref HEAD \
+  --no-write
+```
+
+EKRI 的本地运行状态默认放在目标项目的 `.EKRI/` 下；这与业务源码本身分离。
+
+---
+
+## 3. 如果项目已经有 EKRI Project Knowledge，优先复用，不要重新扫描
+
+当目标项目已经存在 portable Project Knowledge，例如：
 
 ```text
-EKRI/README.md
-EKRI/CHANGELOG.md
-EKRI/docs/adaptive-knowledge-acquisition-v1.1.md
-EKRI/docs/releases/v1.1.0.md
-EKRI_RELEASE_PACK_MANIFEST.json
+/workspace/my-project/.EKRI/project/<asset-id>/
 ```
+
+先验证它：
+
+```bash
+python3 ~/.local/share/ekri/EKRI/scripts/manage_project_assets.py verify \
+  --repository-root /workspace/my-project \
+  --asset-id <asset-id>
+```
+
+EKRI 会重新检查 source identity、artifact digest、evidence binding 和兼容性，而不是因为目录存在就信任它。
+
+已有知识满足当前问题时，应直接复用；只有缺失、过期、冲突或被阻塞的部分才继续回源探索。
+
+---
+
+## 4. 按问题逐步查询，而不是一次性加载整个项目
+
+当项目已经有对应 Capability knowledge 时，可以使用 Named Query：
+
+```bash
+python3 ~/.local/share/ekri/EKRI/scripts/query_capability.py \
+  --repository-root /workspace/my-project \
+  --source-tree <target-tree> \
+  --query-kind find-capability \
+  --query "path normalization"
+```
+
+找到能力后，可以继续查询 realization、authority 和 evidence，而不是重新从源码全文搜索：
+
+```text
+find-capability
+→ get-realizations
+→ explain-authority
+→ get-evidence
+```
+
+Query miss **不代表不存在**。如果当前 Project Knowledge 不足，应该进入有边界的补充探索，而不是直接制造 absence 结论。
+
+---
+
+## 5. 对还没有完整 Project Knowledge 的项目怎么办
+
+EKRI v1.1.0 已经提供：
+
+- exact observation trust boundary；
+- Project Knowledge v1/v2 verification；
+- Architecture / Capability / Asset / Ownership / Lifecycle / Evolution / Flow 等知识契约与查询面；
+- 面向 Agent 的 adaptive acquisition contracts，用于识别已有知识、知识缺口、预算和 bounded exploration。
+
+但当前版本**没有提供一个“对任意项目执行一次命令，就自动重建全部工程知识”的万能扫描命令**。
+
+推荐方式是由 Agent 根据当前任务，先查询已有知识，再只对 missing / stale / conflicting frontier 做有边界的探索，并将通过证据与 authority 校验的结果沉淀为 Project Knowledge。
+
+这也是 EKRI 与传统“全库扫描生成报告”工具的重要区别。
+
+---
+
+# 在 Skills / Agent 环境中使用
+
+很多 AI 编程环境使用 Skills、Agent instructions 或工具调用机制来组织能力。
+
+**EKRI v1.1.0 当前没有发布一个可直接复制到 `~/.*/skills/` 的官方通用 `SKILL.md`。**
+
+因此当前推荐的是 **Tool-backed Skill** 模式：
+
+```text
+你的 Agent / Skill
+      │
+      │ 调用 EKRI CLI / Python API
+      ▼
+独立 ekri-release scanner-control repo
+      │
+      │ source-bound observation / query / evidence
+      ▼
+你的已有项目
+```
+
+不要为了“安装 Skill”而把 EKRI 源码复制到业务项目里。
+
+## 一个最小的 Skill / Agent 接入规则
+
+你可以让自己的项目 Skill 或 Agent instruction 遵守下面的约定：
+
+```text
+处理已有项目时：
+
+1. 先确定 target repository root 和 target ref。
+2. 在大范围读取源码前，先运行 EKRI observation boundary。
+3. 如果项目存在 .EKRI/project 资产，先 verify，再决定是否复用。
+4. 优先查询已有 Capability / Architecture / Asset knowledge。
+5. 只有 missing、stale、unknown 或 conflicting 的部分才继续回源。
+6. 搜索 miss、import/call edge、测试或文档都不能自动升级成 semantic truth。
+7. 新获得的知识必须保留 exact source identity、evidence 和 authority posture。
+8. 当前任务已经 knowledge-sufficient 时停止探索，不做无边界全库扫描。
+```
+
+这类 Skill 负责**什么时候调用 EKRI**；EKRI 负责**什么知识已经存在、证据是什么、当前能相信到什么程度**。
+
+未来如果提供正式的通用 EKRI Skill 安装包，它应当保持这一边界，而不是在 Skill 中维护另一套项目真相。
+
+---
+
+## 典型使用场景
+
+### 接手一个陌生项目
+
+先建立 exact source context，检查是否已有 Project Knowledge，然后优先了解关键 Capability、边界、owner、Flow 和 known unknowns，再根据任务逐步展开源码。
+
+### 开发新功能前避免重复实现
+
+先查询项目是否已经存在相同或相近 Capability，再查看 realization、evidence 和约束。只有确认现有能力不能满足需求后，才进入新增实现。
+
+### 做存量代码重构
+
+结合 Asset Identity、Ownership、Lifecycle、结构依赖和 evidence，先判断候选代码的真实职责与消费者，再决定是否值得进一步合并或拆分。
+
+### 项目持续演化后的增量更新
+
+新 commit 到来后，先判断已有知识是否仍绑定当前 target；只重建 stale / missing / changed frontier，不必重新扫描整个项目。
 
 ---
 
 ## 当前边界
 
-EKRI v1.1 不声称：
+EKRI 当前不声称：
 
-- 穷尽整个软件项目的所有知识；
-- 自动判断 safe delete / merge / refactor；
-- 自动拥有业务、架构或 ownership 决策权；
-- 已实现 PX 路由控制；
-- 已实现全项目 Convergence Candidate Discovery；
-- 已实现 Human Projection 产品；
-- 已证明真实 UAT、production readiness 或 owner approval。
+- 已经穷尽整个项目的所有工程知识；
+- 搜索 miss 可以证明某能力不存在；
+- import / call / Git history 可以直接决定 semantic ownership；
+- 可以自动批准 safe delete、merge 或 refactor；
+- 可以替代业务 owner、架构评审或生产审批；
+- 已提供一个对任意技术栈都能自动完成全项目语义重建的一键扫描器。
 
-它提供的是一个更基础的能力：
+EKRI 更基础也更重要的目标是：
 
-> **让 AI 面对长期演化的软件项目时，可以先查询一份可信工程知识资产，只对真正缺失、过期或冲突的部分继续探索，而不是每次从零重新理解代码库。**
+> **让 AI 面对一个长期演化的软件项目时，先复用一份可信工程知识资产，再只探索真正不知道的部分。**
 
 ---
 
-## License / Source
+## 下载与版本
 
-EKRI 的正式源码版本来自 `rv198-star/software-lifecycle-skills` 中的 `ekri/vX.Y.Z` source tag。
+公开发行仓库：
 
-本仓库 `rv198-star/ekri-release` 是 EKRI 的独立公开分发仓库，从 v1.1 起承载展开后的 runtime/source distribution 与正式 GitHub Release 资产。
+- `https://github.com/rv198-star/ekri-release`
+
+当前版本：
+
+- **EKRI v1.1.0**
+- GitHub Release：`https://github.com/rv198-star/ekri-release/releases/tag/v1.1.0`
+
+每个正式 Release 提供：
+
+```text
+ekri-vX.Y.Z-release-pack.zip
+EKRI_RELEASE_PACK_MANIFEST.json
+SHA256SUMS
+```
+
+`vX.Y.Z` public tag 固定该版本经过审计的精确分发内容；`main` 可以继续改进产品 README、Changelog 等展示层，不会移动已经发布的版本 tag。
+
+版本变化请看：[CHANGELOG.md](./CHANGELOG.md)
+
+更底层的产品/runtime文档保留在 `EKRI/` 目录中。
