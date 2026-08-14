@@ -149,30 +149,6 @@ EKRI_HOME=/path/to/ekri-release
 
 ---
 
-## 版本兼容
-
-EKRI 的兼容性以**项目工程知识资产结构**为主要边界。
-
-只要 Project Knowledge 的资产结构没有发生不兼容变化，就属于同一个兼容版本代；一旦资产结构发生不兼容变化，就进入新的兼容代。
-
-当前：
-
-```text
-v1.1.0 ↔ v1.1.1：完全兼容
-兼容代：project-knowledge-layout-g2
-当前资产结构：ekri.project-knowledge-asset.v2
-```
-
-v1.1.x 同时保留对旧 `v1` 项目知识资产的兼容读取。
-
-机器可读的完整兼容列表：
-
-```text
-EKRI/specs/version-compatibility.json
-```
-
----
-
 ## 常见使用场景
 
 ### 接手一个陌生项目
@@ -209,6 +185,30 @@ EKRI 不会因为找到几个文件就自动决定：
 - 某次重构已经安全可发布。
 
 这些仍然需要结合当前任务、源码、测试和实际工程判断。
+
+---
+
+## 版本兼容
+
+EKRI 的兼容性以**项目工程知识资产结构**为主要边界。
+
+只要 Project Knowledge 的资产结构没有发生不兼容变化，就属于同一个兼容版本代；一旦资产结构发生不兼容变化，就进入新的兼容代。
+
+当前：
+
+```text
+v1.1.0 ↔ v1.1.1：完全兼容
+兼容代：project-knowledge-layout-g2
+当前资产结构：ekri.project-knowledge-asset.v2
+```
+
+v1.1.x 同时保留对旧 `v1` 项目知识资产的兼容读取。
+
+机器可读的完整兼容列表：
+
+```text
+EKRI/specs/version-compatibility.json
+```
 
 ---
 
