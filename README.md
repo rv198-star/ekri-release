@@ -114,9 +114,9 @@ python3 ~/.local/share/ekri/EKRI/scripts/query_capability.py \
 
 > 注意：不同类型的项目知识需要不同的输入。EKRI v1.1.0 还不是一个“一条命令自动读懂任何项目”的工具。它更适合由 AI 根据当前任务选择需要补充的知识。
 
-## 和 AI Skills 一起使用
+## 在 AI Skill 里怎么接入
 
-如果你的 AI 开发环境支持 Skills、Rules 或项目级指令，可以让自己的 Skill 把 EKRI 当成一个外部项目查询工具。
+如果你的 AI 开发环境支持 Skill 或项目级规则，可以让自己的 Skill 把 EKRI 当成一个外部项目查询工具。
 
 **不要把 EKRI 整个复制进 Skill，也不要让 Skill 每次先全库扫描。**
 
@@ -136,7 +136,7 @@ python3 ~/.local/share/ekri/EKRI/scripts/query_capability.py \
 
 这样，Skill 负责当前任务，EKRI 负责保存和复用项目知识。
 
-### 当前 Skills 支持状态
+### 当前支持情况
 
 **v1.1.0 还没有提供一个官方通用的 `SKILL.md` 安装包。**
 
@@ -164,7 +164,7 @@ EKRI 命令 / Python 接口
 
 在生成代码前先查项目是否已有相同或相近能力，优先复用或扩展现有实现。
 
-### 修 Bug
+### 修问题
 
 先定位相关能力、实现位置和依赖范围，再决定需要继续展开哪些源码。
 
@@ -191,7 +191,7 @@ EKRI 不会因为扫描到了几个文件就自动决定：
 
 ## 下载
 
-推荐从 GitHub Releases 下载正式版本：
+推荐从 GitHub 发布页下载正式版本：
 
 - [EKRI Releases](https://github.com/rv198-star/ekri-release/releases)
 - [EKRI v1.1.0](https://github.com/rv198-star/ekri-release/releases/tag/v1.1.0)
