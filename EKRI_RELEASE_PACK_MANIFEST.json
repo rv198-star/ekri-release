@@ -139,6 +139,7 @@
     "EKRI/tests/test_core_boundary_reconstruction.py",
     "EKRI/tests/test_core_extraction.py",
     "EKRI/tests/test_core_migration.py",
+    "EKRI/tests/test_ekri_skills.py",
     "EKRI/tests/test_existing_capability_intelligence.py",
     "EKRI/tests/test_flow_query.py",
     "EKRI/tests/test_knowledge_reconstruction.py",
@@ -155,7 +156,9 @@
     "EKRI/tests/test_repository_ownership_boundary.py",
     "EKRI/tests/test_shadow_semantic_substrate.py",
     "EKRI/tests/test_v100_release_gate.py",
-    "EKRI/tests/test_v110_gate.py"
+    "EKRI/tests/test_v110_gate.py",
+    "EKRI/tests/test_v111_gate.py",
+    "EKRI/tests/test_version_compatibility.py"
   ],
   "files": [
     {
@@ -167,18 +170,18 @@
       "size": 50
     },
     {
-      "git_blob_oid": "04134bcc772d2aa7ad1afcb62a7659b89362fb08",
+      "git_blob_oid": "b3ee1f25b11d3ea883ccb073ec826db7446c1a9e",
       "mode": "100644",
       "path": "EKRI/CHANGELOG.md",
-      "sha256": "6a262402dec2d1fbb9b2541f689b4ba1ce448b73f61b780f9a1c39c38a3b716e",
-      "size": 10259
+      "sha256": "737246a68e1fd266b9ef61f18ba5b1a99f60408d6a654caa2ba18a8484af5991",
+      "size": 11709
     },
     {
-      "git_blob_oid": "033dd9b2137870e6c6cadc47115f488a65f3ce49",
+      "git_blob_oid": "157e38fde02ca9912935642d0006ff8754e52127",
       "mode": "100644",
       "path": "EKRI/README.md",
-      "sha256": "eed04078a724fe85923d37780223335251567cc78b7cbb19959e755314dac063",
-      "size": 26668
+      "sha256": "b811d103ea6545043a164876950e969a562838c6ce289a67663f6718c0a3a156",
+      "size": 27735
     },
     {
       "git_blob_oid": "2d3c54ab66ca96996e5825689f43eccf9e2437fc",
@@ -272,11 +275,18 @@
       "size": 6949
     },
     {
-      "git_blob_oid": "18fb5cdcb6eb4167fe8f95aee13ab3c28ca59fd6",
+      "git_blob_oid": "0a6569b1b19afe8f3ce4078a59ec7be8f305bed4",
       "mode": "100644",
       "path": "EKRI/docs/releases/v1.1.0.md",
-      "sha256": "447fe9c90c7a3e9a127c71e42043c7aed9aa7344a020ddb382c39ad5865806de",
-      "size": 1910
+      "sha256": "3301c259c77e23c94ab8b93183189fb5b0f9c28249c1ec2b3baf864970918706",
+      "size": 2223
+    },
+    {
+      "git_blob_oid": "648ce6793d3e7f11f0d80c351df4adff89f4add6",
+      "mode": "100644",
+      "path": "EKRI/docs/releases/v1.1.1.md",
+      "sha256": "fce74555bb9cf786fc60a64172e31dc591adfd1a58590868320291c81891def1",
+      "size": 2645
     },
     {
       "git_blob_oid": "46f09f8213079bef3e33618458bacb96780e0644",
@@ -314,10 +324,10 @@
       "size": 11679
     },
     {
-      "git_blob_oid": "6e98e191ceaf94f054b420a945dd5ad884bf393d",
+      "git_blob_oid": "56e7a1038985e039eba8a5c54cfc10689abb4f10",
       "mode": "100644",
       "path": "EKRI/pyproject.toml",
-      "sha256": "9264f3315255527bde294321358998292765d474339a962309c7dd498a0326a7",
+      "sha256": "6466e56ec42628f3296d70f8ca4aadb624b4d73552ee5f876806e39ae50107fa",
       "size": 348
     },
     {
@@ -678,11 +688,11 @@
       "size": 397
     },
     {
-      "git_blob_oid": "20fde8c0e3b0440fe26463b15941a27dc430d744",
+      "git_blob_oid": "ac9b24ac6ee8377981ea69cbf1e4e350d845e9a9",
       "mode": "100644",
       "path": "EKRI/scripts/audit_release_pack.py",
-      "sha256": "1154a6df1c7cf01143a8d02186923cd8ce3115b9b6d1b569b7cd6484246b7879",
-      "size": 8564
+      "sha256": "51a3a998b2f7bc569c51a73b61de85ac765f444b582b4d8b94ea6728c7344f21",
+      "size": 9105
     },
     {
       "git_blob_oid": "4a6b5cee7cf0abbfd5cfc935648eda27a0194112",
@@ -697,6 +707,13 @@
       "path": "EKRI/scripts/audit_v110_gate.py",
       "sha256": "853506adc22cd3ef4c99b16df7297095bcbbabfb06d920daa4a466d541d036fa",
       "size": 344
+    },
+    {
+      "git_blob_oid": "22133a5d168629e8617221f55620c433ef865573",
+      "mode": "100644",
+      "path": "EKRI/scripts/audit_v111_gate.py",
+      "sha256": "1c06ffe8d082ed31d4b9d06c19689d33cba5df885aa15038fd04b101ee0e7467",
+      "size": 652
     },
     {
       "git_blob_oid": "8d54ee270083b45854be1a6044182886357a6ef4",
@@ -720,11 +737,11 @@
       "size": 1803
     },
     {
-      "git_blob_oid": "26e1e3f0c47e074c347d3cbdcbf84374bf4f3528",
+      "git_blob_oid": "ad8218c2c90878fc58befc8f42ba49d798c4f088",
       "mode": "100644",
       "path": "EKRI/scripts/build_release_pack.py",
-      "sha256": "86641d62e7b92e67096a489350f1f9b076b62db13568402d74f044a6af97013c",
-      "size": 14503
+      "sha256": "806046f4f182339fa8bf75ec0152ebd62610e795a2b4484c3a99723eabaa50aa",
+      "size": 16006
     },
     {
       "git_blob_oid": "758fc553316121a741aa55307d3bc1fb9ce9a2e7",
@@ -732,6 +749,13 @@
       "path": "EKRI/scripts/check_existing_capability.py",
       "sha256": "866baa2e3635c434ff9bc4b946500cf967180d79539923d3cb894f51fa1f9e6b",
       "size": 3374
+    },
+    {
+      "git_blob_oid": "47902c7a2bb34d7e2b5d3418861c3a2adafd85e7",
+      "mode": "100644",
+      "path": "EKRI/scripts/check_version_compatibility.py",
+      "sha256": "782f0d65c84a0756a62bb034f2d20fd64a2fac2d38b91dee0b7ec2b6357fc76c",
+      "size": 1900
     },
     {
       "git_blob_oid": "b68067665bd3356386ecfeaba22a8d10867aad69",
@@ -746,6 +770,13 @@
       "path": "EKRI/scripts/define_wff_core_contract.py",
       "sha256": "c8789171987ec6ca09ae1adcafccb5ef4184bbd75beebfc6fa08b39cb1584f0f",
       "size": 1987
+    },
+    {
+      "git_blob_oid": "47371f6ccfc3cf7abcb61fcf90dab546a90c7daf",
+      "mode": "100644",
+      "path": "EKRI/scripts/install_ekri_skills.py",
+      "sha256": "28fc82619c4b1021690cdc76041baf4b2a32fa3525732bf85a562dda9eeeedbf",
+      "size": 3689
     },
     {
       "git_blob_oid": "88a58304605188d8357683292ecce7223ca006f8",
@@ -839,6 +870,34 @@
       "size": 2254
     },
     {
+      "git_blob_oid": "ee28f8c2f23e768d039aed961a5c094917265540",
+      "mode": "100644",
+      "path": "EKRI/skills/ekri-init/SKILL.md",
+      "sha256": "e8a6c5cea00ef7a75811ec73faadbc9b5d786ae1ba067839ee86ffd34bf65e8f",
+      "size": 4045
+    },
+    {
+      "git_blob_oid": "f0a7ddcd61be6a28dc595b4e08f8a38a47568ee4",
+      "mode": "100644",
+      "path": "EKRI/skills/ekri-query/SKILL.md",
+      "sha256": "8f297b268106e4b6f092abe0b5f7a82a4d9b3213c5a6fa7362841e487d0897aa",
+      "size": 3985
+    },
+    {
+      "git_blob_oid": "1084cf7a6fe56fb3a6d51dcf0d5da9e5f8acc4d6",
+      "mode": "100644",
+      "path": "EKRI/skills/ekri-refresh/SKILL.md",
+      "sha256": "f2916fef075581ddd42f6df5b9ea6085b54cfa94bd5fdee78b068d7ed7968c12",
+      "size": 4035
+    },
+    {
+      "git_blob_oid": "d48ce5e9d3daca7b68e0a2ab92b53af3de7ef944",
+      "mode": "100644",
+      "path": "EKRI/skills/using-ekri/SKILL.md",
+      "sha256": "131a9d532616646780455da745ae093e153bc701da05051da138d1f303dd05d5",
+      "size": 3403
+    },
+    {
       "git_blob_oid": "d1cda9d588208111f27a880030b930da1481545a",
       "mode": "100644",
       "path": "EKRI/specs/adaptive-exploration-conformance.json",
@@ -879,6 +938,20 @@
       "path": "EKRI/specs/v110-product-surface-classification.json",
       "sha256": "0eea2f38a35246457c77fd0c549d5703de10a5e2035d76d9d9a161c8e3c48d54",
       "size": 428
+    },
+    {
+      "git_blob_oid": "4abf15ff108b09193bea1839eb959c5de5985b16",
+      "mode": "100644",
+      "path": "EKRI/specs/v111-skill-surface-classification.json",
+      "sha256": "af04d0815d562bdf7d465d59d56708a092e97e921a578aa45d5bf7c07d294061",
+      "size": 1801
+    },
+    {
+      "git_blob_oid": "18577f4b735c45e2df04d69469bc2a3c873f46e0",
+      "mode": "100644",
+      "path": "EKRI/specs/version-compatibility.json",
+      "sha256": "e7ab1caf82c74124eeb33c59346cbda9995f1d9665cc285c247bf5590b16d913",
+      "size": 1887
     },
     {
       "git_blob_oid": "46d670615ac068675db90b374d717e59ef692b5e",
@@ -1119,6 +1192,13 @@
       "size": 41180
     },
     {
+      "git_blob_oid": "fd0d5c7cd266eb5a690ae62300be60f2ccccd18d",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/skill_surface.py",
+      "sha256": "71d063c73674a5fea33056bc5ce83103e00c321a1f2e08de106e702a2b69c0f8",
+      "size": 2833
+    },
+    {
       "git_blob_oid": "199ff6c3a48215bcef1fb856f6cdac8c624dbd98",
       "mode": "100644",
       "path": "EKRI/src/ekri/v100_release_gate.py",
@@ -1126,31 +1206,45 @@
       "size": 29751
     },
     {
-      "git_blob_oid": "339f646d19f266e820814a03a0b6c310df938207",
+      "git_blob_oid": "cfa42861c7c07f5026ef4658c0a71885634c60e8",
       "mode": "100644",
       "path": "EKRI/src/ekri/v110_gate.py",
-      "sha256": "1ddb37c09e497fdfeb71c694d811c167c05d51ed61632daf3729e324642cab8a",
-      "size": 18060
+      "sha256": "a38f4342010503a70a59cb7594a4142fe82e59659009ffad179acdea843a5efb",
+      "size": 22178
+    },
+    {
+      "git_blob_oid": "a5e0fd5c4981036aefd192eea5964678648539e8",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/v111_gate.py",
+      "sha256": "52068c866d1cb5f498fbe5fa179aeaf777ecfecf8cfe2b32f91d17a175acd165",
+      "size": 21692
+    },
+    {
+      "git_blob_oid": "3e7a61fb7117a9e317b011edc28e122e87af708d",
+      "mode": "100644",
+      "path": "EKRI/src/ekri/version_compatibility.py",
+      "sha256": "2508ba7acb8a56e16490c3f1987044a43621aecd9afbd2ae2143ea4d3703402d",
+      "size": 4478
     },
     {
       "generated": true,
       "git_blob_oid": "",
       "mode": "100644",
       "path": "README.md",
-      "sha256": "24fcfe659892aad1876a90968b89d6ca1c66247ef7d5e938738a4ec5f282e06c",
-      "size": 1984
+      "sha256": "bddb28b024e02e471e4678a07493260a916dbad7ca5bddf82e055c0efa00970d",
+      "size": 3248
     }
   ],
   "formal_scanner_requirement": "EKRI Formal Scanner requires the active implementation to be committed as top-level EKRI/ inside its scanner-control Git repository; this package does not introduce a standalone provenance fallback.",
-  "included_file_count": 140,
-  "included_total_bytes": 1689400,
+  "included_file_count": 153,
+  "included_total_bytes": 1756701,
   "installation_model": "git-committed-top-level-EKRI-scanner-control-repository",
-  "package_name": "ekri-v1.1.0-release-pack",
-  "packager_revision": "d45dc12d0777d5c7f6651f3564dea63b1dded8a6",
+  "package_name": "ekri-v1.1.1-release-pack",
+  "packager_revision": "5c049d66179d224310b160ed9bc70a628ca5ff19",
   "product": "EKRI",
   "schema_version": "ekri.release-pack.v1",
-  "source_ref": "ekri/v1.1.0",
-  "source_revision": "d45dc12d0777d5c7f6651f3564dea63b1dded8a6",
-  "source_tree": "966ef5b76f1e3a4d876985d98a3069c71f891c25",
-  "version": "1.1.0"
+  "source_ref": "ekri/v1.1.1",
+  "source_revision": "5c049d66179d224310b160ed9bc70a628ca5ff19",
+  "source_tree": "7790dc3b77624b8a98a33b5529c481eba041720e",
+  "version": "1.1.1"
 }

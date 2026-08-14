@@ -37,6 +37,18 @@ V110_REQUIRED_FILES = {
     "EKRI/specs/v110-product-surface-classification.json",
     "EKRI/specs/adaptive-exploration-conformance.json",
 }
+V111_REQUIRED_FILES = {
+    "EKRI/docs/releases/v1.1.1.md",
+    "EKRI/specs/v111-skill-surface-classification.json",
+    "EKRI/specs/version-compatibility.json",
+    "EKRI/scripts/install_ekri_skills.py",
+    "EKRI/scripts/check_version_compatibility.py",
+    "EKRI/scripts/audit_v111_gate.py",
+    "EKRI/skills/using-ekri/SKILL.md",
+    "EKRI/skills/ekri-init/SKILL.md",
+    "EKRI/skills/ekri-refresh/SKILL.md",
+    "EKRI/skills/ekri-query/SKILL.md",
+}
 FORBIDDEN_PREFIXES = (
     "EKRI/tests/",
     "EKRI/registrations/",
@@ -115,6 +127,8 @@ def audit_release_pack(pack_root: Path) -> dict[str, Any]:
         required_files.update(V100_REQUIRED_FILES)
     if version.startswith("1.1"):
         required_files.update(V110_REQUIRED_FILES)
+    if version.startswith("1.1.1"):
+        required_files.update(V111_REQUIRED_FILES)
     missing_required = sorted(required_files - actual_set)
     if missing_required:
         failures.append("required package files missing: " + ", ".join(missing_required))

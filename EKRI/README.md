@@ -1,8 +1,10 @@
 # EKRI
 
-Engineering Knowledge Reconstruction and Intelligence (EKRI) is a top-level
-WFF repository subproject. It is not a WFF Skill, lifecycle phase, install-pack
-surface, or release-bundle dependency.
+Engineering Knowledge Reconstruction and Intelligence (EKRI) is a versioned engineering-knowledge system for AI software engineering.
+
+In plain terms, EKRI maintains a graded project engineering asset so an AI Agent can quickly understand only the engineering structure relevant to the current task, then decide whether to reuse an existing capability, extend an existing implementation, or create something new. Knowledge is disclosed progressively from orientation to implementation, constraints, and exact evidence instead of forcing every task to reread the whole repository.
+
+EKRI is an independent product surface. Starting with v1.1.1, it ships its own standalone AI-facing Skill set under `EKRI/skills/`.
 
 ## Product version and release line
 
@@ -20,8 +22,10 @@ WFF version/tag/release:     separate product lifecycle
 first released supported Engineering Knowledge System architecture line. The
 formal `ekri/v1.0.0` tag is frozen at
 `026f2ffa5c3c8685418adc4bf281911b4ff2d578`. `EKRI v1.1.0` adds Adaptive
-Knowledge Acquisition over that stable semantic system without rewriting the
-published v1.0 identity.
+Knowledge Acquisition over that stable semantic system. `EKRI v1.1.1` is a
+bounded usability hotfix that restores the official four-Skill AI entry surface
+without changing the Engineering Knowledge Model or semantic writer/family
+boundaries.
 
 Starting with v0.9.0, EKRI Releases publish an independent audited release pack.
 The pack preserves the top-level `EKRI/` layout required by Formal Scanner Git
@@ -37,6 +41,18 @@ the top level of another scanner-control Git repository), keep the supplied
 package-root `.gitignore`, and commit the `EKRI/` surface before formal
 observation. The release pack intentionally does not add a non-Git or
 self-certified scanner fallback.
+
+For v1.1.1 and later, validate or install the complete official Skill directories
+with:
+
+```bash
+python3 EKRI/scripts/install_ekri_skills.py --check
+python3 EKRI/scripts/install_ekri_skills.py --target-dir /path/to/agent/skills
+```
+
+The official action Skills are `using-ekri`, `ekri-init`, `ekri-refresh`, and
+`ekri-query`. They route AI usage over existing EKRI capabilities and do not own
+semantic truth.
 
 `EKRI v1.0.0` supports a rich but shallow Engineering Knowledge Model with named
 Query/View contracts and progressive disclosure, backed internally by the

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ekri"
-version = "1.1.0"
+version = "1.1.1"
 description = "Evidence-bounded Engineering Knowledge Reconstruction and Intelligence"
 requires-python = ">=3.12"
 

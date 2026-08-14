@@ -1,0 +1,46 @@
+{
+  "schema_version": "ekri.version-compatibility.v1",
+  "compatibility_rule": "EKRI product versions are fully compatible only when they share the same current Project Knowledge asset-layout generation. A layout-generation change starts a new compatibility generation. Backward readability of older asset schemas may be retained but does not make two generations fully compatible.",
+  "generations": [
+    {
+      "generation_id": "project-knowledge-layout-g1",
+      "current_asset_schema": "ekri.project-knowledge-asset.v1",
+      "supported_asset_schemas": [
+        "ekri.project-knowledge-asset.v1"
+      ],
+      "versions": [
+        "0.9.0",
+        "1.0.0"
+      ],
+      "status": "historical-compatible-line"
+    },
+    {
+      "generation_id": "project-knowledge-layout-g2",
+      "current_asset_schema": "ekri.project-knowledge-asset.v2",
+      "supported_asset_schemas": [
+        "ekri.project-knowledge-asset.v1",
+        "ekri.project-knowledge-asset.v2"
+      ],
+      "versions": [
+        "1.1.0",
+        "1.1.1"
+      ],
+      "status": "current-compatible-line",
+      "backward_readability": [
+        "ekri.project-knowledge-asset.v1"
+      ]
+    }
+  ],
+  "policy": {
+    "same_generation": "fully-compatible",
+    "different_generation": "not-fully-compatible",
+    "unknown_version": "unknown",
+    "layout_change_requires_new_generation": true,
+    "product_patch_without_layout_change_stays_in_generation": true
+  },
+  "notes": [
+    "Compatibility is about the persisted Project Knowledge asset structure, not about whether every CLI or Skill surface is identical.",
+    "A newer generation may retain explicit backward readers for older asset schemas; this is migration/backward support, not full generation compatibility.",
+    "Whenever the current Project Knowledge asset schema/layout changes incompatibly, add a new generation before release."
+  ]
+}

@@ -1,25 +1,38 @@
 {
   "schema_version": 1,
-  "version": "v1.1.0",
-  "generated_at": "2026-08-13T19:25:06Z",
+  "version": "v1.1.1",
+  "generated_at": "2026-08-14T11:45:06+08:00",
   "public_repository_shape": "unpacked-ekri-release-pack",
   "source_repo": "rv198-star/software-lifecycle-skills",
-  "source_tag": "ekri/v1.1.0",
-  "source_revision": "d45dc12d0777d5c7f6651f3564dea63b1dded8a6",
-  "source_tree": "966ef5b76f1e3a4d876985d98a3069c71f891c25",
+  "source_tag": "ekri/v1.1.1",
+  "source_revision": "5c049d66179d224310b160ed9bc70a628ca5ff19",
+  "source_tree": "7790dc3b77624b8a98a33b5529c481eba041720e",
   "public_repository": "rv198-star/ekri-release",
-  "release_pack_name": "ekri-v1.1.0-release-pack",
+  "release_pack_name": "ekri-v1.1.1-release-pack",
   "release_pack": {
-    "archive_name": "ekri-v1.1.0-release-pack.zip",
-    "archive_size": 451147,
-    "archive_sha256": "317ccbd13db697b6f87f4be92cb0c050aaacdf44a20feeb790e221476debb00e",
-    "manifest_sha256": "8444a14ec1f0efce3325f0bb1f2d058e6738585359d74465ec5c8f38105b04ef",
-    "included_file_count": 140
+    "archive_name": "ekri-v1.1.1-release-pack.zip",
+    "archive_size": 478933,
+    "archive_sha256": "7751d53da409bf43675fd947a259fdc1bb640b52c06fa9d6bffb7a4c1506aa30",
+    "manifest_sha256": "99e8fef01782f4fd0e1aaa76efa4f10b2efc4c9a840072d4c9ca7b94720b4d28",
+    "included_file_count": 153
   },
+  "official_skills": [
+    "using-ekri",
+    "ekri-init",
+    "ekri-refresh",
+    "ekri-query"
+  ],
+  "target_project_default_access": "read-only",
+  "authorized_knowledge_persistence_path": ".EKRI/project/**",
+  "project_knowledge_compatibility_generation": "project-knowledge-layout-g2",
+  "fully_compatible_versions": [
+    "1.1.0",
+    "1.1.1"
+  ],
   "release_assets": [
-    "ekri-v1.1.0-release-pack.zip",
+    "ekri-v1.1.1-release-pack.zip",
     "EKRI_RELEASE_PACK_MANIFEST.json",
     "SHA256SUMS"
   ],
-  "claim_boundary": "Public repository contains the unpacked audited EKRI release pack plus public distribution metadata only. WFF runtime/install-pack content, EKRI tests, authoring history, WFF registrations, and repository-local .EKRI runtime state are excluded."
+  "claim_boundary": "Public repository contains the unpacked audited EKRI release pack plus public distribution metadata only at the version tag. EKRI Skills are AI-Agent entry surfaces and keep target-project access read-only except explicitly authorized EKRI knowledge persistence under .EKRI/project/**. WFF runtime/install-pack content, EKRI tests, authoring history, WFF registrations, and repository-local runtime state are excluded."
 }

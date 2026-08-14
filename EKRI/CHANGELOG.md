@@ -18,6 +18,25 @@ EKRI is versioned independently from WFF even while both products remain in the 
 
 ### Security
 
+## [1.1.1] - 2026-08-14
+
+### Added
+
+- Official AI-facing EKRI Skill set: `using-ekri`, `ekri-init`, `ekri-refresh`, and `ekri-query`.
+- Generic Skill installer/validator `EKRI/scripts/install_ekri_skills.py` for caller-supplied Agent skills directories.
+- Machine-readable v1.1.1 Skill-surface classification and release-gate coverage.
+- AI-Agent-only target-project access contract: Skills are read-only by default; only explicitly authorized EKRI knowledge persistence under `.EKRI/project/**` is allowed, with Git tracking recommended.
+- Machine-readable EKRI product-version compatibility list based on Project Knowledge asset-layout generations, plus a CLI for list/lookup/compare.
+
+### Fixed
+
+- v1.1.0 shipped runtime/CLI/API capability without an official packaged Skill entry surface; v1.1.1 makes the four action Skills mandatory release-pack content.
+
+### Compatibility / claim posture
+
+- No new semantic writer or knowledge family is introduced; the Skills are non-authoritative routing/usage surfaces over existing EKRI capabilities.
+- `1.1.0` and `1.1.1` are fully compatible because the current Project Knowledge asset layout remains `ekri.project-knowledge-asset.v2`; `1.0.0` belongs to the prior layout generation.
+
 ## [1.1.0] - 2026-08-14
 
 ### Added
@@ -34,6 +53,8 @@ EKRI is versioned independently from WFF even while both products remain in the 
 - Existing Project Knowledge Asset v1 promotion, verification, hydration and Capability migration remain unchanged; multiple tracked assets now require explicit asset selection rather than implicit era/format choice.
 
 ### Fixed
+
+- v1.1 release-gate lifecycle now supports the published tag state only when `ekri/v1.1.0` resolves to the frozen validated v1.1 source, while post-merge WFF-only descendant changes remain outside EKRI release scope.
 
 ### Deprecated
 

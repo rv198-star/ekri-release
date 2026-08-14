@@ -1,0 +1,54 @@
+{
+  "schema_version": "ekri.v111-skill-surface-classification.v1",
+  "product_version": "1.1.1",
+  "status": "release-candidate-classification",
+  "skills": [
+    {
+      "name": "using-ekri",
+      "role": "admission-router",
+      "routes_to": ["ekri-init", "ekri-refresh", "ekri-query"],
+      "semantic_authority": false
+    },
+    {
+      "name": "ekri-init",
+      "role": "first-project-connection",
+      "routes_to": ["ekri-refresh", "ekri-query"],
+      "semantic_authority": false
+    },
+    {
+      "name": "ekri-refresh",
+      "role": "incremental-knowledge-refresh",
+      "routes_to": ["ekri-query"],
+      "semantic_authority": false
+    },
+    {
+      "name": "ekri-query",
+      "role": "progressive-knowledge-query",
+      "disclosure_levels": ["L0", "L1", "L2", "L3"],
+      "semantic_authority": false
+    }
+  ],
+  "consumer": "ai-agent",
+  "target_project_access": {
+    "default": "read-only",
+    "forbidden_writes": [
+      "source-code",
+      "configuration",
+      "tests",
+      "business-project-files",
+      "git-commit"
+    ],
+    "authorized_knowledge_persistence": {
+      "requires_explicit_user_authorization": true,
+      "allowed_path": ".EKRI/project/**",
+      "recommend_git_tracking": true
+    }
+  },
+  "installation": {
+    "unit": "complete-skill-directory",
+    "installer": "EKRI/scripts/install_ekri_skills.py",
+    "target_policy": "caller-supplied-agent-skills-directory"
+  },
+  "semantic_change": false,
+  "claim_ceiling": "The EKRI v1.1.1 Skill surface provides official AI-facing admission, initialization, refresh and progressive-query instructions over existing EKRI product capabilities. It does not add semantic writers, new knowledge families, autonomous engineering decisions, exhaustive project understanding or a general Agent runtime."
+}

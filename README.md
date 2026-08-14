@@ -1,243 +1,85 @@
-# EKRI
+# EKRI v1.1.1 Release Pack
 
-**面向 AI 软件工程的项目工程知识系统。**
+This is the independent EKRI source/runtime distribution for product version `1.1.1`.
 
-EKRI（Engineering Knowledge Reconstruction and Intelligence）用于把一个已有软件项目重建成一份**可验证、可复用、随代码版本演化的工程知识资产**。
+Source identity: `5c049d66179d224310b160ed9bc70a628ca5ff19` (the formal release tag, when published, is `ekri/v1.1.1`).
 
-它不是简单地给代码做索引，也不是生成一份静态架构文档。EKRI 更关注 AI 在长期开发中反复需要回答的工程问题：
+## Layout
 
-- 这个项目整体是怎么组织的？
-- 已经有哪些能力和现成实现？
-- 某个能力具体落在哪里？
-- 哪些代码、配置、资源和接口彼此相关？
-- 哪些内容仍在使用，哪些属于兼容或历史遗留？
-- 这条结论依据什么？当前版本还成立吗？
-- 当前任务还缺哪些知识，是否真的需要继续读更多源码？
+The package preserves a top-level `EKRI/` directory because EKRI Formal Scanner provenance requires the active implementation to live at `EKRI/` in its scanner-control Git repository.
 
-EKRI 的目标，是让 AI **先复用项目已经知道的东西，再对真正缺失、过期或有冲突的部分继续探索**。
+## Install / activate the Formal Scanner
 
-当前公开版本：**v1.1.0**
-
----
-
-## 核心特点
-
-### 1. 以工程知识为中心，而不是以搜索结果为中心
-
-普通代码检索擅长回答：
-
-> “这个关键词、类、函数或调用出现在哪里？”
-
-EKRI 更关注：
-
-> “这段代码在项目里承担什么工程职责？它对应什么能力？和哪些资产、流程、约束、使用方有关？这个判断有多可靠？”
-
-代码搜索、符号索引、调用关系、测试、配置和 Git 历史，都可以成为 EKRI 获取证据的手段，但它们本身不是最终的项目知识。
-
-EKRI 会把这些分散信息整理成相对稳定的工程知识，例如：
-
-- 项目的整体结构和主要边界；
-- 已有能力及其实现位置；
-- 关键工程资产以及相互关系；
-- 责任和所有权边界；
-- 使用、兼容、维护和历史状态；
-- 关键流程与交接关系；
-- 项目变化以及可能受到影响的区域；
-- 每条结论的来源、可信程度和未解决问题。
-
-### 2. 渐进式披露：先整体，再局部，最后才看证据细节
-
-大型项目的知识可以很多，但一次任务通常只需要其中很小一部分。
-
-EKRI 不要求 AI 一开始就加载完整项目模型，而是按软件工程层次逐级展开：
-
-| 层级 | 主要回答的问题 | 典型用途 |
-|---|---|---|
-| **L0：定位** | 有没有？是什么？ | 快速判断项目是否已有某项能力或相关知识 |
-| **L1：实现** | 在哪里？由哪些实现承载？ | 定位模块、代码、配置和相关资产 |
-| **L2：关系与约束** | 谁负责？有哪些边界、依赖和限制？ | 评估改动、复用和重构风险 |
-| **L3：证据** | 为什么这样判断？具体依据在哪里？ | 回到精确源码和证据做验证 |
-
-因此，一个普通问题可以只停在 L0；需要修改代码时再展开到 L1/L2；只有在需要核实结论或处理冲突时，才继续进入 L3。
-
-这也是 EKRI 和一般代码检索最重要的区别之一：
-
-> **检索通常直接返回大量命中项；EKRI 先提供工程层面的结论和定位，再按需要逐步展开到局部实现和原始证据。**
-
-### 3. 知识和具体代码版本绑定
-
-项目知识不是永久正确的。
-
-文件会移动，模块会拆分，接口会变化，旧实现也可能被替换。EKRI 会把知识和明确的 Git 版本绑定，并区分：
-
-- 当前仍然有效；
-- 已经过期，需要重新确认；
-- 证据不足；
-- 不同证据之间存在冲突。
-
-这样可以避免 AI 拿几个月前的项目理解继续当成当前事实。
-
-### 4. 保留证据和不确定性，不制造“看起来很完整”的答案
-
-EKRI 不会因为搜索到了几个文件，就自动把它们升级成确定的工程结论。
-
-项目知识可以处于不同状态，例如：
-
-- 已确认；
-- 有证据支持的推断；
-- 仍然未知；
-- 证据相互冲突。
-
-“没有搜索到”也不会被自动解释成“项目里不存在”。
-
-对重构、接手开发和已有能力复用来说，这一点通常比生成一张完整但不可靠的架构图更重要。
-
-### 5. 增量维护，而不是每次重新理解整个项目
-
-EKRI 的工程知识可以随着项目演化继续更新。
-
-当代码发生变化时，AI 可以先复用仍然有效的知识，只重新确认受影响、已经过期或当前任务真正需要深入的部分。
-
-因此 EKRI 更适合作为一个长期项目资产，而不是一次性的代码扫描报告。
-
----
-
-## 它主要解决什么问题
-
-在一个维护时间较长的项目里，AI 很容易遇到：
-
-- 每个新会话都重新搜索项目入口、模块和调用关系；
-- 不知道项目已经有类似实现，又写出一套新的；
-- 接手旧项目时，不清楚哪些代码最重要、哪些地方不能随便改；
-- 做重构时，只看到了几个文件，却不知道还有哪些使用方会受影响；
-- 几个月前得到的项目理解已经过期，却仍被当成当前事实；
-- 搜索没有找到结果，就误以为项目里不存在对应能力；
-- 为了回答一个小问题，读取了大量其实无关的源码。
-
-EKRI 把这些反复发生的理解成本，沉淀成可以被后续 AI 会话继续使用的工程知识。
-
----
-
-## 在一个已有项目里怎么用
-
-### 1. 单独安装 EKRI
-
-推荐把 EKRI 放在业务项目之外，不要把 EKRI 源码复制进你的项目仓库。
+1. Extract this package into a directory that will act as the EKRI scanner-control repository.
+2. Initialize Git if needed: `git init`.
+3. Keep the package-root `.gitignore`; it excludes `.EKRI/` and Python cache artifacts that must not make the scanner surface dirty.
+4. Add and commit the extracted `EKRI/` surface (and package metadata if desired).
+5. Run EKRI against a target Git repository, for example:
 
 ```bash
-git clone https://github.com/rv198-star/ekri-release.git ~/.local/share/ekri
-cd ~/.local/share/ekri
-git checkout v1.1.0
-```
-
-### 2. 指向你的项目，建立可信的项目版本边界
-
-假设你的项目位于：
-
-```text
-/workspace/my-project
-```
-
-执行：
-
-```bash
-python3 ~/.local/share/ekri/EKRI/scripts/validate_observation_boundary.py \
-  --repository-root /workspace/my-project \
+python3 EKRI/scripts/validate_observation_boundary.py \
+  --repository-root /path/to/target-repository \
   --target-ref HEAD
 ```
 
-这一步会确认 EKRI 当前观察的是哪一个 Git 版本，并排除 EKRI 自己的运行文件，避免把工具本身混进项目知识。
+The scanner intentionally fails closed if its `EKRI/` implementation surface is dirty, uncommitted, outside a Git repository, or not rooted at top-level `EKRI/`.
 
-完成第一次接入后，后续查询、已有知识验证和 L0–L3 逐层展开，可以按当前任务需要使用，不必在首页一次看完所有命令。
+This package preserves the Git-backed scanner-control trust model. It does not add a standalone-provenance fallback.
 
-详细入口见：
 
-- [EKRI 技术说明](./EKRI/README.md)
-- [更新记录](./CHANGELOG.md)
+## Install the official EKRI Skills
 
----
+The release pack includes four official EKRI Skills under `EKRI/skills/`:
 
-## 在 AI Skill 或项目规则中接入
+- `using-ekri`
+- `ekri-init`
+- `ekri-refresh`
+- `ekri-query`
 
-如果你的 AI 开发环境支持 Skill、Rules 或项目级指令，可以把 EKRI 作为**独立的项目知识工具**接入，而不是把 EKRI 源码复制进业务项目的 Skill 目录。
+Validate them:
 
-推荐给 AI 的使用原则很简单：
-
-```text
-处理已有项目时：
-
-1. 先确认目标 Git 版本。
-2. 在大范围读取源码前，先查询 EKRI 已有知识。
-3. 从 L0 开始，只有当前任务需要时才继续展开到 L1 / L2 / L3。
-4. 只有知识缺失、过期或有冲突时，才扩大源码探索范围。
-5. 搜索没有找到结果，不等于项目里不存在。
-6. 当前任务需要的信息已经足够时，停止继续扩大扫描范围。
+```bash
+python3 EKRI/scripts/install_ekri_skills.py --check
 ```
 
-Skill 负责当前任务和调用时机，EKRI 负责项目知识的保存、验证和查询。
+Install the complete Skill directories into an Agent skills directory chosen by the caller:
 
----
-
-## 常见使用场景
-
-### 接手一个陌生项目
-
-先了解项目整体结构、主要能力和关键边界，再针对当前负责的模块逐步展开，而不是从一个文件开始盲目追调用链。
-
-### 开发新功能
-
-生成代码前先查询是否已有相同或相近能力，确认已有实现和约束后，再决定复用、扩展还是新增。
-
-### 修问题
-
-先定位相关能力、实现位置和依赖范围，再决定哪些源码值得继续深入。
-
-### 重构或接手旧模块
-
-先确认已有实现、使用方、依赖、维护状态和边界，再开始移动、合并或替换代码。
-
-### 长期维护大型项目
-
-项目变化后保留仍然有效的知识，只更新受影响部分，避免每个 AI 会话都重新建立整套项目认知。
-
----
-
-## EKRI 不会替你自动决定什么
-
-EKRI 不会因为扫描到了几个文件就自动决定：
-
-- 这段代码可以安全删除；
-- 两套实现一定应该合并；
-- 某个人或模块一定拥有某项职责；
-- 搜索没找到就证明某项能力不存在；
-- 当前项目已经被完全理解；
-- 某次重构已经安全可发布。
-
-这些仍然需要结合当前任务、源码、测试和实际工程判断。
-
----
-
-## 下载与文档
-
-推荐从 GitHub 发布页下载正式版本：
-
-- [EKRI Releases](https://github.com/rv198-star/ekri-release/releases)
-- [EKRI v1.1.0](https://github.com/rv198-star/ekri-release/releases/tag/v1.1.0)
-
-发布包同时提供：
-
-```text
-ekri-v1.1.0-release-pack.zip
-EKRI_RELEASE_PACK_MANIFEST.json
-SHA256SUMS
+```bash
+python3 EKRI/scripts/install_ekri_skills.py --target-dir /path/to/agent/skills
 ```
 
-更多资料：
+Use `--force` only when intentionally replacing existing EKRI Skill directories.
 
-- [更新记录](./CHANGELOG.md)
-- [详细技术说明](./EKRI/README.md)
-- [v1.1.0 发布说明](./EKRI/docs/releases/v1.1.0.md)
+These Skills are designed for AI Agents. Keep the EKRI runtime outside the target business repository and point installed Skills back to this release root, for example:
 
----
+```bash
+export EKRI_HOME=/path/to/ekri-release-pack
+```
 
-> **EKRI 的核心价值，是把“每次重新读代码”变成“先查已有工程知识，再按需深入源码”。**
+The Skills are read-only against target-project source, configuration, tests and business files. Persisting EKRI knowledge requires explicit user authorization and is limited to `<project-root>/.EKRI/project/**`; when persisted, that directory is intended to be tracked as a project asset.
+
+Check EKRI product-version compatibility by Project Knowledge asset layout:
+
+```bash
+python3 EKRI/scripts/check_version_compatibility.py --list
+python3 EKRI/scripts/check_version_compatibility.py --compare 1.1.0 1.1.1
+```
+
+## Included
+
+- Python implementation under `EKRI/src/ekri/`
+- EKRI command-line scripts
+- schemas and product/profile specs required by the selected EKRI version
+- committed audit/conformance fixtures required by current supported capabilities
+- bounded product/operation/release documentation
+- `EKRI/README.md`, `EKRI/CHANGELOG.md`, and `EKRI/pyproject.toml`
+
+## Excluded
+
+- EKRI tests
+- WFF change-registration history
+- ontology exploration/audit history not listed as bounded product documentation
+- repository-local runtime state (`.EKRI/**`)
+- WFF runtime/install-pack content
+
+See `EKRI_RELEASE_PACK_MANIFEST.json` for exact file identities and the release claim ceiling.

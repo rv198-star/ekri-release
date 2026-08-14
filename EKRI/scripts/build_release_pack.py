@@ -49,6 +49,7 @@ INCLUDED_PREFIXES = (
     "EKRI/schemas/",
     "EKRI/specs/",
     "EKRI/audit-fixtures/",
+    "EKRI/skills/",
     "EKRI/docs/releases/",
     "EKRI/docs/adaptive-",
 )
@@ -137,7 +138,49 @@ def _package_gitignore() -> bytes:
     return b".EKRI/\n**/__pycache__/\n*.pyc\n*.pyo\n.pytest_cache/\n"
 
 
-def _package_readme(version: str, source_revision: str) -> bytes:
+def _package_readme(version: str, source_revision: str, *, has_skills: bool) -> bytes:
+    skills_section = ""
+    if has_skills:
+        skills_section = """
+## Install the official EKRI Skills
+
+The release pack includes four official EKRI Skills under `EKRI/skills/`:
+
+- `using-ekri`
+- `ekri-init`
+- `ekri-refresh`
+- `ekri-query`
+
+Validate them:
+
+```bash
+python3 EKRI/scripts/install_ekri_skills.py --check
+```
+
+Install the complete Skill directories into an Agent skills directory chosen by the caller:
+
+```bash
+python3 EKRI/scripts/install_ekri_skills.py --target-dir /path/to/agent/skills
+```
+
+Use `--force` only when intentionally replacing existing EKRI Skill directories.
+
+These Skills are designed for AI Agents. Keep the EKRI runtime outside the target business repository and point installed Skills back to this release root, for example:
+
+```bash
+export EKRI_HOME=/path/to/ekri-release-pack
+```
+
+The Skills are read-only against target-project source, configuration, tests and business files. Persisting EKRI knowledge requires explicit user authorization and is limited to `<project-root>/.EKRI/project/**`; when persisted, that directory is intended to be tracked as a project asset.
+
+Check EKRI product-version compatibility by Project Knowledge asset layout:
+
+```bash
+python3 EKRI/scripts/check_version_compatibility.py --list
+python3 EKRI/scripts/check_version_compatibility.py --compare 1.1.0 1.1.1
+```
+
+"""
     text = f"""# EKRI v{version} Release Pack
 
 This is the independent EKRI source/runtime distribution for product version `{version}`.
@@ -166,7 +209,7 @@ The scanner intentionally fails closed if its `EKRI/` implementation surface is 
 
 This package preserves the Git-backed scanner-control trust model. It does not add a standalone-provenance fallback.
 
-## Included
+{skills_section}## Included
 
 - Python implementation under `EKRI/src/ekri/`
 - EKRI command-line scripts
@@ -268,7 +311,11 @@ def build_release_pack(
             }
         )
 
-    package_readme = _package_readme(version, source_revision)
+    package_readme = _package_readme(
+        version,
+        source_revision,
+        has_skills=any(path.startswith("EKRI/skills/") for path in selected_paths),
+    )
     _write_file(pack_root / PACKAGE_README_NAME, package_readme)
     file_rows.append(
         {

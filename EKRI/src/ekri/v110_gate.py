@@ -32,6 +32,7 @@ PRODUCT_VERSION = "1.1.0"
 V100_TAG = "ekri/v1.0.0"
 V100_SOURCE = "026f2ffa5c3c8685418adc4bf281911b4ff2d578"
 V110_BASE_SOURCE = "44dac393d387c02a6545dfa979ccf520f4cd6e6d"
+V110_SOURCE = "d45dc12d0777d5c7f6651f3564dea63b1dded8a6"
 REQUIRED_ADAPTIVE_EXPORTS = frozenset({
     "AdaptiveExplorationError",
     "CompetencyQuestion",
@@ -77,9 +78,11 @@ def _product_metadata(ekri_root: Path) -> dict[str, Any]:
         pyproject = tomllib.loads((ekri_root / "pyproject.toml").read_text(encoding="utf-8"))
     except (OSError, tomllib.TOMLDecodeError) as exc:
         raise V110GateError(f"pyproject cannot be read: {exc}") from exc
-    version = str(pyproject.get("project", {}).get("version") or "")
-    if version != PRODUCT_VERSION:
-        raise V110GateError(f"EKRI product version is not {PRODUCT_VERSION}: {version}")
+    current_version = str(pyproject.get("project", {}).get("version") or "")
+    if current_version != PRODUCT_VERSION and not current_version.startswith("1.1."):
+        raise V110GateError(
+            f"EKRI current product version is outside the v1.1 compatibility line: {current_version}"
+        )
     required = [
         ekri_root / "CHANGELOG.md",
         ekri_root / "docs" / "adaptive-knowledge-acquisition-v1.1.md",
@@ -104,7 +107,8 @@ def _product_metadata(ekri_root: Path) -> dict[str, Any]:
     ]:
         raise V110GateError("v1.1 adaptive supported surface classification drifted")
     return {
-        "version": version,
+        "version": PRODUCT_VERSION,
+        "current_product_version": current_version,
         "design": "EKRI/docs/adaptive-knowledge-acquisition-v1.1.md",
         "release_notes": "EKRI/docs/releases/v1.1.0.md",
         "surface_classification": "EKRI/specs/v110-product-surface-classification.json",
@@ -171,8 +175,12 @@ def _distribution_manifest(root: Path) -> dict[str, Any] | None:
 
 def _version_invariants(root: Path) -> dict[str, Any]:
     release_tag = f"ekri/v{PRODUCT_VERSION}"
-    if _git(root, "tag", "--list", release_tag):
-        raise V110GateError("v1.1 candidate gate requires release tag to remain absent")
+    release_tag_exists = bool(_git(root, "tag", "--list", release_tag))
+    release_source = ""
+    if release_tag_exists:
+        release_source = _git(root, "rev-parse", f"{release_tag}^{{commit}}")
+        if release_source != V110_SOURCE:
+            raise V110GateError("published EKRI v1.1.0 tag/source identity changed")
     try:
         resolved_v100 = _git(root, "rev-parse", f"{V100_TAG}^{{commit}}")
     except V110GateError:
@@ -186,6 +194,9 @@ def _version_invariants(root: Path) -> dict[str, Any]:
             "v100_source_expected": V100_SOURCE,
             "v110_release_tag": release_tag,
             "v110_release_tag_exists": False,
+            "v110_release_source": "not-locally-resolvable",
+            "v110_release_source_expected": V110_SOURCE,
+            "publication_state": "distribution",
             "pack_source_revision": str(manifest.get("source_revision") or ""),
         }
     if resolved_v100 != V100_SOURCE:
@@ -195,11 +206,80 @@ def _version_invariants(root: Path) -> dict[str, Any]:
         "v100_tag": V100_TAG,
         "v100_source": resolved_v100,
         "v110_release_tag": release_tag,
-        "v110_release_tag_exists": False,
+        "v110_release_tag_exists": release_tag_exists,
+        "v110_release_source": release_source if release_tag_exists else "",
+        "v110_release_source_expected": V110_SOURCE,
+        "publication_state": "published" if release_tag_exists else "pre-publication",
+    }
+
+
+def _is_v110_scope_path(path: str) -> bool:
+    return path.startswith("EKRI/") or path.startswith(".EKRI/project/")
+
+
+def _commit_delta(root: Path, commit: str) -> tuple[str, list[str]]:
+    parent_row = _git(root, "rev-list", "--parents", "-n", "1", commit).split()
+    if len(parent_row) < 2:
+        return "", []
+    parent = parent_row[1]
+    changed = [line for line in _git(root, "diff", "--name-only", f"{parent}..{commit}").splitlines() if line]
+    return parent, changed
+
+
+def _find_v110_merge_anchor(root: Path) -> tuple[str, str, list[str]] | None:
+    for commit in _git(root, "rev-list", "--first-parent", "HEAD").splitlines():
+        parent_row = _git(root, "rev-list", "--parents", "-n", "1", commit).split()
+        if len(parent_row) < 3:
+            continue
+        parent, changed = _commit_delta(root, commit)
+        if "EKRI/docs/releases/v1.1.0.md" in changed and "EKRI/specs/v110-product-surface-classification.json" in changed:
+            return commit, parent, changed
+    return None
+
+
+def _merged_v110_scope_audit(root: Path) -> dict[str, Any] | None:
+    anchor = _find_v110_merge_anchor(root)
+    if anchor is None:
+        return None
+    anchor_commit, scope_base, anchor_changed = anchor
+    forbidden_anchor = [path for path in anchor_changed if not _is_v110_scope_path(path)]
+    if forbidden_anchor:
+        raise V110GateError("v1.1 merge scope contains non-EKRI paths: " + ", ".join(forbidden_anchor[:20]))
+    post_commits = [
+        value
+        for value in _git(root, "rev-list", "--reverse", "--first-parent", f"{anchor_commit}..HEAD").splitlines()
+        if value
+    ]
+    post_ekri_paths: list[str] = []
+    ignored_paths: list[str] = []
+    for commit in post_commits:
+        _, changed = _commit_delta(root, commit)
+        ekri_paths = [path for path in changed if _is_v110_scope_path(path)]
+        other_paths = [path for path in changed if not _is_v110_scope_path(path)]
+        if ekri_paths and other_paths:
+            raise V110GateError("post-v1.1 EKRI scope is mixed with unrelated paths: " + ", ".join(other_paths[:20]))
+        if ekri_paths:
+            post_ekri_paths.extend(ekri_paths)
+        else:
+            ignored_paths.extend(other_paths)
+    audited_paths = sorted(set([*anchor_changed, *post_ekri_paths]))
+    return {
+        "mode": "source-repository",
+        "scope_proof_mode": "merged-v110-program-plus-ekri-only-followups",
+        "base_source": scope_base,
+        "program_base_source": V110_BASE_SOURCE,
+        "v110_merge_source": anchor_commit,
+        "changed_path_count": len(audited_paths),
+        "post_merge_ekri_path_count": len(set(post_ekri_paths)),
+        "ignored_non_ekri_descendant_path_count": len(set(ignored_paths)),
+        "non_ekri_changed_paths": [],
     }
 
 
 def _scope_audit(root: Path) -> dict[str, Any]:
+    merged_scope = _merged_v110_scope_audit(root)
+    if merged_scope is not None:
+        return merged_scope
     parent_row = _git(root, "rev-list", "--parents", "-n", "1", "HEAD").split()
     if len(parent_row) >= 3:
         scope_base = parent_row[1]
@@ -382,8 +462,14 @@ def validate_v110_release_gate_report(payload: Mapping[str, Any]) -> dict[str, A
     if not isinstance(acquisition, Mapping) or acquisition.get("persistent_truth_store") is not False:
         raise V110GateError("v1.1 acquisition control attempted a persistent truth store")
     versions = data.get("versions")
-    if not isinstance(versions, Mapping) or versions.get("v110_release_tag_exists") is not False:
-        raise V110GateError("v1.1 candidate gate must stop before publication")
+    if not isinstance(versions, Mapping):
+        raise V110GateError("v1.1 release version evidence is missing")
+    if versions.get("v110_release_tag_exists") not in {True, False}:
+        raise V110GateError("v1.1 release tag state is invalid")
+    if versions.get("v110_release_tag_exists") is True and versions.get("v110_release_source") != V110_SOURCE:
+        raise V110GateError("published EKRI v1.1.0 tag/source identity changed")
+    if versions.get("v110_release_source_expected") not in {None, V110_SOURCE}:
+        raise V110GateError("v1.1 release source expectation drifted")
     fingerprint = str(data.get("report_fingerprint") or "")
     expected = _digest({key: value for key, value in data.items() if key != "report_fingerprint"})
     if fingerprint != expected:
